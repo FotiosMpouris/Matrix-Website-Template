@@ -1,75 +1,82 @@
-// script.js
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - MAGHA</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-function initializeMatrixEffect() {
-    const canvas = document.getElementById('matrix-canvas');
-    const ctx = canvas.getContext('2d');
+    <canvas id="matrix-canvas"></canvas>
+    <div class="particles-container" id="particles-container"></div>
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    <nav class="navbar">
+        <a href="https://github.com/YourGitHubUsername" target="_blank" rel="noopener noreferrer">
+            <svg class="github-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="..."/>
+            </svg>
+        </a>
+        <div class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="team.html">Team</a></li>
+            <li><a href="projects.html" class="active-link">Projects</a></li>
+            <li><a href="connect.html">Connect</a></li>
+        </ul>
+    </nav>
 
-    const letters = Array(256).join("0").split("");
+    <section class="section" id="projects">
+        <div class="container">
+            <h2 class="title">Key Initiatives &amp; Projects</h2>
+            <p class="subtitle">Building America's Future</p>
 
-    function drawMatrix() {
-        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+            <div class="projects">
+                <!-- DOGE Project Card -->
+                <div class="project-card">
+                    <h4>Project DOGE</h4>
+                    <p>
+                        The Department of Government Efficiency (DOGE) is tasked with optimizing
+                        bureaucratic processes, reducing waste, and employing cutting-edge
+                        technologies to ensure taxpayer dollars are effectively utilized.
+                    </p>
+                    <a href="doge.html" style="color: #ffb3b3; text-decoration: underline;">Learn More</a>
+                </div>
 
-        ctx.fillStyle = "#0f0"; // Green matrix color
-        letters.forEach((y_pos, index) => {
-            const text = String.fromCharCode(3e4 + Math.random() * 33);
-            const x_pos = index * 10;
-            ctx.fillText(text, x_pos, y_pos);
+                <!-- Department of Government Efficiency -->
+                <div class="project-card">
+                    <h4>Department of Government Efficiency</h4>
+                    <p>
+                        A newly established department focusing on cross-agency collaboration,
+                        data-driven audits, and AI-assisted streamlining. This project aims to
+                        drastically improve public sector operations.
+                    </p>
+                    <a href="department-efficiency.html" style="color: #ffb3b3; text-decoration: underline;">
+                        Department Page
+                    </a>
+                </div>
 
-            if (y_pos > 100 + Math.random() * 1e5) {
-                letters[index] = 0;
-            } else {
-                letters[index] = y_pos + 10;
-            }
-        });
-    }
-    setInterval(drawMatrix, 50);
+                <!-- Global Affairs -->
+                <div class="project-card">
+                    <h4>Global Affairs &amp; Diplomacy</h4>
+                    <p>
+                        Strengthening America's position on the world stage through fair trade
+                        deals, strategic alliances, and innovative policies that champion
+                        freedom and prosperity.
+                    </p>
+                    <a href="global-affairs.html" style="color: #ffb3b3; text-decoration: underline;">
+                        View Initiatives
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    });
-}
+    <script src="script.js"></script>
+</body>
+</html>
 
-function createParticle(e) {
-    const container = document.getElementById('particles-container');
-    if (!container) return;
 
-    const particle = document.createElement('div');
-    particle.className = 'particle';
-    particle.style.left = e.pageX + 'px';
-    particle.style.top = e.pageY + 'px';
-    container.appendChild(particle);
-
-    setTimeout(() => {
-        container.removeChild(particle);
-    }, 2000);
-}
-
-function createEnergyWave(x, y) {
-    const container = document.getElementById('particles-container');
-    if (!container) return;
-
-    const wave = document.createElement('div');
-    wave.className = 'energy-wave';
-    wave.style.left = (x - 100) + 'px';
-    wave.style.top = (y - 100) + 'px';
-    container.appendChild(wave);
-
-    setTimeout(() => {
-        container.removeChild(wave);
-    }, 3000);
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    initializeMatrixEffect();
-
-    // Simple click effect
-    document.addEventListener('click', (e) => {
-        createParticle(e);
-        createEnergyWave(e.pageX, e.pageY);
-    });
-});
