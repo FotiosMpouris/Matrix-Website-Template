@@ -17,35 +17,60 @@
         <path d="..."></path>
       </svg>
     </a>
-    <div class="hamburger" id="hamburger">
-      <span></span><span></span><span></span>
-    </div>
-    <ul class="nav-links" id="nav-links">
+    <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
-      <li><a href="projects.html">Projects</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="team.html">Team</a></li>
+      <li>
+        <a href="projects.html">Projects</a>
+        <ul class="dropdown">
+          <li><a href="doge.html" class="active-link">Project DOGE</a></li>
+          <li><a href="department-efficiency.html">Dept Efficiency</a></li>
+          <li><a href="global-affairs.html">Global Affairs</a></li>
+        </ul>
+      </li>
       <li><a href="connect.html">Connect</a></li>
     </ul>
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
   </nav>
 
+  <!-- Mobile menu overlay -->
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="team.html">Team</a>
+    <button id="projects-toggle-btn" style="background:none;border:none;color:#fff;font-size:1.1rem;cursor:pointer;">
+      Projects &#9662;
+    </button>
+    <div class="mobile-dropdown" id="mobile-dropdown">
+      <a href="doge.html" class="active-link">Project DOGE</a>
+      <a href="department-efficiency.html">Dept Efficiency</a>
+      <a href="global-affairs.html">Global Affairs</a>
+    </div>
+    <a href="connect.html">Connect</a>
+  </div>
+
   <section class="section">
-    <div class="container">
+    <div class="container translucent-box">
       <h1 class="title">Project DOGE</h1>
       <p class="subtitle">Department of Government Efficiency</p>
 
-      <div class="about-content" style="background:none; box-shadow:none;">
-        <p>
-          The Department of Government Efficiency (DOGE) represents a major leap in 
-          rethinking how the federal government manages resources. Headed by a team 
-          of forward-thinking experts, including Elon Musk, DOGE is an attempt to 
-          merge private-sector innovation with public-sector accountability.
-        </p>
-        <p>
-          Through AI, automation, and transparent performance metrics, DOGE aims to
-          slash bureaucracy, cut unnecessary spending, and make government services
-          more user-friendly. Ultimately, Project DOGE stands for a government that 
-          is leaner, smarter, and more responsive to citizens’ needs.
-        </p>
-      </div>
+      <p style="line-height:1.8; margin-bottom:1rem;">
+        The Department of Government Efficiency (DOGE) represents a major leap in 
+        rethinking how the federal government manages resources. Headed by a team 
+        of forward-thinking experts, including Elon Musk, DOGE is an attempt to 
+        merge private-sector innovation with public-sector accountability.
+      </p>
+      <p style="line-height:1.8;">
+        Through AI, automation, and transparent performance metrics, DOGE aims to
+        slash bureaucracy, cut unnecessary spending, and make government services
+        more user-friendly. Ultimately, Project DOGE stands for a government that 
+        is leaner, smarter, and more responsive to citizens’ needs.
+      </p>
     </div>
   </section>
 
