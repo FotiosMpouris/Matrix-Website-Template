@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team - MAGHA</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <canvas id="matrix-canvas"></canvas>
+    <div class="particles-container" id="particles-container"></div>
+
+    <nav class="navbar">
+        <a href="https://github.com/YourGitHubUsername" target="_blank" rel="noopener noreferrer">
+            <svg class="github-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="..."/>
+            </svg>
+        </a>
+        <div class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="team.html" class="active-link">Team</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="connect.html">Connect</a></li>
+        </ul>
+    </nav>
+
+    <section class="dark-theme-section">
+        <div class="section-border-glow"></div>
+        <div class="container about-card">
+            <div class="tech-grid"></div>
+            <div class="about-header">
+                <div class="profile-container">
+                    <img src="images/donald-trump.png" alt="Donald Trump" class="about-profile-img">
+                </div>
+                <div class="about-header-text">
+                    <h1 class="glow-text">Leadership &amp; Key Appointees</h1>
+                </div>
+            </div>
+
+            <div class="about-content">
+                <p>
+                    Below is a snapshot of our prominent team members, each bringing a unique
+                    perspective and skill set to the Administration.
+                </p>
+
+                <!-- Team Grid -->
+                <div class="skills-container">
+                    <!-- Example: Donald Trump -->
+                    <div class="skill-icon" title="Donald Trump - President">
+                        <img src="images/donald-trump.png" alt="Donald Trump Icon">
+                    </div>
+                    <!-- Example: Elon Musk -->
+                    <div class="skill-icon" title="Elon Musk - Tech & Energy Advisor">
+                        <img src="images/elon-musk.png" alt="Elon Musk Icon">
+                    </div>
+                    <!-- Example: Robert F. Kennedy Jr. -->
+                    <div class="skill-icon" title="RFK Jr. - Health & Environmental Leader">
+                        <img src="images/robert-kennedy-jr.png" alt="RFK Jr Icon">
+                    </div>
+
+                    <!-- Add more placeholders as needed, e.g.: -->
+                    <!-- <div class="skill-icon" title="Name - Title">
+                        <img src="images/appointee-name.png" alt="Name Icon">
+                    </div> -->
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
