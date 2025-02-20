@@ -4,8 +4,8 @@
 :root {
   --primary-dark: #0a192f;
   --primary-light: #1a1f35;
-  --accent-blue: #007BFF;  /* bright accent blue */
-  --accent-glow: rgba(255, 0, 0, 0.5); /* subtle red glow */
+  --accent-blue: #007BFF;  
+  --accent-glow: rgba(255, 0, 0, 0.5); 
   --text-primary: #ffffff;
   --text-secondary: rgba(255, 255, 255, 0.7);
   --matrix-color: rgba(0, 183, 255, 0.25);
@@ -76,7 +76,7 @@ body {
 
 /* NAVBAR - STICKY DESKTOP, HAMBURGER MOBILE */
 .navbar {
-  position: fixed; /* so it follows scrolling */
+  position: fixed; 
   top: 0;
   left: 0;
   width: 100%;
@@ -95,7 +95,6 @@ body {
   gap: 2rem;
 }
 
-/* Desktop Nav Links */
 .nav-links li {
   position: relative;
 }
@@ -106,8 +105,7 @@ body {
   font-weight: 500;
   transition: var(--transition-standard);
 }
-.nav-links li a:hover,
-.active-link {
+.nav-links li a:hover {
   color: var(--accent-blue);
 }
 
@@ -164,7 +162,7 @@ body {
 /* MOBILE MENU OVERLAY */
 .mobile-menu {
   position: fixed;
-  top: 60px; /* just below the navbar */
+  top: 60px; 
   left: 50%;
   transform: translateX(-50%) translateY(-100%);
   width: 80%;
@@ -244,7 +242,7 @@ body {
   position: relative;
   z-index: 2;
   animation: fadeUp 1s forwards;
-  margin-top: 60px; /* give room for fixed navbar */
+  margin-top: 60px; /* for fixed navbar */
 }
 
 /* Animations */
@@ -320,11 +318,10 @@ body {
 
 /* SOCIAL LINKS (CONNECT PAGE) */
 .social-links {
-  /* remove translucent bg */
-  background: none;
   display: flex;
+  flex-wrap: wrap; /* let them wrap onto multiple lines */
   justify-content: center;
-  gap: 2rem;
+  gap: 1rem;
   margin-top: 2rem;
   padding: 1rem 0;
 }
@@ -337,8 +334,8 @@ body {
   padding: 10px 20px;
   border-radius: 5px;
   background: rgba(255, 60, 0, 0.1);
-  overflow: hidden;
   transition: var(--transition-standard);
+  flex: 0 0 auto; 
 }
 .social-link:hover {
   background: rgba(255, 60, 0, 0.2);
@@ -346,15 +343,19 @@ body {
   box-shadow: 0 5px 15px rgba(255, 60, 0, 0.2);
 }
 
-/* Responsive Fixes */
+/* Make them stack in narrower mobile widths */
 @media (max-width: 480px) {
-  .skill-icon img {
-    width: 40px;
-    height: 40px;
+  .social-links {
+    flex-direction: column;
+    align-items: center;
+  }
+  .social-link {
+    width: 80%;
+    margin: 0 auto;
   }
 }
 
-/* Helper: translucent box styling for various pages */
+/* Helper: translucent box styling for pages like About/Projects */
 .translucent-box {
   background: rgba(255, 255, 255, 0.07);
   margin: 0 auto;
