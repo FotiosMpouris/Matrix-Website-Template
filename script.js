@@ -1,117 +1,82 @@
 // scripts.js
 gsap.registerPlugin(ScrollTrigger);
 
-function initializeMatrixEffect() {
+function initializeMatrix() {
     const canvas = document.getElementById('matrix-canvas');
     const ctx = canvas.getContext('2d');
-
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        initializeMatrix();
-    }
-
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
+    
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
     const stars = '★☆✩✪✫✬✭✮✯';
-    const fontSize = 16;
-    let columns, drops;
-
-    function initializeMatrix() {
-        columns = Math.floor(canvas.width / fontSize);
-        drops = Array(columns).fill(1);
-    }
-
-    function drawMatrix() {
-        ctx.fillStyle = 'rgba(26, 37, 38, 0.05)';
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
+    
+    function draw() {
+        ctx.fillStyle = 'rgba(26, 37, 38, 0.1)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
         ctx.font = `${fontSize}px monospace`;
-
+        
         for (let i = 0; i < drops.length; i++) {
             const text = stars.charAt(Math.floor(Math.random() * stars.length));
             ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-            if (drops[i] * fontSize > canvas.height || Math.random() > 0.975) drops[i] = 0;
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
             drops[i]++;
         }
-        requestAnimationFrame(drawMatrix);
     }
-    drawMatrix();
-}
-
-function createParticle(container) {
-    const particle = document.createElement('div');
-    particle.className = 'particle';
-    const size = Math.random() * 4 + 2;
-    particle.style.width = `${size}px`;
-    particle.style.height = `${size}px`;
-    particle.style.left = `${Math.random() * 100}%`;
-    particle.style.top = `${Math.random() * 100}%`;
-    container.appendChild(particle);
-    gsap.to(particle, {
-        y: -500,
-        x: Math.random() * 100 - 50,
-        opacity: 0,
-        duration: Math.random() * 3 + 2,
-        ease: "power1.out",
-        onComplete: () => particle.remove()
+    
+    setInterval(draw, 50);
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
     });
 }
 
-function createEnergyWave(x, y, container) {
-    const wave = document.createElement('div');
-    wave.className = 'energy-wave';
-    wave.style.left = `${x - 100}px`;
-    wave.style.top = `${y - 100}px`;
-    container.appendChild(wave);
-    setTimeout(() => wave.remove(), 6000);
+function createParticles() {
+    const containers = document.querySelectorAll('.particles-container');
+    containers.forEach(container => {
+        setInterval(() => {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.width = `${Math.random() * 4 + 2}px`;
+            particle.style.height = particle.style.width;
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.top = `${Math.random() * 100}%`;
+            container.appendChild(particle);
+            
+            gsap.to(particle, {
+                y: -200,
+                opacity: 0,
+                duration: Math.random() * 3 + 2,
+                ease: 'power1.out',
+                onComplete: () => particle.remove()
+            });
+        }, 200);
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    initializeMatrixEffect();
+    initializeMatrix();
+    createParticles();
 
+    // Animations
     gsap.to('.title', { opacity: 1, y: 0, duration: 1, delay: 0.5 });
     gsap.to('.subtitle', { opacity: 1, y: 0, duration: 1, delay: 0.8 });
-
-    const appointeeIcons = document.querySelectorAll('.appointee-icon');
-    appointeeIcons.forEach((icon, index) => {
+    
+    document.querySelectorAll('.appointee-icon').forEach((icon, i) => {
         gsap.to(icon, {
             opacity: 1,
-            scale: 1,
             duration: 0.5,
-            delay: 1.2 + (index * 0.1),
-            ease: "back.out(1.7)"
+            delay: 1 + i * 0.1,
+            ease: 'back.out(1.7)'
         });
     });
 
-    const sections = document.querySelectorAll('.section');
-    sections.forEach((section, index) => {
-        gsap.to(section, {
-            scrollTrigger: { trigger: section, start: "top 80%", toggleActions: "play none none none" },
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            delay: 0.2 * index
-        });
-    });
-
-    const particlesContainers = document.querySelectorAll('.particles-container');
-    particlesContainers.forEach(container => {
-        setInterval(() => createParticle(container), 200);
-    });
-
-    document.addEventListener('mousemove', (e) => {
-        particlesContainers.forEach(container => {
-            const rect = container.getBoundingClientRect();
-            if (e.clientY >= rect.top && e.clientY <= rect.bottom && Math.random() < 0.1) {
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                createEnergyWave(x, y, container);
-            }
-        });
-    });
-
+    // Navbar toggle
     const hamburger = document.querySelector('.hamburger');
     const navLinks = document.querySelector('.nav-links');
     hamburger.addEventListener('click', () => {
