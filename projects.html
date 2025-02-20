@@ -1,80 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projects - MAGHA</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Projects</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
-    <canvas id="matrix-canvas"></canvas>
-    <div class="particles-container" id="particles-container"></div>
+  <canvas id="matrix-canvas"></canvas>
+  <div class="particles-container" id="particles-container"></div>
 
-    <nav class="navbar">
-        <a href="https://github.com/YourGitHubUsername" target="_blank" rel="noopener noreferrer">
-            <svg class="github-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="..."/>
-            </svg>
-        </a>
-        <div class="hamburger" id="hamburger">
-            <span></span><span></span><span></span>
+  <nav class="navbar">
+    <a href="https://github.com/YourGitHubUsername" target="_blank" rel="noopener noreferrer">
+      <svg class="github-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="..."></path>
+      </svg>
+    </a>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="team.html">Team</a></li>
+      <li><a href="projects.html" class="active-link">Projects</a></li>
+      <li><a href="connect.html">Connect</a></li>
+    </ul>
+  </nav>
+
+  <section class="section" id="projects">
+    <div class="container">
+      <h2 class="title">Key Initiatives &amp; Projects</h2>
+      <p class="subtitle">Building America's Future</p>
+
+      <div class="projects">
+        <!-- DOGE Project Card -->
+        <div class="project-card">
+          <h4>Project DOGE</h4>
+          <p>
+            The Department of Government Efficiency (DOGE) is tasked with optimizing
+            bureaucratic processes, reducing waste, and employing cutting-edge
+            technologies to ensure taxpayer dollars are effectively utilized.
+          </p>
+          <a
+            href="doge.html"
+            style="color: #ffb3b3; text-decoration: underline;"
+            >Learn More</a
+          >
         </div>
-        <ul class="nav-links" id="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="team.html">Team</a></li>
-            <li><a href="projects.html" class="active-link">Projects</a></li>
-            <li><a href="connect.html">Connect</a></li>
-        </ul>
-    </nav>
 
-    <section class="section" id="projects">
-        <div class="container">
-            <h2 class="title">Key Initiatives &amp; Projects</h2>
-            <p class="subtitle">Building America's Future</p>
-
-            <div class="projects">
-                <!-- DOGE Project Card -->
-                <div class="project-card">
-                    <h4>Project DOGE</h4>
-                    <p>
-                        The Department of Government Efficiency (DOGE) is tasked with optimizing
-                        bureaucratic processes, reducing waste, and employing cutting-edge
-                        technologies to ensure taxpayer dollars are effectively utilized.
-                    </p>
-                    <a href="doge.html" style="color: #ffb3b3; text-decoration: underline;">Learn More</a>
-                </div>
-
-                <!-- Department of Government Efficiency -->
-                <div class="project-card">
-                    <h4>Department of Government Efficiency</h4>
-                    <p>
-                        A newly established department focusing on cross-agency collaboration,
-                        data-driven audits, and AI-assisted streamlining. This project aims to
-                        drastically improve public sector operations.
-                    </p>
-                    <a href="department-efficiency.html" style="color: #ffb3b3; text-decoration: underline;">
-                        Department Page
-                    </a>
-                </div>
-
-                <!-- Global Affairs -->
-                <div class="project-card">
-                    <h4>Global Affairs &amp; Diplomacy</h4>
-                    <p>
-                        Strengthening America's position on the world stage through fair trade
-                        deals, strategic alliances, and innovative policies that champion
-                        freedom and prosperity.
-                    </p>
-                    <a href="global-affairs.html" style="color: #ffb3b3; text-decoration: underline;">
-                        View Initiatives
-                    </a>
-                </div>
-            </div>
+        <!-- Department of Government Efficiency -->
+        <div class="project-card">
+          <h4>Department of Government Efficiency</h4>
+          <p>
+            A newly established department focusing on cross-agency collaboration,
+            data-driven audits, and AI-assisted streamlining. This project aims to
+            drastically improve public sector operations.
+          </p>
+          <a
+            href="department-efficiency.html"
+            style="color: #ffb3b3; text-decoration: underline;"
+            >Department Page</a
+          >
         </div>
-    </section>
 
-    <script src="script.js"></script>
+        <!-- Global Affairs -->
+        <div class="project-card">
+          <h4>Global Affairs &amp; Diplomacy</h4>
+          <p>
+            Strengthening America's position on the world stage through fair trade
+            deals, strategic alliances, and innovative policies that champion
+            freedom and prosperity.
+          </p>
+          <a
+            href="global-affairs.html"
+            style="color: #ffb3b3; text-decoration: underline;"
+            >View Initiatives</a
+          >
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
 </body>
 </html>
