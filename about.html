@@ -1,71 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - MAGHA</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Inline style to place the translucent US flag behind text */
+    .us-flag-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url("images/usflag.png") center center no-repeat;
+      background-size: cover;
+      opacity: 0.15; /* slight transparency */
+      z-index: -1;
+    }
+    .about-container {
+      position: relative;
+      padding: 6rem 2rem;
+      text-align: center;
+    }
+    .about-container img {
+      max-width: 300px;
+      margin-bottom: 2rem;
+    }
+    .about-text {
+      font-size: 1.2rem;
+      color: #fff;
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+  </style>
 </head>
 <body>
 
-    <canvas id="matrix-canvas"></canvas>
-    <div class="particles-container" id="particles-container"></div>
+  <canvas id="matrix-canvas"></canvas>
+  <div class="particles-container" id="particles-container"></div>
 
-    <nav class="navbar">
-        <a href="https://github.com/YourGitHubUsername" target="_blank" rel="noopener noreferrer" title="Visit GitHub">
-            <svg class="github-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <!-- GitHub icon path -->
-                <path d="..."/>
-            </svg>
-        </a>
-        <div class="hamburger" id="hamburger">
-            <span></span><span></span><span></span>
-        </div>
-        <ul class="nav-links" id="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html" class="active-link">About</a></li>
-            <li><a href="team.html">Team</a></li>
-            <li><a href="projects.html">Projects</a></li>
-            <li><a href="connect.html">Connect</a></li>
-        </ul>
-    </nav>
+  <nav class="navbar">
+    <a href="https://github.com/YourGitHubUsername" target="_blank" rel="noopener noreferrer">
+      <svg class="github-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="..."></path>
+      </svg>
+    </a>
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html" class="active-link">About</a></li>
+      <li><a href="team.html">Team</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="connect.html">Connect</a></li>
+    </ul>
+  </nav>
 
-    <section class="dark-theme-section" id="about">
-        <div class="section-border-glow"></div>
-        <div class="container about-card">
+  <section class="section">
+    <!-- Translucent US Flag in the background -->
+    <div class="us-flag-bg"></div>
 
-            <div class="tech-grid"></div>
-            <div class="about-header">
-                <div class="profile-container">
-                    <img src="images/donald-trump.png" alt="Main Figure" class="about-profile-img">
-                </div>
-                <div class="about-header-text">
-                    <h1 class="glow-text">About This Administration</h1>
-                </div>
-            </div>
+    <div class="about-container">
+      <!-- uslogo.png as the main figure -->
+      <img src="images/uslogo.png" alt="US Logo" />
 
-            <div class="about-content">
-                <p>
-                    This incredible group of individuals—led by Donald J. Trump, with
-                    visionaries like Elon Musk, Robert F. Kennedy Jr., and other key appointees—has come together
-                    to restore the American Century. Our mission is to unify our talents and
-                    resources to <strong>Make America Great Again</strong> and to <strong>Make America Healthy Again</strong>.
-                </p>
-                <p>
-                    From technological advancements to government efficiencies, from global
-                    strategies to health initiatives, this new team is driven by a passion for
-                    innovation, freedom, and prosperity. We believe that with the right people
-                    in place, the future of America can shine brighter than ever.
-                </p>
-                <p>
-                    Explore this site to learn more about the key figures in the administration,
-                    the ambitious projects we're undertaking, and the vision that binds us
-                    all together under one patriotic banner.
-                </p>
-            </div>
-        </div>
-    </section>
+      <!-- Minimal text (no "boxes") -->
+      <div class="about-text">
+        <p>
+          We are united by a vision to rebuild America’s strength, integrity, and well-being.
+          Under this Administration, we stand together with one purpose: to restore
+          the American Century and ensure a brighter future for all citizens. 
+        </p>
+        <p>
+          Through innovation, leadership, and unwavering commitment to
+          freedom, we pledge to <strong>Make America Great Again</strong>
+          and <strong>Make America Healthy Again</strong>.
+        </p>
+      </div>
+    </div>
+  </section>
 
-    <script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
