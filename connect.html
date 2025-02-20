@@ -17,27 +17,56 @@
         <path d="..."></path>
       </svg>
     </a>
-    <div class="hamburger" id="hamburger">
-      <span></span><span></span><span></span>
-    </div>
-    <ul class="nav-links" id="nav-links">
+    <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="team.html">Team</a></li>
-      <li><a href="projects.html">Projects</a></li>
+      <li>
+        <a href="projects.html">Projects</a>
+        <ul class="dropdown">
+          <li><a href="doge.html">Project DOGE</a></li>
+          <li><a href="department-efficiency.html">Dept Efficiency</a></li>
+          <li><a href="global-affairs.html">Global Affairs</a></li>
+        </ul>
+      </li>
       <li><a href="connect.html" class="active-link">Connect</a></li>
     </ul>
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
   </nav>
+
+  <!-- Mobile menu overlay -->
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="team.html">Team</a>
+    <button id="projects-toggle-btn" style="background:none;border:none;color:#fff;font-size:1.1rem;cursor:pointer;">
+      Projects &#9662;
+    </button>
+    <div class="mobile-dropdown" id="mobile-dropdown">
+      <a href="doge.html">Project DOGE</a>
+      <a href="department-efficiency.html">Dept Efficiency</a>
+      <a href="global-affairs.html">Global Affairs</a>
+    </div>
+    <a href="connect.html" class="active-link">Connect</a>
+  </div>
 
   <section class="section" id="connect">
     <div class="container">
       <h2 class="title">Connect with Leaders</h2>
       <p class="subtitle">Get in Touch</p>
 
+      <!-- 6 placeholders below -->
       <div class="social-links">
         <a href="#" class="social-link">Twitter</a>
         <a href="#" class="social-link">Telegram</a>
         <a href="#" class="social-link">MAGA Forum</a>
+        <a href="#" class="social-link">Truth Social</a>
+        <a href="#" class="social-link">YouTube</a>
+        <a href="#" class="social-link">Newsletter</a>
       </div>
     </div>
   </section>
