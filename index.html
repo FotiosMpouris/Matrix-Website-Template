@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
   <!-- Matrix + Particles -->
   <canvas id="matrix-canvas"></canvas>
   <div class="particles-container" id="particles-container"></div>
@@ -15,31 +14,9 @@
   <!-- Navbar -->
   <nav class="navbar">
     <!-- GitHub Icon -->
-    <a
-      href="https://github.com/YourGitHubUsername"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      <svg
-        class="github-icon"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-      >
-        <path
-          d="M12,0.297C5.373,0.297,0,5.67,0,12.297c0,5.302,3.438,9.8,8.205,11.387
-           c0.6,0.113,0.82-0.258,0.82-0.577c0-0.285-0.01-1.04-0.015-2.04c-3.338,0.724-4.042-1.61-4.042-1.61
-           c-0.546-1.385-1.333-1.754-1.333-1.754c-1.089-0.744,0.084-0.729,0.084-0.729
-           c1.205,0.084,1.84,1.236,1.84,1.236c1.07,1.835,2.807,1.305,3.495,0.997
-           c0.108-0.776,0.42-1.305,0.763-1.605c-2.665-0.303-5.466-1.333-5.466-5.931
-           c0-1.31,0.47-2.381,1.236-3.221C7.009,8.092,6.708,6.907,7.417,5.92
-           c0,0,1.008-0.322,3.301,1.23c0.957-0.266,1.983-0.399,3.003-0.404
-           c1.02,0.005,2.047,0.138,3.006,0.404c2.291-1.552,3.297-1.23,3.297-1.23
-           c0.71,0.987,0.408,2.172,0.2,3.221c0.77,0.84,1.235,1.911,1.235,3.221
-           c0,4.61-2.807,5.625-5.479,5.921c0.43,0.37,0.823,1.102,0.823,2.222
-           c0,1.606-0.015,2.896-0.015,3.286c0,0.319,0.216,0.694,0.825,0.576
-           C20.565,22.093,24,17.595,24,12.297
-           C24,5.67,18.627,0.297,12,0.297z"
-        ></path>
+    <a href="https://github.com/YourGitHubUsername" target="_blank" rel="noopener noreferrer">
+      <svg class="github-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="..."></path>
       </svg>
     </a>
 
@@ -48,7 +25,6 @@
       <li><a href="index.html" class="active-link">Home</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="team.html">Team</a></li>
-      <!-- Projects Dropdown -->
       <li>
         <a href="projects.html">Projects</a>
         <ul class="dropdown">
@@ -60,7 +36,7 @@
       <li><a href="connect.html">Connect</a></li>
     </ul>
 
-    <!-- Hamburger (Mobile Only) -->
+    <!-- Hamburger (Mobile) -->
     <div class="hamburger" id="hamburger">
       <span></span>
       <span></span>
@@ -70,11 +46,11 @@
 
   <!-- Mobile Menu Overlay -->
   <div class="mobile-menu" id="mobile-menu">
-    <a href="index.html">Home</a>
+    <a href="index.html" class="active-link">Home</a>
     <a href="about.html">About</a>
     <a href="team.html">Team</a>
-    <!-- Projects Expand -->
-    <button id="projects-toggle-btn" style="background:none;border:none;color:#fff;font-size:1.1rem;cursor:pointer;">
+    <button id="projects-toggle-btn"
+      style="background:none;border:none;color:#fff;font-size:1.1rem;cursor:pointer;">
       Projects &#9662;
     </button>
     <div class="mobile-dropdown" id="mobile-dropdown">
@@ -137,7 +113,6 @@
           <img src="images/vivek-ramaswamy.png" alt="Vivek Ramaswamy" />
         </div>
       </div>
-
     </div>
   </section>
 
