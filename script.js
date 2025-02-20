@@ -1,108 +1,109 @@
-gsap.registerPlugin(ScrollTrigger, TextPlugin);
+// script.js
 
-function createMatrixBackground() {
-    const containers = document.querySelectorAll('.matrix-background');
-    containers.forEach(container => {
-        const containerWidth = container.offsetWidth;
-        const columnWidth = 30;
-        const numberOfColumns = Math.ceil(containerWidth / columnWidth);
-        const chars = '01★☆✩';
-        container.innerHTML = '';
-        for (let i = 0; i < numberOfColumns; i++) {
-            const column = document.createElement('div');
-            column.className = 'matrix-column';
-            let columnChars = '';
-            for (let j = 0; j < 50; j++) {
-                columnChars += chars[Math.floor(Math.random() * chars.length)] + '\n';
+// If using GSAP's ScrollTrigger, uncomment below (GSAP library must be included):
+// gsap.registerPlugin(ScrollTrigger);
+
+/* ===========================
+   Matrix Effect using Canvas
+   =========================== */
+function initializeMatrixEffect() {
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Make canvas full screen
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const letters = Array(256).join("0").split("");
+
+    function drawMatrix() {
+        // Background fill - slightly transparent to create the trailing effect
+        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Set text color
+        ctx.fillStyle = "#0f0"; // classic green matrix color or pick something patriotic
+        letters.forEach((y_pos, index) => {
+            const text = String.fromCharCode(3e4 + Math.random() * 33);
+            const x_pos = index * 10;
+            ctx.fillText(text, x_pos, y_pos);
+            if (y_pos > 100 + Math.random() * 1e5) {
+                letters[index] = 0;
+            } else {
+                letters[index] = y_pos + 10;
             }
-            column.textContent = columnChars;
-            column.style.left = `${i * columnWidth}px`;
-            column.style.animationDelay = `${-Math.random() * 20}s`;
-            container.appendChild(column);
-        }
+        });
+    }
+    setInterval(drawMatrix, 50);
+
+    // Handle resize
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
     });
 }
 
-function createParticle(container) {
+/* ===========================
+   Particle Effects on Click
+   =========================== */
+function createParticle(e) {
+    const container = document.getElementById('particles-container');
     const particle = document.createElement('div');
     particle.className = 'particle';
-    const size = Math.random() * 4 + 2;
-    particle.style.width = `${size}px`;
-    particle.style.height = `${size}px`;
-    particle.style.left = `${Math.random() * 100}%`;
-    particle.style.top = `${Math.random() * 100}%`;
+    particle.style.left = e.pageX + 'px';
+    particle.style.top = e.pageY + 'px';
+
     container.appendChild(particle);
-    gsap.to(particle, {
-        y: -500,
-        x: Math.random() * 100 - 50,
-        opacity: 0,
-        duration: Math.random() * 3 + 2,
-        ease: "power1.out",
-        onComplete: () => particle.remove()
-    });
+
+    // Remove after animation
+    setTimeout(() => {
+        container.removeChild(particle);
+    }, 2000);
+}
+function createEnergyWave(x, y) {
+    const container = document.getElementById('particles-container');
+    const wave = document.createElement('div');
+    wave.className = 'energy-wave';
+    wave.style.left = (x - 100) + 'px';
+    wave.style.top = (y - 100) + 'px';
+    container.appendChild(wave);
+
+    setTimeout(() => {
+        container.removeChild(wave);
+    }, 3000);
 }
 
-function typeText(element, text, speed = 0.01) {
-    gsap.to(element, {
-        duration: text.length * speed,
-        text: text,
-        ease: "none",
-        onStart: () => element.style.opacity = '1'
-    });
+// Throttle function if needed
+function throttle(func, limit) {
+    let lastFunc;
+    let lastRan;
+    return function() {
+        const context = this;
+        const args = arguments;
+        if (!lastRan) {
+            func.apply(context, args);
+            lastRan = Date.now();
+        } else {
+            clearTimeout(lastFunc);
+            lastFunc = setTimeout(function() {
+                if ((Date.now() - lastRan) >= limit) {
+                    func.apply(context, args);
+                    lastRan = Date.now();
+                }
+            }, limit - (Date.now() - lastRan));
+        }
+    };
 }
 
+/* ===========================
+   Initialize Everything
+   =========================== */
 document.addEventListener('DOMContentLoaded', () => {
-    if (document.querySelector('.matrix-background')) {
-        createMatrixBackground();
-    }
+    initializeMatrixEffect();
 
-    const particlesContainers = document.querySelectorAll('.particles-container');
-    particlesContainers.forEach(container => {
-        setInterval(() => createParticle(container), 200);
+    // On click, create simple particle & wave
+    document.addEventListener('click', (e) => {
+        createParticle(e);
+        createEnergyWave(e.pageX, e.pageY);
     });
-
-    gsap.to('.title', { opacity: 1, duration: 1, delay: 0.5 });
-    gsap.to('.subtitle', { opacity: 1, duration: 1, delay: 0.8 });
-
-    const skillIcons = document.querySelectorAll('.skill-icon');
-    skillIcons.forEach((icon, index) => {
-        gsap.to(icon, {
-            opacity: 1,
-            scale: 1,
-            duration: 0.5,
-            delay: 1.2 + (index * 0.05),
-            ease: "back.out(1.7)"
-        });
-    });
-
-    const sections = document.querySelectorAll('.section');
-    sections.forEach((section, index) => {
-        gsap.to(section, {
-            scrollTrigger: {
-                trigger: section,
-                start: "top 80%",
-                toggleActions: "play none none none"
-            },
-            opacity: 1,
-            duration: 1,
-            delay: 0.2 * index
-        });
-    });
-
-    const aboutPs = document.querySelectorAll('.about-content p');
-    aboutPs.forEach((p, index) => {
-        const text = p.getAttribute('data-text') || p.textContent;
-        p.textContent = '';
-        p.style.opacity = '0';
-        typeText(p, text, 0.01);
-    });
-
-    const hamburger = document.getElementById('hamburger');
-    const navLinks = document.getElementById('nav-links');
-    hamburger.addEventListener('click', () => {
-        hamburger.classList.toggle('active');
-        navLinks.classList.toggle('active');
-    });
-
-    window.addEventListener('resize', createMatrixBackground);
 });
