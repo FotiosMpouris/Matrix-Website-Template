@@ -73,6 +73,9 @@ function setupMobileNav() {
   const mobileProjectsDropdown = document.getElementById('mobile-dropdown');
 
   if (!hamburger || !mobileMenu) return;
+  
+  // Make sure the mobile menu starts closed
+  mobileMenu.classList.remove('open');
 
   // Toggle overlay on hamburger click
   hamburger.addEventListener('click', () => {
@@ -85,6 +88,13 @@ function setupMobileNav() {
       mobileProjectsDropdown.classList.toggle('open');
     });
   }
+  
+  // Close menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+      mobileMenu.classList.remove('open');
+    }
+  });
 }
 
 function handleScroll() {
@@ -101,6 +111,12 @@ function handleScroll() {
 
 document.addEventListener('DOMContentLoaded', () => {
   initializeMatrixEffect();
+
+  // Ensure mobile menu is hidden on page load
+  const mobileMenu = document.getElementById('mobile-menu');
+  if (mobileMenu) {
+    mobileMenu.classList.remove('open');
+  }
 
   // Particle click effect
   document.addEventListener('click', (e) => {
