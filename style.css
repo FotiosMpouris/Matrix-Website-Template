@@ -306,8 +306,8 @@ body {
   box-shadow: 0 0 20px var(--accent-glow);
 }
 .skill-icon img {
-  width: 90px;
-  height: 90px;
+  width: 1200px;
+  height: 120px;
   object-fit: contain;
 }
 
