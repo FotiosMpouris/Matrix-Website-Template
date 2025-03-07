@@ -86,6 +86,13 @@ body {
   z-index: 9999;
 }
 
+@media (max-width: 992px) {
+  .navbar .title {
+    font-size: 1.2rem; /* Adjust as needed */
+    white-space: nowrap;
+  }
+}
+
 /* NAV LINKS (DESKTOP) */
 .nav-links {
   display: flex;
