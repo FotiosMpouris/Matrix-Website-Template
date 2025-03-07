@@ -1,6 +1,5 @@
-/************************************************
-  MATRIX EFFECT (unchanged)
-************************************************/
+// script.js
+
 function initializeMatrixEffect() {
   const canvas = document.getElementById('matrix-canvas');
   const ctx = canvas.getContext('2d');
@@ -35,137 +34,7 @@ function initializeMatrixEffect() {
   });
 }
 
-/************************************************
-  STARFIELD EFFECT
-************************************************/
-function initializeStarfieldEffect() {
-  const canvas = document.getElementById('starfield-canvas');
-  if (!canvas) return;
-
-  const ctx = canvas.getContext('2d');
-  let width = window.innerWidth;
-  let height = window.innerHeight;
-
-  canvas.width = width;
-  canvas.height = height;
-
-  // Create an array of stars
-  const numStars = 150;
-  const stars = [];
-
-  for (let i = 0; i < numStars; i++) {
-    stars.push({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      speed: 0.5 + Math.random() * 1.5,  // star downward speed
-      size: Math.random() * 2
-    });
-  }
-
-  function animateStarfield() {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
-    ctx.fillRect(0, 0, width, height);
-
-    ctx.fillStyle = "#ffffff";
-    stars.forEach(star => {
-      ctx.beginPath();
-      ctx.arc(star.x, star.y, star.size, 0, 2 * Math.PI);
-      ctx.fill();
-
-      // Move star downward
-      star.y += star.speed;
-
-      // If star goes off screen, reset to top
-      if (star.y > height) {
-        star.y = 0;
-        star.x = Math.random() * width;
-      }
-    });
-
-    requestAnimationFrame(animateStarfield);
-  }
-
-  animateStarfield();
-
-  // Resize handler
-  window.addEventListener('resize', () => {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-  });
-}
-
-/************************************************
-  SUBTLE WAVE EFFECT REACTING TO SCROLL
-************************************************/
-function initializeWaveEffect() {
-  const canvas = document.getElementById('wave-canvas');
-  if (!canvas) return;
-
-  const ctx = canvas.getContext('2d');
-  let width = window.innerWidth;
-  let height = window.innerHeight;
-
-  canvas.width = width;
-  canvas.height = height;
-
-  // Wave parameters
-  let waveOffset = 0;
-  const waveSpeed = 0.8;   // how fast the wave moves horizontally
-  const waveAmplitude = 20;
-  const waveLength = 180;  // wave period
-  let scrollPos = 0;       // track window.scrollY
-
-  // Listen for scroll to slightly shift the wave
-  window.addEventListener('scroll', () => {
-    scrollPos = window.scrollY;
-  });
-
-  function animateWave() {
-    // Semi-transparent clear
-    ctx.clearRect(0, 0, width, height);
-
-    // Move wave horizontally over time
-    waveOffset += waveSpeed;
-
-    // Setup wave styling
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
-    ctx.beginPath();
-
-    // Draw a single sine wave across the width
-    const centerY = height / 2;
-    for (let x = 0; x <= width; x += 10) {
-      const y = centerY
-        + waveAmplitude
-          * Math.sin((x + waveOffset + scrollPos * 0.2) / waveLength);
-
-      if (x === 0) {
-        ctx.moveTo(x, y);
-      } else {
-        ctx.lineTo(x, y);
-      }
-    }
-    ctx.stroke();
-
-    requestAnimationFrame(animateWave);
-  }
-
-  animateWave();
-
-  // Handle resize
-  window.addEventListener('resize', () => {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-  });
-}
-
-/************************************************
-  PARTICLE EFFECTS (existing)
-************************************************/
+/* Particle Effects */
 function createParticle(e) {
   const container = document.getElementById('particles-container');
   if (!container) return;
@@ -196,9 +65,7 @@ function createEnergyWave(x, y) {
   }, 3000);
 }
 
-/************************************************
-  MOBILE NAV TOGGLES (existing)
-************************************************/
+/* Mobile Nav Toggles */
 function setupMobileNav() {
   const hamburger = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobile-menu');
@@ -230,9 +97,6 @@ function setupMobileNav() {
   });
 }
 
-/************************************************
-  SCROLL HANDLER (existing)
-************************************************/
 function handleScroll() {
   // Turn hamburger red on scroll
   const hamburger = document.getElementById('hamburger');
@@ -245,18 +109,14 @@ function handleScroll() {
   }
 }
 
-/************************************************
-  DOMContentLoaded - INIT
-************************************************/
 document.addEventListener('DOMContentLoaded', () => {
-  // 1) Starfield behind everything
-  initializeStarfieldEffect();
-
-  // 2) Matrix Rain
   initializeMatrixEffect();
 
-  // 3) Subtle Wave
-  initializeWaveEffect();
+  // Ensure mobile menu is hidden on page load
+  const mobileMenu = document.getElementById('mobile-menu');
+  if (mobileMenu) {
+    mobileMenu.classList.remove('open');
+  }
 
   // Particle click effect
   document.addEventListener('click', (e) => {
@@ -267,12 +127,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Setup mobile nav toggles
   setupMobileNav();
 
-  // Ensure mobile menu is hidden on page load
-  const mobileMenu = document.getElementById('mobile-menu');
-  if (mobileMenu) {
-    mobileMenu.classList.remove('open');
-  }
-
   // Listen for scroll
   window.addEventListener('scroll', handleScroll);
 });
+
+
+
