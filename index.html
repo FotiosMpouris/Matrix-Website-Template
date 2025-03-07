@@ -7,13 +7,15 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- STARFIELD, WAVE, and MATRIX Canvases -->
+  <!-- STARFIELD, WAVE, and MATRIX Canvases (each fixed in place) -->
   <canvas id="starfield-canvas"></canvas>
   <canvas id="wave-canvas"></canvas>
   <canvas id="matrix-canvas"></canvas>
+
+  <!-- Particle container (click effects) -->
   <div class="particles-container" id="particles-container"></div>
 
-  <!-- Navbar -->
+  <!-- Navbar (fixed top, high z-index) -->
   <nav class="navbar">
     <!-- GitHub Icon -->
     <a href="https://github.com/YourGitHubUsername" target="_blank" rel="noopener noreferrer">
@@ -63,22 +65,20 @@
     <a href="connect.html">Connect</a>
   </div>
 
-  <!-- HOME CONTENT -->
-  <section class="section" id="hero" style="padding-top:2rem;">
+  <!-- HOME CONTENT (now on top of the canvases) -->
+  <section class="section" id="hero">
     <div class="container" style="text-align:center;">
-      <span style="color:#fff; font-size:1rem;">The</span>
+      <span style="font-size:1rem;">The</span>
       <span style="color:#B31942; font-size:3rem;">MAGA</span>
-      <span style="color:#fff; font-size:3rem;">MATRIX</span>
+      <span style="font-size:3rem;">MATRIX</span>
 
-      <!-- Administration Showcase -->
       <div class="skills-container" style="margin-top:3rem;">
-        <!-- Donald Trump -->
+        <!-- Example Admin Icons -->
         <a href="https://www.whitehouse.gov/administration/donald-j-trump/" target="_blank">
           <div class="skill-icon" title="Donald Trump">
             <img src="images/donald-trump1.png" alt="Donald Trump" />
           </div>
         </a>
-        <!-- JD Vance -->
         <a href="https://www.whitehouse.gov/administration/jd-vance/" target="_blank">
           <div class="skill-icon" title="JD Vance">
             <img src="images/jd-vance1.png" alt="JD Vance" />
@@ -87,48 +87,17 @@
       </div>
 
       <div class="skills-container">
-        <!-- RFK Jr -->
         <a href="https://www.hhs.gov/about/leadership/robert-kennedy.html" target="_blank">
           <div class="skill-icon" title="Robert F. Kennedy Jr.">
             <img src="images/robert-kennedy1.png" alt="RFK Jr" />
           </div>
         </a>
-        <!-- Tulsi Gabbard -->
         <a href="https://www.dni.gov/index.php/who-we-are/leadership/director-of-national-intelligence" target="_blank">
           <div class="skill-icon" title="Tulsi Gabbard">
             <img src="images/tulsi-gabbard1.png" alt="Tulsi Gabbard" />
           </div>
         </a>
-        <!-- Kash Patel -->
-        <a href="https://x.com/Kash_Patel" target="_blank">
-          <div class="skill-icon" title="Kash Patel">
-            <img src="images/kash-patel1.png" alt="Kash Patel" />
-          </div>
-        </a>
-        <!-- Jay Bhattacharya -->
-        <a href="https://www.nih.gov/about-nih/who-we-are/nih-director" target="_blank">
-          <div class="skill-icon" title="Jay Bhattacharya">
-            <img src="images/jay-bhattacharya1.png" alt="Jay Bhattacharya" />
-          </div>
-        </a>
-        <!-- Tom Homan -->
-        <a href="https://x.com/RealTomHoman" target="_blank">
-          <div class="skill-icon" title="Tom Homan">
-            <img src="images/tom-homan1.png" alt="Tom Homan" />
-          </div>
-        </a>
-        <!-- Elon Musk -->
-        <a href="https://x.com/DOGE" target="_blank">
-          <div class="skill-icon" title="Elon Musk">
-            <img src="images/elon-musk1.png" alt="Elon Musk" />
-          </div>
-        </a>
-        <!-- Pam Bondi -->
-        <a href="https://www.justice.gov/ag" target="_blank">
-          <div class="skill-icon" title="Pam Bondi">
-            <img src="images/pam-bondi1.png" alt="Pam Bondi" />
-          </div>
-        </a>
+        <!-- Continue your icons... -->
       </div>
     </div>
   </section>
