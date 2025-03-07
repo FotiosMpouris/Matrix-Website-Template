@@ -375,5 +375,18 @@ body {
   box-shadow: 0 0 20px rgba(255,255,255,0.05);
 }
 
-
+.icon-label {
+  display: block;
+  text-align: center;
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin-top: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: var(--transition-standard);
+}
+.skill-icon:hover .icon-label {
+  color: var(--accent-blue);
+  text-shadow: 0 0 10px var(--accent-glow);
+}
 
