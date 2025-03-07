@@ -1,33 +1,25 @@
-/***********************************************
- * 1) MATRIX EFFECT + PARTICLE ANIMATION CODE
- ***********************************************/
+/************************************************
+  MATRIX EFFECT (unchanged)
+************************************************/
 function initializeMatrixEffect() {
   const canvas = document.getElementById('matrix-canvas');
-  if (!canvas) return; // Safeguard if no matrix canvas
   const ctx = canvas.getContext('2d');
 
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 
-  // Setup for Matrix effect
-  const letters = Array(256).join("0").split(""); 
+  const letters = Array(256).join("0").split("");
+
   function drawMatrix() {
-    // Slightly transparent background
     ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Green text
     ctx.fillStyle = "#0f0";
     letters.forEach((y_pos, index) => {
       const text = String.fromCharCode(3e4 + Math.random() * 33);
       const x_pos = index * 10;
       ctx.fillText(text, x_pos, y_pos);
 
-      // Random reset
       if (y_pos > 100 + Math.random() * 1e5) {
         letters[index] = 0;
       } else {
@@ -36,9 +28,144 @@ function initializeMatrixEffect() {
     });
   }
   setInterval(drawMatrix, 50);
+
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
 }
 
-/* Particle Effects */
+/************************************************
+  STARFIELD EFFECT
+************************************************/
+function initializeStarfieldEffect() {
+  const canvas = document.getElementById('starfield-canvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  let width = window.innerWidth;
+  let height = window.innerHeight;
+
+  canvas.width = width;
+  canvas.height = height;
+
+  // Create an array of stars
+  const numStars = 150;
+  const stars = [];
+
+  for (let i = 0; i < numStars; i++) {
+    stars.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      speed: 0.5 + Math.random() * 1.5,  // star downward speed
+      size: Math.random() * 2
+    });
+  }
+
+  function animateStarfield() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+    ctx.fillRect(0, 0, width, height);
+
+    ctx.fillStyle = "#ffffff";
+    stars.forEach(star => {
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.size, 0, 2 * Math.PI);
+      ctx.fill();
+
+      // Move star downward
+      star.y += star.speed;
+
+      // If star goes off screen, reset to top
+      if (star.y > height) {
+        star.y = 0;
+        star.x = Math.random() * width;
+      }
+    });
+
+    requestAnimationFrame(animateStarfield);
+  }
+
+  animateStarfield();
+
+  // Resize handler
+  window.addEventListener('resize', () => {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+  });
+}
+
+/************************************************
+  SUBTLE WAVE EFFECT REACTING TO SCROLL
+************************************************/
+function initializeWaveEffect() {
+  const canvas = document.getElementById('wave-canvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  let width = window.innerWidth;
+  let height = window.innerHeight;
+
+  canvas.width = width;
+  canvas.height = height;
+
+  // Wave parameters
+  let waveOffset = 0;
+  const waveSpeed = 0.8;   // how fast the wave moves horizontally
+  const waveAmplitude = 20;
+  const waveLength = 180;  // wave period
+  let scrollPos = 0;       // track window.scrollY
+
+  // Listen for scroll to slightly shift the wave
+  window.addEventListener('scroll', () => {
+    scrollPos = window.scrollY;
+  });
+
+  function animateWave() {
+    // Semi-transparent clear
+    ctx.clearRect(0, 0, width, height);
+
+    // Move wave horizontally over time
+    waveOffset += waveSpeed;
+
+    // Setup wave styling
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
+    ctx.beginPath();
+
+    // Draw a single sine wave across the width
+    const centerY = height / 2;
+    for (let x = 0; x <= width; x += 10) {
+      const y = centerY
+        + waveAmplitude
+          * Math.sin((x + waveOffset + scrollPos * 0.2) / waveLength);
+
+      if (x === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
+    }
+    ctx.stroke();
+
+    requestAnimationFrame(animateWave);
+  }
+
+  animateWave();
+
+  // Handle resize
+  window.addEventListener('resize', () => {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+  });
+}
+
+/************************************************
+  PARTICLE EFFECTS (existing)
+************************************************/
 function createParticle(e) {
   const container = document.getElementById('particles-container');
   if (!container) return;
@@ -69,9 +196,9 @@ function createEnergyWave(x, y) {
   }, 3000);
 }
 
-/***********************************************
- * 2) MOBILE NAVIGATION CODE (unchanged)
- ***********************************************/
+/************************************************
+  MOBILE NAV TOGGLES (existing)
+************************************************/
 function setupMobileNav() {
   const hamburger = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobile-menu');
@@ -79,7 +206,7 @@ function setupMobileNav() {
   const mobileProjectsDropdown = document.getElementById('mobile-dropdown');
 
   if (!hamburger || !mobileMenu) return;
-
+  
   // Make sure the mobile menu starts closed
   mobileMenu.classList.remove('open');
 
@@ -94,7 +221,7 @@ function setupMobileNav() {
       mobileProjectsDropdown.classList.toggle('open');
     });
   }
-
+  
   // Close menu when clicking outside
   document.addEventListener('click', (e) => {
     if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
@@ -103,6 +230,9 @@ function setupMobileNav() {
   });
 }
 
+/************************************************
+  SCROLL HANDLER (existing)
+************************************************/
 function handleScroll() {
   // Turn hamburger red on scroll
   const hamburger = document.getElementById('hamburger');
@@ -115,277 +245,34 @@ function handleScroll() {
   }
 }
 
-/***********************************************
- * 3) GALAGA-STYLE GAME CODE
- ***********************************************/
-
-// Canvas & context (for the game)
-let canvas, ctx;
-
-// Player
-let player, shipImg;
-
-// Bullets & Enemies
-let bullets = [];
-let enemies = [];
-
-// Game states
-let score = 0;
-let gameOver = false;
-let gameWin = false;
-
-// Settings
-const playerWidth = 40;     // final drawn size of your ship image
-const playerHeight = 40;    // tweak to match your PNG proportions
-const playerSpeed = 4;      // slower horizontal movement
-const bulletSpeed = 5;      // slower bullet
-const enemySpeed = 0.3;     // slower enemy descent
-const enemyWidth = 20;
-const enemyHeight = 20;
-const rowsOfEnemies = 3;    // fewer rows to keep it simpler
-const enemiesPerRow = 7;    // you can adjust
-const enemySpacingX = 60;
-const enemySpacingY = 60;
-
-// Key press tracking
-let leftPressed = false;
-let rightPressed = false;
-let spacePressed = false;
-
-// To limit firing rate
-let shootCooldown = 0; // frames until you can shoot again
-
-function initGame() {
-  // Setup the game canvas
-  canvas = document.getElementById('gameCanvas');
-  if (!canvas) return; // safeguard if no canvas
-  ctx = canvas.getContext('2d');
-
-  // Load the player ship image
-  shipImg = new Image();
-  shipImg.src = 'images/ship.png';
-
-  resetGame();
-  // Listen for key events
-  document.addEventListener('keydown', keyDownHandler);
-  document.addEventListener('keyup', keyUpHandler);
-
-  // Optional: handle a mobile "shoot" button if you want
-  const shootBtn = document.getElementById('shootButton');
-  if (shootBtn) {
-    shootBtn.addEventListener('click', () => {
-      if (!gameOver) shootBullet();
-    });
-  }
-
-  // Start the update-draw loop
-  requestAnimationFrame(gameLoop);
-}
-
-function resetGame() {
-  // Reset game variables
-  bullets = [];
-  enemies = [];
-  score = 0;
-  gameOver = false;
-  gameWin = false;
-  shootCooldown = 0;
-
-  // Place player at bottom center
-  if (canvas) {
-    player = {
-      x: canvas.width / 2 - playerWidth / 2,
-      y: canvas.height - playerHeight - 10,
-      width: playerWidth,
-      height: playerHeight
-    };
-  }
-
-  // Create new enemies
-  createEnemies();
-}
-
-function createEnemies() {
-  for (let row = 0; row < rowsOfEnemies; row++) {
-    for (let col = 0; col < enemiesPerRow; col++) {
-      enemies.push({
-        x: 50 + col * enemySpacingX,
-        y: 50 + row * enemySpacingY,
-        width: enemyWidth,
-        height: enemyHeight,
-        alive: true
-      });
-    }
-  }
-}
-
-function keyDownHandler(e) {
-  if (e.code === 'ArrowLeft' || e.code === 'KeyA') leftPressed = true;
-  if (e.code === 'ArrowRight' || e.code === 'KeyD') rightPressed = true;
-  if (e.code === 'Space') spacePressed = true;
-
-  // R to restart if game over
-  if (e.code === 'KeyR' && gameOver) {
-    resetGame();
-    requestAnimationFrame(gameLoop);
-  }
-}
-
-function keyUpHandler(e) {
-  if (e.code === 'ArrowLeft' || e.code === 'KeyA') leftPressed = false;
-  if (e.code === 'ArrowRight' || e.code === 'KeyD') rightPressed = false;
-  if (e.code === 'Space') spacePressed = false;
-}
-
-function shootBullet() {
-  // Create a bullet from the player's center top
-  bullets.push({
-    x: player.x + player.width / 2 - 2,
-    y: player.y,
-    width: 4,
-    height: 10
-  });
-}
-
-function update() {
-  if (gameOver) return; // don’t update if game ended
-
-  // Move player
-  if (leftPressed && player.x > 0) {
-    player.x -= playerSpeed;
-  }
-  if (rightPressed && player.x < canvas.width - player.width) {
-    player.x += playerSpeed;
-  }
-
-  // Handle shooting (limit rate)
-  if (spacePressed && shootCooldown <= 0) {
-    shootBullet();
-    shootCooldown = 30; // wait 30 frames before next shot
-  }
-  if (shootCooldown > 0) shootCooldown--;
-
-  // Move bullets
-  bullets.forEach((b) => {
-    b.y -= bulletSpeed;
-  });
-  // Remove bullets off screen
-  bullets = bullets.filter((b) => b.y + b.height > 0);
-
-  // Move enemies
-  enemies.forEach((e) => {
-    if (e.alive) {
-      e.y += enemySpeed;
-      // If an enemy goes past the bottom -> game over (lose)
-      if (e.y > canvas.height) {
-        gameOver = true;
-        gameWin = false;
-      }
-    }
-  });
-
-  // Bullet-enemy collisions
-  for (let i = 0; i < enemies.length; i++) {
-    let e = enemies[i];
-    if (!e.alive) continue;
-
-    for (let j = 0; j < bullets.length; j++) {
-      let b = bullets[j];
-      // basic collision check
-      if (
-        b.x < e.x + e.width &&
-        b.x + b.width > e.x &&
-        b.y < e.y + e.height &&
-        b.y + b.height > e.y
-      ) {
-        // Bullet hits enemy
-        e.alive = false;
-        bullets.splice(j, 1); // remove bullet
-        j--;
-        score += 100;
-        break;
-      }
-    }
-  }
-
-  // Check if all enemies are destroyed
-  const anyAlive = enemies.some((e) => e.alive === true);
-  if (!anyAlive) {
-    // All enemies destroyed -> you win
-    gameOver = true;
-    gameWin = true;
-  }
-}
-
-function draw() {
-  if (!canvas) return;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // Draw Score in the top-left
-  ctx.fillStyle = '#fff';
-  ctx.font = '20px Arial';
-  ctx.fillText('Score: ' + score, 10, 25);
-
-  // Draw player (ship image)
-  if (shipImg) {
-    ctx.drawImage(shipImg, player.x, player.y, player.width, player.height);
-  }
-
-  // Draw bullets
-  ctx.fillStyle = '#ff0';
-  bullets.forEach((b) => {
-    ctx.fillRect(b.x, b.y, b.width, b.height);
-  });
-
-  // Draw enemies (as "$")
-  ctx.fillStyle = '#0f0';
-  ctx.font = '20px Arial';
-  enemies.forEach((enemy) => {
-    if (enemy.alive) {
-      ctx.fillText('$', enemy.x, enemy.y + enemy.height);
-    }
-  });
-
-  // If game over, draw a message
-  if (gameOver) {
-    ctx.fillStyle = 'rgba(0,0,0,0.5)';
-    ctx.fillRect(0, canvas.height / 2 - 50, canvas.width, 100);
-
-    ctx.fillStyle = '#fff';
-    ctx.font = '30px Arial';
-    let message = gameWin ? 'YOU WIN!' : 'GAME OVER!';
-    ctx.fillText(message, canvas.width / 2 - 70, canvas.height / 2 - 10);
-
-    ctx.font = '20px Arial';
-    ctx.fillText('Press R to Restart', canvas.width / 2 - 90, canvas.height / 2 + 20);
-  }
-}
-
-function gameLoop() {
-  update();
-  draw();
-  if (!gameOver) {
-    requestAnimationFrame(gameLoop);
-  }
-}
-
-/***********************************************
- * 4) DOM LOAD: INIT EVERYTHING
- ***********************************************/
+/************************************************
+  DOMContentLoaded - INIT
+************************************************/
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Start matrix background
+  // 1) Starfield behind everything
+  initializeStarfieldEffect();
+
+  // 2) Matrix Rain
   initializeMatrixEffect();
 
-  // 2. Particle click effect (if desired)
+  // 3) Subtle Wave
+  initializeWaveEffect();
+
+  // Particle click effect
   document.addEventListener('click', (e) => {
     createParticle(e);
     createEnergyWave(e.pageX, e.pageY);
   });
 
-  // 3. Mobile nav
+  // Setup mobile nav toggles
   setupMobileNav();
-  window.addEventListener('scroll', handleScroll);
 
-  // 4. Initialize Galaga game
-  initGame();
+  // Ensure mobile menu is hidden on page load
+  const mobileMenu = document.getElementById('mobile-menu');
+  if (mobileMenu) {
+    mobileMenu.classList.remove('open');
+  }
+
+  // Listen for scroll
+  window.addEventListener('scroll', handleScroll);
 });
