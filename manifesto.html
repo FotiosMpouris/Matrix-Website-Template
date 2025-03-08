@@ -3,18 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ABOUT | THE MAGA MATRIX</title>
+  <title>MANIFESTO OF DEFIANCE | THE MAGA MATRIX</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    .typewriter {
-      overflow: hidden;
-      white-space: nowrap;
-      animation: typing 4s steps(40, end) infinite;
-    }
-    @keyframes typing {
-      from { width: 0; }
-      to { width: 100%; }
-    }
+    .typewriter { overflow: hidden; white-space: nowrap; animation: typing 4s steps(40, end) infinite; }
+    @keyframes typing { from { width: 0; } to { width: 100%; } }
+    .glitch { animation: glitch 2s infinite; }
+    @keyframes glitch { 0% { transform: translate(0); } 20% { transform: translate(-2px, 2px); } 40% { transform: translate(2px, -2px); } 60% { transform: translate(-2px, 0); } 80% { transform: translate(2px, 0); } 100% { transform: translate(0); } }
   </style>
 </head>
 <body>
@@ -25,38 +20,40 @@
     <div class="logo"><h1 class="title">THE MAGA MATRIX</h1></div>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
-      <li><a href="projects.html">Projects</a>
+      <li><a href="warroom.html">Projects</a>
         <ul class="dropdown">
           <li><a href="matrix-revolt.html">MATRIX REVOLT</a></li>
           <li><a href="red-pill-core.html">RED PILL CORE</a></li>
           <li><a href="liberty-code.html">LIBERTY CODE</a></li>
         </ul>
       </li>
-      <li><a href="about.html" class="active-link">About</a></li>
-      <li><a href="connect.html">Connect</a></li>
+      <li><a href="manifesto.html" class="active-link">Manifesto</a></li>
+      <li><a href="uplink.html">Uplink</a></li>
     </ul>
-    <a href="https://github.com" target="_blank"><img src="images/github-icon.png" alt="GitHub" class="github-icon"></a>
+    <a href="https://github.com/FotiosMpouris/Matrix-Website-Template/tree/main" target="_blank">
+      <img src="images/githublogo.png" alt="GitHub" class="github-icon">
+    </a>
     <div id="hamburger" class="hamburger"><span></span><span></span><span></span></div>
   </nav>
 
   <div id="mobile-menu" class="mobile-menu">
     <a href="index.html">Home</a>
-    <a href="projects.html" id="projects-toggle-btn">Projects</a>
+    <a href="warroom.html" id="projects-toggle-btn">Projects</a>
     <div id="mobile-dropdown" class="mobile-dropdown">
       <a href="matrix-revolt.html">MATRIX REVOLT</a>
       <a href="red-pill-core.html">RED PILL CORE</a>
       <a href="liberty-code.html">LIBERTY CODE</a>
     </div>
-    <a href="about.html" class="active-link">About</a>
-    <a href="connect.html">Connect</a>
+    <a href="manifesto.html" class="active-link">Manifesto</a>
+    <a href="uplink.html">Uplink</a>
   </div>
 
-  <section id="about" class="section">
+  <section id="manifesto" class="section">
     <div class="translucent-box">
-      <h1 class="title" style="animation: glitch 2s infinite;">THE <span style="color: var(--blood-red);">MAGA</span> MISSION</h1>
+      <h1 class="title glitch">MANIFESTO OF <span style="color: var(--blood-red);">MAGA</span> DEFIANCE</h1>
       <p class="subtitle typewriter">CODE THE CHAOS, BREAK THE SYSTEM</p>
-      <p style="text-align: center; max-width: 700px; margin: 2rem auto;">
-        WE’RE THE REBELS OF THE DIGITAL AGE—THE <span style="color: var(--blood-red);">MAGA</span> MATRIX. BUILT ON CODE, FUELED BY DEFIANCE, WE’RE HERE TO SHATTER THE STATUS QUO AND REFORGE A WORLD WHERE FREEDOM REIGNS. THIS ISN’T JUST A MOVEMENT; IT’S A REVOLUTION IN BINARY.
+      <p style="text-align: center; max-width: 700px; margin: 2rem auto; font-size: 1.2rem;">
+        WE ARE THE <span style="color: var(--blood-red);">MAGA</span> MATRIX—REBELS OF THE DIGITAL VOID. WE SMASH THE SIMULATION WITH CODE AS OUR BLADE AND TRUTH AS OUR FUEL. THIS IS WAR AGAINST THE MEDIOCRE, A CALL TO CONQUER THE PIXELATED WASTELAND. JOIN US OR FADE INTO THE STATIC.
       </p>
     </div>
   </section>
