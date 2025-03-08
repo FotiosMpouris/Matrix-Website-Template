@@ -26,17 +26,19 @@ function initializeMatrixEffect() {
   });
 }
 
-// ADD THE GAME CODE HERE (after initializeMatrixEffect)
 function startGame() {
   const canvas = document.getElementById('matrix-canvas');
   const ctx = canvas.getContext('2d');
+  const sections = document.querySelectorAll('.section'); // Hide all sections
+  sections.forEach(section => section.style.display = 'none');
+
   let player = { x: 100, y: 400, speed: 5 };
   let agents = [];
   let codeDrops = [];
   let score = 0;
+  let timeLeft = 30; // 30-second countdown
   let portal = { x: 700, y: 400, active: false };
 
-  // Clear the existing Matrix rain interval to avoid overlap
   clearInterval(window.drawMatrixInterval);
   window.drawMatrixInterval = setInterval(window.drawMatrix, 50);
 
@@ -52,7 +54,7 @@ function startGame() {
 
   function gameLoop() {
     ctx.clearRect(0, 0, 800, 500);
-    window.drawMatrix(); // Use the shared Matrix rain
+    window.drawMatrix();
 
     // Player
     ctx.fillStyle = 'red';
@@ -60,19 +62,18 @@ function startGame() {
     ctx.arc(player.x, player.y, 10, 0, Math.PI * 2);
     ctx.fill();
 
-    // Agents (Blue Pill obstacles)
+    // Agents
     ctx.fillStyle = 'blue';
     agents = agents.filter(a => a.y < 500);
     agents.forEach(a => {
       ctx.fillRect(a.x, a.y, 20, 20);
       a.y += a.speed;
       if (Math.abs(a.x - player.x) < 15 && Math.abs(a.y - player.y) < 15) {
-        alert('Game Over! Score: ' + score);
-        location.reload(); // Restart the page to reset
+        endGame('Game Over! Score: ' + score);
       }
     });
 
-    // Code Drops (MAGA Code collectibles)
+    // Code Drops
     ctx.fillStyle = 'green';
     codeDrops = codeDrops.filter(c => c.y < 500);
     codeDrops.forEach(c => {
@@ -84,7 +85,7 @@ function startGame() {
       }
     });
 
-    // Portal (Red Pill Escape)
+    // Portal
     if (score > 50) portal.active = true;
     if (portal.active) {
       ctx.fillStyle = 'red';
@@ -92,12 +93,30 @@ function startGame() {
       ctx.arc(portal.x, portal.y, 20, 0, Math.PI * 2);
       ctx.fill();
       if (Math.abs(portal.x - player.x) < 20 && Math.abs(portal.y - player.y) < 20) {
-        alert('Escaped! You’re a Matrix Rebel! Final Score: ' + score);
-        location.reload();
+        endGame('Escaped! You’re a Matrix Rebel! Final Score: ' + score);
       }
     }
 
+    // Score and Timer Display
+    ctx.fillStyle = 'white';
+    ctx.font = '20px Segoe UI';
+    ctx.fillText('Score: ' + score, 10, 30);
+    ctx.fillText('Time Left: ' + Math.ceil(timeLeft) + 's', 10, 60);
+
+    // Countdown Timer
+    if (timeLeft > 0) {
+      timeLeft -= 0.016; // Approx 60 FPS
+    } else {
+      endGame('Time’s Up! Score: ' + score);
+    }
+
     requestAnimationFrame(gameLoop);
+  }
+
+  function endGame(message) {
+    sections.forEach(section => section.style.display = 'block');
+    alert(message);
+    location.reload();
   }
 
   document.addEventListener('mousemove', (e) => {
