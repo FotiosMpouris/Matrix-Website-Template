@@ -404,3 +404,8 @@ body {
   50% { text-shadow: 0 0 10px var(--blood-red), 0 0 20px var(--blood-red); }
   100% { text-shadow: 0 0 5px var(--blood-red), 0 0 10px var(--blood-red); }
 }
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
