@@ -409,3 +409,30 @@ body {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+
+.matrix-m {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 5px var(--blood-red), 0 0 10px var(--blood-red);
+  transition: var(--transition-standard);
+  animation: glitch 1s infinite, pulse-red 2s infinite;
+  display: inline-block; /* Ensure it behaves as a block element */
+}
+.matrix-m:hover {
+  text-shadow: 0 0 10px var(--accent-glow), 0 0 15px var(--blood-red);
+}
+@keyframes pulse-red {
+  0% { text-shadow: 0 0 5px var(--blood-red), 0 0 10px var(--blood-red); }
+  50% { text-shadow: 0 0 15px var(--blood-red), 0 0 20px var(--blood-red); }
+  100% { text-shadow: 0 0 5px var(--blood-red), 0 0 10px var(--blood-red); }
+}
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(2px, -2px); }
+  60% { transform: translate(-2px, 0); }
+  80% { transform: translate(2px, 0); }
+  100% { transform: translate(0); }
+}
