@@ -3,8 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RED PILL PORTAL | THE MAGA MATRIX</title>
+  <title>CONNECT | THE MAGA MATRIX</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .pill-choice { display: flex; gap: 2rem; justify-content: center; margin-top: 2rem; }
+    .pill { padding: 1rem 2rem; border-radius: 25px; cursor: pointer; transition: var(--transition-standard); }
+    .red-pill { background: var(--blood-red); }
+    .blue-pill { background: var(--accent-blue); }
+    .pill:hover { transform: scale(1.1); box-shadow: 0 0 20px var(--accent-glow); }
+  </style>
 </head>
 <body>
   <canvas id="matrix-canvas"></canvas>
@@ -21,8 +28,8 @@
           <li><a href="liberty-code.html">LIBERTY CODE</a></li>
         </ul>
       </li>
-      <li><a href="code-manifesto.html">Manifesto</a></li>
-      <li><a href="red-pill-portal.html" class="active-link">Connect</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="connect.html" class="active-link">Connect</a></li>
     </ul>
     <a href="https://github.com" target="_blank"><img src="images/github-icon.png" alt="GitHub" class="github-icon"></a>
     <div id="hamburger" class="hamburger"><span></span><span></span><span></span></div>
@@ -36,35 +43,26 @@
       <a href="red-pill-core.html">RED PILL CORE</a>
       <a href="liberty-code.html">LIBERTY CODE</a>
     </div>
-    <a href="code-manifesto.html">Manifesto</a>
-    <a href="red-pill-portal.html" class="active-link">Connect</a>
+    <a href="about.html">About</a>
+    <a href="connect.html" class="active-link">Connect</a>
   </div>
 
   <section id="connect" class="section">
-    <div class="translucent-box" style="text-align: center;">
-      <h1 class="title">RED PILL PORTAL</h1>
-      <p class="subtitle">PLUG INTO THE <span style="color: var(--blood-red);">MAGA</span> MATRIX</p>
-      <div class="social-links">
+    <div class="translucent-box">
+      <h1 class="title">PLUG INTO THE MATRIX</h1>
+      <p class="subtitle">CHOOSE YOUR PILL</p>
+      <div class="pill-choice">
+        <div class="pill red-pill" onclick="alert('Welcome to the MAGA Matrix, rebel!')">RED PILL</div>
+        <div class="pill blue-pill" onclick="alert('Back to the simulation you go...')">BLUE PILL</div>
+      </div>
+      <div class="social-links" style="margin-top: 3rem;">
         <a href="https://twitter.com" target="_blank" class="social-link">TWITTER</a>
         <a href="https://discord.com" target="_blank" class="social-link">DISCORD</a>
         <a href="mailto:contact@themagamatrix.com" class="social-link">EMAIL</a>
-      </div>
-      <div id="red-pill-challenge" style="margin-top: 2rem;">
-        <button onclick="takeRedPill()" style="background: var(--blood-red); border: none; padding: 1rem 2rem; color: #fff; font-size: 1.2rem; cursor: pointer; border-radius: 5px; transition: var(--transition-standard);">TAKE THE RED PILL</button>
-        <p id="challenge-text" style="margin-top: 1rem; font-size: 1.1rem;"></p>
       </div>
     </div>
   </section>
 
   <script src="script.js"></script>
-  <script>
-    function takeRedPill() {
-      const text = document.getElementById('challenge-text');
-      text.innerText = 'WELCOME TO THE REAL. THE MATRIX IS YOURS NOW.';
-      text.style.color = 'var(--accent-blue)';
-      text.style.textShadow = '0 0 10px var(--accent-glow)';
-      setTimeout(() => text.style.opacity = '0', 2000);
-    }
-  </script>
 </body>
 </html>
