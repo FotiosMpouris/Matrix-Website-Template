@@ -114,10 +114,12 @@ function startGame() {
   }
 
   function endGame(message) {
-    sections.forEach(section => section.style.display = 'block');
-    alert(message);
-    location.reload();
-  }
+  sections.forEach(section => section.style.display = 'block');
+  const popup = document.createElement('div');
+  popup.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.8); color: white; padding: 20px; border-radius: 10px; z-index: 1000; text-align: center; font-size: 1.5rem;';
+  popup.innerHTML = `${message} <br><button onclick="this.parentElement.remove(); location.reload();" style="margin-top: 10px; padding: 5px 10px; background: var(--blood-red); color: white; border: none; cursor: pointer;">OK</button>`;
+  document.body.appendChild(popup);
+}
 
   document.addEventListener('mousemove', (e) => {
     player.x = e.clientX - 10;
