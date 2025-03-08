@@ -1,77 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Connect</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RED PILL PORTAL | THE MAGA MATRIX</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
   <canvas id="matrix-canvas"></canvas>
-  <div class="particles-container" id="particles-container"></div>
+  <div id="particles-container" class="particles-container"></div>
 
   <nav class="navbar">
-    <a href="https://github.com/YourGitHubUsername" target="_blank" rel="noopener noreferrer">
-      <svg class="github-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <path d="..."></path>
-      </svg>
-    </a>
+    <div class="logo"><h1 class="title">THE MAGA MATRIX</h1></div>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="team.html">Team</a></li>
-      <li>
-        <a href="projects.html">Projects</a>
+      <li><a href="projects.html">Projects</a>
         <ul class="dropdown">
-          <li><a href="doge.html">Project DOGE</a></li>
-          <li><a href="department-efficiency.html">America Safe Again</a></li>
-          <li><a href="global-affairs.html">Drain the Swamp</a></li>
+          <li><a href="matrix-revolt.html">MATRIX REVOLT</a></li>
+          <li><a href="red-pill-core.html">RED PILL CORE</a></li>
+          <li><a href="liberty-code.html">LIBERTY CODE</a></li>
         </ul>
       </li>
-      <li><a href="connect.html" class="active-link">Connect</a></li>
+      <li><a href="code-manifesto.html">Manifesto</a></li>
+      <li><a href="red-pill-portal.html" class="active-link">Connect</a></li>
     </ul>
-    <div class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
+    <a href="https://github.com" target="_blank"><img src="images/github-icon.png" alt="GitHub" class="github-icon"></a>
+    <div id="hamburger" class="hamburger"><span></span><span></span><span></span></div>
   </nav>
 
-  <!-- Mobile menu overlay -->
-  <div class="mobile-menu" id="mobile-menu">
+  <div id="mobile-menu" class="mobile-menu">
     <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="team.html">Team</a>
-    <button id="projects-toggle-btn"
-      style="background:none;border:none;color:#fff;font-size:1.1rem;cursor:pointer;">
-      Projects &#9662;
-    </button>
-    <div class="mobile-dropdown" id="mobile-dropdown">
-      <a href="doge.html">Project DOGE</a>
-      <a href="department-efficiency.html">America Safe Again</a>
-      <a href="global-affairs.html">Drain the Swamp</a>
+    <a href="projects.html" id="projects-toggle-btn">Projects</a>
+    <div id="mobile-dropdown" class="mobile-dropdown">
+      <a href="matrix-revolt.html">MATRIX REVOLT</a>
+      <a href="red-pill-core.html">RED PILL CORE</a>
+      <a href="liberty-code.html">LIBERTY CODE</a>
     </div>
-    <a href="connect.html" class="active-link">Connect</a>
+    <a href="code-manifesto.html">Manifesto</a>
+    <a href="red-pill-portal.html" class="active-link">Connect</a>
   </div>
 
-  <section class="section" id="connect">
-    <div class="container">
-      <h2 class="title">Connect</h2>
-      <p class="subtitle">follow</p>
-
-      <!-- 6 placeholders below; stacked on mobile via CSS -->
+  <section id="connect" class="section">
+    <div class="translucent-box" style="text-align: center;">
+      <h1 class="title">RED PILL PORTAL</h1>
+      <p class="subtitle">PLUG INTO THE <span style="color: var(--blood-red);">MAGA</span> MATRIX</p>
       <div class="social-links">
-        <a href="https://x.com/WhiteHouse" class="social-link">X</a>
-        <a href="https://x.com/DOGE" class="social-link">DOGE</a>
-        <a href="https://www.whitehouse.gov/" class="social-link">WHITEHOUSE</a>
-        <a href="https://x.com/RobertKennedyJr" class="social-link">RFK jr</a>
-        <a href="https://x.com/realDonaldTrump" class="social-link">DONALD TRUMP X</a>
-        <a href="https://www.whitehouse.gov/news/" class="social-link">WHITEHOUSE NEWS</a>
+        <a href="https://twitter.com" target="_blank" class="social-link">TWITTER</a>
+        <a href="https://discord.com" target="_blank" class="social-link">DISCORD</a>
+        <a href="mailto:contact@themagamatrix.com" class="social-link">EMAIL</a>
+      </div>
+      <div id="red-pill-challenge" style="margin-top: 2rem;">
+        <button onclick="takeRedPill()" style="background: var(--blood-red); border: none; padding: 1rem 2rem; color: #fff; font-size: 1.2rem; cursor: pointer; border-radius: 5px; transition: var(--transition-standard);">TAKE THE RED PILL</button>
+        <p id="challenge-text" style="margin-top: 1rem; font-size: 1.1rem;"></p>
       </div>
     </div>
   </section>
 
   <script src="script.js"></script>
+  <script>
+    function takeRedPill() {
+      const text = document.getElementById('challenge-text');
+      text.innerText = 'WELCOME TO THE REAL. THE MATRIX IS YOURS NOW.';
+      text.style.color = 'var(--accent-blue)';
+      text.style.textShadow = '0 0 10px var(--accent-glow)';
+      setTimeout(() => text.style.opacity = '0', 2000);
+    }
+  </script>
 </body>
 </html>
