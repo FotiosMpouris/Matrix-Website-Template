@@ -1,37 +1,111 @@
-// script.js
-
 function initializeMatrixEffect() {
   const canvas = document.getElementById('matrix-canvas');
   const ctx = canvas.getContext('2d');
-
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
+  canvas.width = 800; // Fixed size for game
+  canvas.height = 500;
   const letters = Array(256).join("0").split("");
 
-  function drawMatrix() {
+  // Make drawMatrix accessible globally for the game
+  window.drawMatrix = function() {
     ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-
     ctx.fillStyle = "#0f0";
     letters.forEach((y_pos, index) => {
       const text = String.fromCharCode(3e4 + Math.random() * 33);
       const x_pos = index * 10;
       ctx.fillText(text, x_pos, y_pos);
-
-      if (y_pos > 100 + Math.random() * 1e5) {
-        letters[index] = 0;
-      } else {
-        letters[index] = y_pos + 10;
-      }
+      if (y_pos > 100 + Math.random() * 1e5) letters[index] = 0;
+      else letters[index] = y_pos + 10;
     });
-  }
-  setInterval(drawMatrix, 50);
+  };
+  setInterval(window.drawMatrix, 50);
 
   window.addEventListener('resize', () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = 800;
+    canvas.height = 500;
   });
+}
+
+// ADD THE GAME CODE HERE (after initializeMatrixEffect)
+function startGame() {
+  const canvas = document.getElementById('matrix-canvas');
+  const ctx = canvas.getContext('2d');
+  let player = { x: 100, y: 400, speed: 5 };
+  let agents = [];
+  let codeDrops = [];
+  let score = 0;
+  let portal = { x: 700, y: 400, active: false };
+
+  // Clear the existing Matrix rain interval to avoid overlap
+  clearInterval(window.drawMatrixInterval);
+  window.drawMatrixInterval = setInterval(window.drawMatrix, 50);
+
+  function spawnAgent() {
+    agents.push({ x: Math.random() * 800, y: -20, speed: 2 + Math.random() * 2 });
+  }
+  function spawnCode() {
+    codeDrops.push({ x: Math.random() * 800, y: -20, speed: 1 });
+  }
+
+  setInterval(spawnAgent, 1000);
+  setInterval(spawnCode, 1500);
+
+  function gameLoop() {
+    ctx.clearRect(0, 0, 800, 500);
+    window.drawMatrix(); // Use the shared Matrix rain
+
+    // Player
+    ctx.fillStyle = 'red';
+    ctx.beginPath();
+    ctx.arc(player.x, player.y, 10, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Agents (Blue Pill obstacles)
+    ctx.fillStyle = 'blue';
+    agents = agents.filter(a => a.y < 500);
+    agents.forEach(a => {
+      ctx.fillRect(a.x, a.y, 20, 20);
+      a.y += a.speed;
+      if (Math.abs(a.x - player.x) < 15 && Math.abs(a.y - player.y) < 15) {
+        alert('Game Over! Score: ' + score);
+        location.reload(); // Restart the page to reset
+      }
+    });
+
+    // Code Drops (MAGA Code collectibles)
+    ctx.fillStyle = 'green';
+    codeDrops = codeDrops.filter(c => c.y < 500);
+    codeDrops.forEach(c => {
+      ctx.fillRect(c.x, c.y, 10, 10);
+      c.y += c.speed;
+      if (Math.abs(c.x - player.x) < 10 && Math.abs(c.y - player.y) < 10) {
+        score += 10;
+        codeDrops.splice(codeDrops.indexOf(c), 1);
+      }
+    });
+
+    // Portal (Red Pill Escape)
+    if (score > 50) portal.active = true;
+    if (portal.active) {
+      ctx.fillStyle = 'red';
+      ctx.beginPath();
+      ctx.arc(portal.x, portal.y, 20, 0, Math.PI * 2);
+      ctx.fill();
+      if (Math.abs(portal.x - player.x) < 20 && Math.abs(portal.y - player.y) < 20) {
+        alert('Escaped! You’re a Matrix Rebel! Final Score: ' + score);
+        location.reload();
+      }
+    }
+
+    requestAnimationFrame(gameLoop);
+  }
+
+  document.addEventListener('mousemove', (e) => {
+    player.x = e.clientX - 10;
+    player.y = e.clientY - 10;
+  });
+
+  gameLoop();
 }
 
 /* Particle Effects */
@@ -74,22 +148,18 @@ function setupMobileNav() {
 
   if (!hamburger || !mobileMenu) return;
   
-  // Make sure the mobile menu starts closed
   mobileMenu.classList.remove('open');
 
-  // Toggle overlay on hamburger click
   hamburger.addEventListener('click', () => {
     mobileMenu.classList.toggle('open');
   });
 
-  // Toggle Projects submenu on mobile
   if (projectsToggleBtn && mobileProjectsDropdown) {
     projectsToggleBtn.addEventListener('click', () => {
       mobileProjectsDropdown.classList.toggle('open');
     });
   }
   
-  // Close menu when clicking outside
   document.addEventListener('click', (e) => {
     if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
       mobileMenu.classList.remove('open');
@@ -98,7 +168,6 @@ function setupMobileNav() {
 }
 
 function handleScroll() {
-  // Turn hamburger red on scroll
   const hamburger = document.getElementById('hamburger');
   if (!hamburger) return;
 
@@ -112,24 +181,14 @@ function handleScroll() {
 document.addEventListener('DOMContentLoaded', () => {
   initializeMatrixEffect();
 
-  // Ensure mobile menu is hidden on page load
   const mobileMenu = document.getElementById('mobile-menu');
-  if (mobileMenu) {
-    mobileMenu.classList.remove('open');
-  }
+  if (mobileMenu) mobileMenu.classList.remove('open');
 
-  // Particle click effect
   document.addEventListener('click', (e) => {
     createParticle(e);
     createEnergyWave(e.pageX, e.pageY);
   });
 
-  // Setup mobile nav toggles
   setupMobileNav();
-
-  // Listen for scroll
   window.addEventListener('scroll', handleScroll);
 });
-
-
-
