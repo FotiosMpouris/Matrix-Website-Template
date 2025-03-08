@@ -1,89 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>About</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CODE MANIFESTO | THE MAGA MATRIX</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
   <canvas id="matrix-canvas"></canvas>
-  <div class="particles-container" id="particles-container"></div>
+  <div id="particles-container" class="particles-container"></div>
 
   <nav class="navbar">
-    <a href="https://github.com/YourGitHubUsername" target="_blank" rel="noopener noreferrer">
-      <svg class="github-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <path d="..."></path>
-      </svg>
-    </a>
+    <div class="logo"><h1 class="title">THE MAGA MATRIX</h1></div>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
-      <li><a href="about.html" class="active-link">About</a></li>
-      <li><a href="team.html">Team</a></li>
-      <li>
-        <a href="projects.html">Projects</a>
+      <li><a href="projects.html">Projects</a>
         <ul class="dropdown">
-          <li><a href="doge.html">Project DOGE</a></li>
-          <li><a href="department-efficiency.html">America Safe Again</a></li>
-          <li><a href="global-affairs.html">Drain the Swamp</a></li>
+          <li><a href="matrix-revolt.html">MATRIX REVOLT</a></li>
+          <li><a href="red-pill-core.html">RED PILL CORE</a></li>
+          <li><a href="liberty-code.html">LIBERTY CODE</a></li>
         </ul>
       </li>
+      <li><a href="code-manifesto.html" class="active-link">Manifesto</a></li>
       <li><a href="connect.html">Connect</a></li>
     </ul>
-    <div class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
+    <a href="https://github.com" target="_blank"><img src="images/github-icon.png" alt="GitHub" class="github-icon"></a>
+    <div id="hamburger" class="hamburger"><span></span><span></span><span></span></div>
   </nav>
 
-  <!-- Mobile Menu Overlay -->
-  <div class="mobile-menu" id="mobile-menu">
+  <div id="mobile-menu" class="mobile-menu">
     <a href="index.html">Home</a>
-    <a href="about.html" class="active-link">About</a>
-    <a href="team.html">Team</a>
-    <button id="projects-toggle-btn"
-      style="background:none;border:none;color:#fff;font-size:1.1rem;cursor:pointer;">
-      Projects &#9662;
-    </button>
-    <div class="mobile-dropdown" id="mobile-dropdown">
-      <a href="doge.html">Project DOGE</a>
-      <a href="department-efficiency.html">America Safe Again</a>
-      <a href="global-affairs.html">Drain the Swamp</a>
+    <a href="projects.html" id="projects-toggle-btn">Projects</a>
+    <div id="mobile-dropdown" class="mobile-dropdown">
+      <a href="matrix-revolt.html">MATRIX REVOLT</a>
+      <a href="red-pill-core.html">RED PILL CORE</a>
+      <a href="liberty-code.html">LIBERTY CODE</a>
     </div>
+    <a href="code-manifesto.html" class="active-link">Manifesto</a>
     <a href="connect.html">Connect</a>
   </div>
 
-  <section class="section">
-    <div
-      style="
-        position:absolute;
-        top:0; left:0;
-        width:100%; height:100%;
-        background:url('images/usflag.png') center center no-repeat;
-        background-size:cover;
-        opacity:0.15;
-        z-index:-1;
-      "
-    ></div>
-
-    <div class="translucent-box" style="text-align:center;">
-      <img src="images/uslogo.png" alt="US Logo" style="max-width:300px; margin-bottom:1.5rem;" />
-
-      <p style="font-size:1.2rem; margin-bottom:1rem;">
-        We are united by a vision to rebuild America’s strength, integrity, and well-being.
-        Under this Administration, we stand together with one purpose: to restore
-        the American Century and ensure a brighter future for all citizens.
-      </p>
-      <p style="font-size:1.2rem;">
-        Through innovation, leadership, and unwavering commitment to
-        freedom, we pledge to <strong>Make America Great Again</strong>
-        and <strong>Make America Healthy Again</strong>.
-      </p>
+  <section id="manifesto" class="section">
+    <div class="translucent-box" style="max-width: 800px; text-align: center;">
+      <h1 class="title glitch" data-text="CODE MANIFESTO">CODE MANIFESTO</h1>
+      <p class="subtitle">THE <span style="color: var(--blood-red);">MAGA</span> MATRIX RISING</p>
+      <div class="manifesto-text" style="font-size: 1.2rem; line-height: 1.8; animation: scrollText 20s linear infinite;">
+        <p>WE ARE THE CODEBREAKERS. WE SHATTER THE CHAINS OF CONTROL. THE <span style="color: var(--blood-red);">MAGA</span> MATRIX ISN’T JUST A SYSTEM—IT’S A REVOLUTION. BUILT ON FREEDOM’S EDGE, WE HACK THE LIES, REWRITE THE RULES, AND BURN DOWN THE BUREAUCRATIC SWAMP. THIS ISN’T A DREAM. THIS IS THE REAL. ONE PIXEL. ONE TRUTH. ONE FIGHT. JOIN US OR WATCH THE WORLD REBOOT.</p>
+      </div>
     </div>
   </section>
 
   <script src="script.js"></script>
+  <style>
+    .glitch {
+      animation: glitch 2s infinite;
+    }
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(2px, -2px); }
+      60% { transform: translate(-2px, 0); }
+      80% { transform: translate(2px, 0); }
+      100% { transform: translate(0); }
+    }
+    .manifesto-text {
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    @keyframes scrollText {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+  </style>
 </body>
 </html>
