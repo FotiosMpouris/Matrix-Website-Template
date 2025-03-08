@@ -376,33 +376,28 @@ body {
 }
 
 .skill-icon {
-  position: relative; /* For positioning the label */
-  overflow: hidden; /* Keeps the glow in bounds */
+  position: relative; /* For absolute positioning of label */
 }
-
 .icon-label {
   position: absolute;
-  top: 50%;
+  bottom: 10px; /* Adjust to position on image */
   left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 1.2rem; /* Slightly bigger for impact */
-  color: var(--text-primary);
+  transform: translateX(-50%);
+  text-align: center;
+  font-size: 1rem;
+  color: var(--primary-dark); /* Dark for contrast with white PNGs */
   text-transform: uppercase;
-  letter-spacing: 2px;
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+  letter-spacing: 1px;
+  text-shadow: 0 0 5px var(--accent-glow), 0 0 10px var(--blood-red); /* Glow for visibility */
   transition: var(--transition-standard);
-  z-index: 1; /* Ensures it’s above the image */
 }
-
 .skill-icon:hover .icon-label {
   color: var(--accent-blue);
-  text-shadow: 0 0 15px var(--accent-glow), 0 0 20px var(--accent-blue);
+  text-shadow: 0 0 10px var(--accent-glow), 0 0 15px var(--blood-red);
 }
-
-.skill-icon img {
-  transition: var(--transition-standard);
-}
-
-.skill-icon:hover img {
-  filter: brightness(0.7); /* Darkens image on hover to highlight text */
+@media (max-width: 992px) {
+  .navbar .title {
+    font-size: 1.2rem;
+    white-space: nowrap;
+  }
 }
