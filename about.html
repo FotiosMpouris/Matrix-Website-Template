@@ -3,8 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CODE MANIFESTO | THE MAGA MATRIX</title>
+  <title>ABOUT | THE MAGA MATRIX</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .typewriter {
+      overflow: hidden;
+      white-space: nowrap;
+      animation: typing 4s steps(40, end) infinite;
+    }
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+  </style>
 </head>
 <body>
   <canvas id="matrix-canvas"></canvas>
@@ -21,7 +32,7 @@
           <li><a href="liberty-code.html">LIBERTY CODE</a></li>
         </ul>
       </li>
-      <li><a href="code-manifesto.html" class="active-link">Manifesto</a></li>
+      <li><a href="about.html" class="active-link">About</a></li>
       <li><a href="connect.html">Connect</a></li>
     </ul>
     <a href="https://github.com" target="_blank"><img src="images/github-icon.png" alt="GitHub" class="github-icon"></a>
@@ -36,41 +47,20 @@
       <a href="red-pill-core.html">RED PILL CORE</a>
       <a href="liberty-code.html">LIBERTY CODE</a>
     </div>
-    <a href="code-manifesto.html" class="active-link">Manifesto</a>
+    <a href="about.html" class="active-link">About</a>
     <a href="connect.html">Connect</a>
   </div>
 
-  <section id="manifesto" class="section">
-    <div class="translucent-box" style="max-width: 800px; text-align: center;">
-      <h1 class="title glitch" data-text="CODE MANIFESTO">CODE MANIFESTO</h1>
-      <p class="subtitle">THE <span style="color: var(--blood-red);">MAGA</span> MATRIX RISING</p>
-      <div class="manifesto-text" style="font-size: 1.2rem; line-height: 1.8; animation: scrollText 20s linear infinite;">
-        <p>WE ARE THE CODEBREAKERS. WE SHATTER THE CHAINS OF CONTROL. THE <span style="color: var(--blood-red);">MAGA</span> MATRIX ISN’T JUST A SYSTEM—IT’S A REVOLUTION. BUILT ON FREEDOM’S EDGE, WE HACK THE LIES, REWRITE THE RULES, AND BURN DOWN THE BUREAUCRATIC SWAMP. THIS ISN’T A DREAM. THIS IS THE REAL. ONE PIXEL. ONE TRUTH. ONE FIGHT. JOIN US OR WATCH THE WORLD REBOOT.</p>
-      </div>
+  <section id="about" class="section">
+    <div class="translucent-box">
+      <h1 class="title" style="animation: glitch 2s infinite;">THE <span style="color: var(--blood-red);">MAGA</span> MISSION</h1>
+      <p class="subtitle typewriter">CODE THE CHAOS, BREAK THE SYSTEM</p>
+      <p style="text-align: center; max-width: 700px; margin: 2rem auto;">
+        WE’RE THE REBELS OF THE DIGITAL AGE—THE <span style="color: var(--blood-red);">MAGA</span> MATRIX. BUILT ON CODE, FUELED BY DEFIANCE, WE’RE HERE TO SHATTER THE STATUS QUO AND REFORGE A WORLD WHERE FREEDOM REIGNS. THIS ISN’T JUST A MOVEMENT; IT’S A REVOLUTION IN BINARY.
+      </p>
     </div>
   </section>
 
   <script src="script.js"></script>
-  <style>
-    .glitch {
-      animation: glitch 2s infinite;
-    }
-    @keyframes glitch {
-      0% { transform: translate(0); }
-      20% { transform: translate(-2px, 2px); }
-      40% { transform: translate(2px, -2px); }
-      60% { transform: translate(-2px, 0); }
-      80% { transform: translate(2px, 0); }
-      100% { transform: translate(0); }
-    }
-    .manifesto-text {
-      white-space: nowrap;
-      overflow: hidden;
-    }
-    @keyframes scrollText {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
-    }
-  </style>
 </body>
 </html>
