@@ -376,28 +376,28 @@ body {
 }
 
 .skill-icon {
-  position: relative; /* For absolute positioning of label */
+  position: relative;
 }
 .icon-label {
   position: absolute;
-  bottom: 10px; /* Adjust to position on image */
+  bottom: 20px; /* Raised slightly for better fit */
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
-  font-size: 1rem;
-  color: var(--primary-dark); /* Dark for contrast with white PNGs */
+  font-size: 1.2rem; /* Bigger for impact */
+  color: #fff; /* Neon white */
   text-transform: uppercase;
-  letter-spacing: 1px;
-  text-shadow: 0 0 5px var(--accent-glow), 0 0 10px var(--blood-red); /* Glow for visibility */
+  letter-spacing: 2px;
+  text-shadow: 0 0 5px var(--blood-red), 0 0 10px var(--blood-red), 0 0 15px var(--blood-red); /* Red outline */
+  animation: pulse-text 1.5s infinite; /* Pulsing effect */
   transition: var(--transition-standard);
 }
 .skill-icon:hover .icon-label {
-  color: var(--accent-blue);
-  text-shadow: 0 0 10px var(--accent-glow), 0 0 15px var(--blood-red);
+  color: var(--accent-blue); /* Blue shift on hover */
+  text-shadow: 0 0 10px var(--accent-glow), 0 0 20px var(--blood-red);
 }
-@media (max-width: 992px) {
-  .navbar .title {
-    font-size: 1.2rem;
-    white-space: nowrap;
-  }
+@keyframes pulse-text {
+  0% { text-shadow: 0 0 5px var(--blood-red), 0 0 10px var(--blood-red); }
+  50% { text-shadow: 0 0 10px var(--blood-red), 0 0 20px var(--blood-red); }
+  100% { text-shadow: 0 0 5px var(--blood-red), 0 0 10px var(--blood-red); }
 }
