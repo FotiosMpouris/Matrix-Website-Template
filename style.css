@@ -375,18 +375,34 @@ body {
   box-shadow: 0 0 20px rgba(255,255,255,0.05);
 }
 
-.icon-label {
-  display: block;
-  text-align: center;
-  font-size: 1rem;
-  color: var(--text-primary);
-  margin-top: 0.5rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: var(--transition-standard);
-}
-.skill-icon:hover .icon-label {
-  color: var(--accent-blue);
-  text-shadow: 0 0 10px var(--accent-glow);
+.skill-icon {
+  position: relative; /* For positioning the label */
+  overflow: hidden; /* Keeps the glow in bounds */
 }
 
+.icon-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.2rem; /* Slightly bigger for impact */
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+  transition: var(--transition-standard);
+  z-index: 1; /* Ensures it’s above the image */
+}
+
+.skill-icon:hover .icon-label {
+  color: var(--accent-blue);
+  text-shadow: 0 0 15px var(--accent-glow), 0 0 20px var(--accent-blue);
+}
+
+.skill-icon img {
+  transition: var(--transition-standard);
+}
+
+.skill-icon:hover img {
+  filter: brightness(0.7); /* Darkens image on hover to highlight text */
+}
