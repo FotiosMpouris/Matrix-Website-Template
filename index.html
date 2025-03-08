@@ -13,8 +13,8 @@
   <nav class="navbar">
     <div class="logo"><h1 class="title">THE MAGA MATRIX</h1></div>
     <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="warroom.html">Projects</a>
+      <li><a href="index.html">Portal</a></li>
+      <li><a href="warroom.html">War Room</a>
         <ul class="dropdown">
           <li><a href="matrix-revolt.html">MATRIX REVOLT</a></li>
           <li><a href="red-pill-core.html">RED PILL CORE</a></li>
@@ -31,8 +31,8 @@
   </nav>
 
   <div id="mobile-menu" class="mobile-menu">
-    <a href="index.html">Home</a>
-    <a href="warroom.html" id="projects-toggle-btn">Projects</a>
+    <a href="index.html">Portal</a>
+    <a href="warroom.html" id="projects-toggle-btn">War Room</a>
     <div id="mobile-dropdown" class="mobile-dropdown">
       <a href="matrix-revolt.html">MATRIX REVOLT</a>
       <a href="red-pill-core.html">RED PILL CORE</a>
@@ -53,6 +53,7 @@
         <a href="manifesto.html"><div class="skill-icon"><img src="images/red-pill.png" alt="Truth"><span class="icon-label">TRUTH UNVEILED</span></div></a>
         <a href="uplink.html"><div class="skill-icon"><img src="images/energy-wave.png" alt="Energy"><span class="icon-label">ENERGY SURGE</span></div></a>
       </div>
+      <button onclick="startGame()" style="padding: 1rem 2rem; background: var(--blood-red); color: #fff; border: none; cursor: pointer; margin-top: 2rem;">START RED PILL ESCAPE</button>
     </div>
   </section>
 
@@ -80,16 +81,125 @@
 
   <section id="uplink" class="section">
     <div class="translucent-box">
-      <h2 class="title">JOIN THE MATRIX</h2>
-      <p class="subtitle">TAKE THE RED PILL</p>
-      <div class="social-links">
-        <a href="x.html" class="social-link">X</a>
-        <a href="https://discord.com" target="_blank" class="social-link">DISCORD</a>
-        <a href="mailto:contact@themagamatrix.com" class="social-link">EMAIL</a>
+      <h2 class="title">UPLINK TO FREEDOM</h2>
+      <p class="subtitle">CHOOSE YOUR DESTINY</p>
+      <div class="pill-choice">
+        <div class="pill red-pill" onclick="alert('You’re in—freedom awaits, rebel!')">RED PILL</div>
+        <div class="pill blue-pill" onclick="alert('Coward’s way out—back to the simulation.')">BLUE PILL</div>
+      </div>
+      <div class="social-links" style="margin-top: 3rem; text-align: center;">
+        <a href="x.html" target="_blank">
+          <img src="images/x-logo.png" alt="X" style="width: 40px; animation: spin 10s linear infinite;">
+        </a>
       </div>
     </div>
   </section>
 
-  <script src="script.js"></script>
+  <script src="script.js">
+    function initializeMatrixEffect() {
+      const canvas = document.getElementById('matrix-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 800; // Match game size
+      canvas.height = 500;
+      const letters = Array(256).join("0").split("");
+
+      function drawMatrix() {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#0f0";
+        letters.forEach((y_pos, index) => {
+          const text = String.fromCharCode(3e4 + Math.random() * 33);
+          const x_pos = index * 10;
+          ctx.fillText(text, x_pos, y_pos);
+          if (y_pos > 100 + Math.random() * 1e5) letters[index] = 0;
+          else letters[index] = y_pos + 10;
+        });
+      }
+      setInterval(drawMatrix, 50);
+
+      window.addEventListener('resize', () => {
+        canvas.width = 800;
+        canvas.height = 500;
+      });
+    }
+
+    function startGame() {
+      const ctx = document.getElementById('matrix-canvas').getContext('2d');
+      let player = { x: 100, y: 400, speed: 5 };
+      let agents = [];
+      let codeDrops = [];
+      let score = 0;
+      let portal = { x: 700, y: 400, active: false };
+
+      function spawnAgent() {
+        agents.push({ x: Math.random() * 800, y: -20, speed: 2 + Math.random() * 2 });
+      }
+      function spawnCode() {
+        codeDrops.push({ x: Math.random() * 800, y: -20, speed: 1 });
+      }
+
+      setInterval(spawnAgent, 1000);
+      setInterval(spawnCode, 1500);
+
+      function gameLoop() {
+        ctx.clearRect(0, 0, 800, 500);
+        drawMatrix();
+
+        ctx.fillStyle = 'red';
+        ctx.beginPath();
+        ctx.arc(player.x, player.y, 10, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = 'blue';
+        agents = agents.filter(a => a.y < 500);
+        agents.forEach(a => {
+          ctx.fillRect(a.x, a.y, 20, 20);
+          a.y += a.speed;
+          if (Math.abs(a.x - player.x) < 15 && Math.abs(a.y - player.y) < 15) alert('Game Over! Score: ' + score);
+        });
+
+        ctx.fillStyle = 'green';
+        codeDrops = codeDrops.filter(c => c.y < 500);
+        codeDrops.forEach(c => {
+          ctx.fillRect(c.x, c.y, 10, 10);
+          c.y += c.speed;
+          if (Math.abs(c.x - player.x) < 10 && Math.abs(c.y - player.y) < 10) { score += 10; codeDrops.splice(codeDrops.indexOf(c), 1); }
+        });
+
+        if (score > 50) portal.active = true;
+        if (portal.active) {
+          ctx.fillStyle = 'red';
+          ctx.beginPath();
+          ctx.arc(portal.x, portal.y, 20, 0, Math.PI * 2);
+          ctx.fill();
+          if (Math.abs(portal.x - player.x) < 20 && Math.abs(portal.y - player.y) < 20) alert('Escaped! You’re a Matrix Rebel!');
+        }
+
+        requestAnimationFrame(gameLoop);
+      }
+
+    document.addEventListener('mousemove', (e) => {
+      player.x = e.clientX - 10;
+      player.y = e.clientY - 10;
+    });
+
+    gameLoop();
+  }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initializeMatrixEffect();
+
+      const mobileMenu = document.getElementById('mobile-menu');
+      if (mobileMenu) mobileMenu.classList.remove('open');
+
+      document.addEventListener('click', (e) => {
+        createParticle(e);
+        createEnergyWave(e.pageX, e.pageY);
+      });
+
+      setupMobileNav();
+      window.addEventListener('scroll', handleScroll);
+    });
+  </script>
 </body>
 </html>
