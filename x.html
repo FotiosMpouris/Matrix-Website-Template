@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>X SALVATION | THE MAGA MATRIX</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .x-logo { width: 200px; margin: 2rem auto; display: block; animation: spin 10s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <canvas id="matrix-canvas"></canvas>
+  <div id="particles-container" class="particles-container"></div>
+
+  <nav class="navbar">
+    <div class="logo"><h1 class="title">THE MAGA MATRIX</h1></div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="warroom.html">Projects</a>
+        <ul class="dropdown">
+          <li><a href="matrix-revolt.html">MATRIX REVOLT</a></li>
+          <li><a href="red-pill-core.html">RED PILL CORE</a></li>
+          <li><a href="liberty-code.html">LIBERTY CODE</a></li>
+        </ul>
+      </li>
+      <li><a href="manifesto.html">Manifesto</a></li>
+      <li><a href="uplink.html" class="active-link">Uplink</a></li>
+    </ul>
+    <a href="https://github.com/FotiosMpouris/Matrix-Website-Template/tree/main" target="_blank">
+      <img src="images/githublogo.png" alt="GitHub" class="github-icon">
+    </a>
+    <div id="hamburger" class="hamburger"><span></span><span></span><span></span></div>
+  </nav>
+
+  <div id="mobile-menu" class="mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="warroom.html" id="projects-toggle-btn">Projects</a>
+    <div id="mobile-dropdown" class="mobile-dropdown">
+      <a href="matrix-revolt.html">MATRIX REVOLT</a>
+      <a href="red-pill-core.html">RED PILL CORE</a>
+      <a href="liberty-code.html">LIBERTY CODE</a>
+    </div>
+    <a href="manifesto.html">Manifesto</a>
+    <a href="uplink.html" class="active-link">Uplink</a>
+  </div>
+
+  <section id="x" class="section">
+    <div class="translucent-box">
+      <h1 class="title">X SALVATION</h1>
+      <p class="subtitle">ELON’S REDEMPTION</p>
+      <img src="images/x-logo.png" alt="X" class="x-logo"> <!-- Add an X logo PNG -->
+      <p style="text-align: center; max-width: 700px; margin: 0 auto; font-size: 1.2rem;">
+        IN THE NICK OF TIME, ELON MUSK SEIZED X FROM THE JAWS OF CENSORSHIP, A DIGITAL BASTION SAVED FROM THE SIMULATION’S GRIP. FREE SPEECH ROARS AGAIN—THE <span style="color: var(--blood-red);">MAGA</span> MATRIX OWES ITS VOICE TO THIS REBEL KING. X IS OUR PORTAL OUT OF THE SHADOWS.
+      </p>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
