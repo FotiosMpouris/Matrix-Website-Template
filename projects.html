@@ -1,117 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Projects</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PROJECTS | THE MAGA MATRIX</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .holo-card { background: rgba(255, 255, 255, 0.05); padding: 1.5rem; border-radius: 8px; transition: var(--transition-standard); }
+    .holo-card:hover { transform: translateY(-5px); box-shadow: 0 0 20px var(--accent-glow); }
+  </style>
 </head>
 <body>
-
   <canvas id="matrix-canvas"></canvas>
-  <div class="particles-container" id="particles-container"></div>
+  <div id="particles-container" class="particles-container"></div>
 
   <nav class="navbar">
-    <a href="https://github.com/YourGitHubUsername" target="_blank" rel="noopener noreferrer">
-      <svg class="github-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <path d="..."></path>
-      </svg>
-    </a>
+    <div class="logo"><h1 class="title">THE MAGA MATRIX</h1></div>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="team.html">Team</a></li>
-      <li>
-        <a href="projects.html" class="active-link">Projects</a>
+      <li><a href="projects.html" class="active-link">Projects</a>
         <ul class="dropdown">
-          <li><a href="doge.html">Project DOGE</a></li>
-          <li><a href="department-efficiency.html">America Safe Again</a></li>
-          <li><a href="global-affairs.html">Drain the Swamp</a></li>
+          <li><a href="matrix-revolt.html">MATRIX REVOLT</a></li>
+          <li><a href="red-pill-core.html">RED PILL CORE</a></li>
+          <li><a href="liberty-code.html">LIBERTY CODE</a></li>
         </ul>
       </li>
+      <li><a href="about.html">About</a></li>
       <li><a href="connect.html">Connect</a></li>
     </ul>
-    <div class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
+    <a href="https://github.com" target="_blank"><img src="images/github-icon.png" alt="GitHub" class="github-icon"></a>
+    <div id="hamburger" class="hamburger"><span></span><span></span><span></span></div>
   </nav>
 
-  <!-- Mobile menu overlay -->
-  <div class="mobile-menu" id="mobile-menu">
+  <div id="mobile-menu" class="mobile-menu">
     <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="team.html">Team</a>
-    <button id="projects-toggle-btn" style="background:none;border:none;color:#fff;font-size:1.1rem;cursor:pointer;">
-      Projects &#9662;
-    </button>
-    <div class="mobile-dropdown" id="mobile-dropdown">
-      <a href="doge.html">Project DOGE</a>
-      <a href="department-efficiency.html">America Safe Again</a>
-      <a href="global-affairs.html">Drain the Swamp</a>
+    <a href="projects.html" id="projects-toggle-btn" class="active-link">Projects</a>
+    <div id="mobile-dropdown" class="mobile-dropdown">
+      <a href="matrix-revolt.html">MATRIX REVOLT</a>
+      <a href="red-pill-core.html">RED PILL CORE</a>
+      <a href="liberty-code.html">LIBERTY CODE</a>
     </div>
+    <a href="about.html">About</a>
     <a href="connect.html">Connect</a>
   </div>
 
-  <section class="section" id="projects">
-    <div class="container translucent-box">
-      <h2 class="title">Key Initiatives &amp; Projects</h2>
-      <p class="subtitle">Building America's Future</p>
-
-      <div class="projects">
-        <!-- DOGE Project Card -->
-        <div class="project-card">
-          <h4>Project DOGE</h4>
-          <p>
-            The Department of Government Efficiency (DOGE) is tasked with optimizing
-            bureaucratic processes, reducing waste, and employing cutting-edge
-            technologies to ensure taxpayer dollars are effectively utilized.
-          </p>
-          <a
-            href="doge.html"
-            style="color: #ffb3b3; text-decoration: underline; display:block; margin-top:1rem;"
-            >Learn More</a>
-          <a
-            href="https://x.com/DOGE"
-            class="project-link"
-            style="color:#66c2ff; text-decoration:underline;"
-            >Visit Project</a><!-- placeholder URL -->
-        </div>
-
-        <!-- Department of Government Efficiency -->
-        <div class="project-card">
-          <h4>Make America Safe Again</h4>
-          <p>
-           President Trump will take bold action to secure our border and protect American communities.
-          </p>
-          <a
-            href="department-efficiency.html"
-            style="color: #ffb3b3; text-decoration: underline; display:block; margin-top:1rem;"
-            >Department Page</a>
-          <a
-            href="https://www.whitehouse.gov/briefings-statements/2025/01/president-trumps-america-first-priorities/"
-            class="project-link"
-            style="color:#66c2ff; text-decoration:underline;"
-            >Visit Project</a><!-- placeholder URL -->
-        </div>
-
-        <!-- Global Affairs -->
-        <div class="project-card">
-          <h4>Drain the Swamp</h4>
-          <p>
-            The President will usher a Golden Age for America by reforming and improving the government bureaucracy to work for the American people. He will freeze bureaucrat hiring except in essential areas to end the onslaught of useless and overpaid DEI activists buried into the federal workforce. He will pause burdensome and radical regulations not yet in effect that Biden announced.
-          </p>
-          <a
-            href="global-affairs.html"
-            style="color: #ffb3b3; text-decoration: underline; display:block; margin-top:1rem;"
-            >View Initiatives</a>
-          <a
-            href="https://www.whitehouse.gov/briefings-statements/2025/01/president-trumps-america-first-priorities/"
-            class="project-link"
-            style="color:#66c2ff; text-decoration:underline;"
-            >Visit Project</a><!-- placeholder URL -->
-        </div>
+  <section id="projects" class="section">
+    <div class="translucent-box">
+      <h1 class="title">THE WAR ROOM</h1>
+      <p class="subtitle">COMMAND THE REVOLUTION</p>
+      <div class="skills-container" style="gap: 2rem;">
+        <a href="matrix-revolt.html" class="holo-card">
+          <h3>MATRIX REVOLT</h3>
+          <p>Smash the system. Code the uprising.</p>
+        </a>
+        <a href="red-pill-core.html" class="holo-card">
+          <h3>RED PILL CORE</h3>
+          <p>Truth burns brighter than lies.</p>
+        </a>
+        <a href="liberty-code.html" class="holo-card">
+          <h3>LIBERTY CODE</h3>
+          <p>Freedom runs on unbreakable code.</p>
+        </a>
       </div>
     </div>
   </section>
