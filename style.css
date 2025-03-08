@@ -231,19 +231,22 @@ body {
   }
 }
 
-/* GITHUB ICON */
 .github-icon {
   width: 40px;
   height: 40px;
   transition: var(--transition-standard);
   filter: brightness(0) invert(1);
-  margin-right: 1rem;
+  animation: pulse-red 2s infinite;
 }
 .github-icon:hover {
   transform: scale(1.1);
   filter: brightness(0) invert(1) drop-shadow(0 0 10px var(--accent-glow));
 }
-
+@keyframes pulse-red {
+  0% { filter: brightness(0) invert(1) drop-shadow(0 0 5px var(--blood-red)); }
+  50% { filter: brightness(0) invert(1) drop-shadow(0 0 15px var(--blood-red)); }
+  100% { filter: brightness(0) invert(1) drop-shadow(0 0 5px var(--blood-red)); }
+}
 /* SECTION BASE */
 .section {
   padding: 4rem 0;
