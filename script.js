@@ -39,14 +39,14 @@ function startGame() {
   let score = 0;
   let timeLeft = 60;
   let lastFire = 0;
-  const keys = {}; // Initialize keys object here
+  const keys = {};
 
   clearInterval(window.drawMatrixInterval);
   window.drawMatrixInterval = setInterval(() => {
     ctx.fillStyle = "rgba(0, 0, 0, 0.1)"; // Lower opacity for background
     ctx.fillRect(0, 0, 800, 500);
     ctx.fillStyle = "rgba(0, 255, 0, 0.3)"; // Slower, less intense green
-    let letters = Array(100).join("0").split(""); // Fewer letters
+    let letters = Array(100).join("0").split("");
     letters.forEach((y_pos, index) => {
       const text = String.fromCharCode(3e4 + Math.random() * 33);
       const x_pos = index * 15;
@@ -64,14 +64,14 @@ function startGame() {
     else if (edge === 2) { x = Math.random() * 800; y = 520; }
     else { x = -20; y = Math.random() * 500; }
     enemies.push({ x, y, speed: 1, targetX: redPill.x, targetY: redPill.y });
+    console.log("Enemy spawned at:", x, y); // Debug log
   }
 
-  setInterval(spawnEnemy, 800);
+  setInterval(spawnEnemy, 800); // Ensure this runs
 
   function gameLoop() {
     ctx.clearRect(0, 0, 800, 500);
 
-    // Background Matrix (handled by interval)
     // Draw Red Pill
     ctx.fillStyle = 'red';
     ctx.beginPath();
@@ -97,8 +97,8 @@ function startGame() {
     // Rotate and Fire with Arrows
     if (keys['ArrowLeft']) player.angle -= 5;
     if (keys['ArrowRight']) player.angle += 5;
-    if (keys['ArrowUp'] && Date.now() - lastFire > 300) {
-      bullets.push({ x: player.x, y: player.y, dx: Math.sin(player.angle * Math.PI / 180) * 5, dy: -Math.cos(player.angle * Math.PI / 180) * 5 });
+    if (keys['ArrowUp'] && Date.now() - lastFire > 150) { // Faster firing (150ms cooldown)
+      bullets.push({ x: player.x, y: player.y, dx: Math.sin(player.angle * Math.PI / 180) * 7, dy: -Math.cos(player.angle * Math.PI / 180) * 7 });
       lastFire = Date.now();
     }
 
@@ -113,11 +113,11 @@ function startGame() {
 
     // Enemies (with tentacles)
     ctx.fillStyle = 'blue';
-    enemies.forEach(e => {
+    enemies.forEach((e, index) => {
       let dx = redPill.x - e.x;
       let dy = redPill.y - e.y;
       let distance = Math.sqrt(dx * dx + dy * dy);
-      e.speed = Math.min(5, 1 + (200 - distance) / 40); // Accelerate closer to target
+      e.speed = Math.min(5, 1 + (200 - distance) / 40); // Accelerate closer
       e.x += (dx / distance) * e.speed;
       e.y += (dy / distance) * e.speed;
 
@@ -136,28 +136,28 @@ function startGame() {
       ctx.stroke();
 
       // Collision with bullets
-      bullets.forEach(b => {
+      bullets.forEach((b, bIndex) => {
         if (Math.abs(b.x - e.x) < 10 && Math.abs(b.y - e.y) < 10) {
           score += 20;
-          enemies.splice(enemies.indexOf(e), 1);
-          bullets.splice(bullets.indexOf(b), 1);
+          enemies.splice(index, 1);
+          bullets.splice(bIndex, 1);
         }
       });
 
       // Collision with red pill
       if (Math.abs(e.x - redPill.x) < 20 && Math.abs(e.y - redPill.y) < 20) {
         redPill.hits++;
-        enemies.splice(enemies.indexOf(e), 1);
+        enemies.splice(index, 1);
       }
     });
 
     // Score and Timer
     ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-    ctx.fillRect(10, 10, 200, 60);
+    ctx.fillRect(10, 50, 200, 60); // Moved down to avoid navbar
     ctx.fillStyle = 'white';
     ctx.font = '30px Segoe UI';
-    ctx.fillText('Score: ' + score, 20, 40);
-    ctx.fillText('Time: ' + Math.ceil(timeLeft) + 's', 20, 70);
+    ctx.fillText('Score: ' + score, 20, 80);
+    ctx.fillText('Time: ' + Math.ceil(timeLeft) + 's', 20, 110);
 
     if (timeLeft > 0) {
       timeLeft -= 0.016;
@@ -169,17 +169,20 @@ function startGame() {
   }
 
   function endGame(message) {
-    sections.forEach(section => section.style.display = 'block');
-    const existingPopup = document.querySelector('.game-popup');
-    if (existingPopup) existingPopup.remove();
-    const popup = document.createElement('div');
-    popup.className = 'game-popup';
-    popup.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.8); color: white; padding: 20px; border-radius: 10px; z-index: 1000; text-align: center; font-size: 1.5rem;';
-    popup.innerHTML = `${message} <br><button onclick="document.querySelector('.game-popup').remove(); location.reload();" style="margin-top: 10px; padding: 5px 10px; background: var(--blood-red); color: white; border: none; cursor: pointer;">OK</button>`;
-    document.body.appendChild(popup);
-  }
+  sections.forEach(section => section.style.display = 'block');
+  const existingPopup = document.querySelector('.game-popup');
+  if (existingPopup) existingPopup.remove();
+  const popup = document.createElement('div');
+  popup.className = 'game-popup';
+  popup.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.8); color: white; padding: 20px; border-radius: 10px; z-index: 1000; text-align: center; font-size: 1.5rem;';
+  popup.innerHTML = `${message} <br><button id="game-over-ok" style="margin-top: 10px; padding: 5px 10px; background: var(--blood-red); color: white; border: none; cursor: pointer;">OK</button>`;
+  document.body.appendChild(popup);
+  document.getElementById('game-over-ok').addEventListener('click', () => {
+    popup.remove();
+    location.reload();
+  });
+}
 
-  // Event Listeners for Keys
   document.addEventListener('keydown', (e) => {
     keys[e.key] = true;
   });
@@ -189,6 +192,8 @@ function startGame() {
 
   gameLoop();
 }
+
+
 /* Particle Effects */
 function createParticle(e) {
   const container = document.getElementById('particles-container');
