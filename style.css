@@ -464,3 +464,8 @@ body {
 #home {
   padding-top: 100px; /* Adjust based on navbar height */
 }
+
+.translucent-box {
+  max-height: 70vh;
+  overflow-y: auto;
+}
