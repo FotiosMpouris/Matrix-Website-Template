@@ -29,15 +29,16 @@ function initializeMatrixEffect() {
 function startGame() {
   const canvas = document.getElementById('matrix-canvas');
   const ctx = canvas.getContext('2d');
-  const sections = document.querySelectorAll('.section'); // Hide all sections
+  const sections = document.querySelectorAll('.section');
   sections.forEach(section => section.style.display = 'none');
 
   let player = { x: 100, y: 400, speed: 5 };
   let agents = [];
   let codeDrops = [];
   let score = 0;
-  let timeLeft = 30; // 30-second countdown
+  let timeLeft = 30;
   let portal = { x: 700, y: 400, active: false };
+  let sensitivity = 0.5; // Adjust sensitivity for smoother movement
 
   clearInterval(window.drawMatrixInterval);
   window.drawMatrixInterval = setInterval(window.drawMatrix, 50);
@@ -62,22 +63,42 @@ function startGame() {
     ctx.arc(player.x, player.y, 10, 0, Math.PI * 2);
     ctx.fill();
 
-    // Agents
+    // Agents (with tentacles)
     ctx.fillStyle = 'blue';
     agents = agents.filter(a => a.y < 500);
     agents.forEach(a => {
+      // Main body
       ctx.fillRect(a.x, a.y, 20, 20);
+      // Tentacles (4 small lines)
+      ctx.strokeStyle = 'blue';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(a.x + 5, a.y + 20);
+      ctx.lineTo(a.x + 5, a.y + 30);
+      ctx.moveTo(a.x + 15, a.y + 20);
+      ctx.lineTo(a.x + 15, a.y + 30);
+      ctx.moveTo(a.x, a.y + 10);
+      ctx.lineTo(a.x - 10, a.y + 20);
+      ctx.moveTo(a.x + 20, a.y + 10);
+      ctx.lineTo(a.x + 30, a.y + 20);
+      ctx.stroke();
       a.y += a.speed;
       if (Math.abs(a.x - player.x) < 15 && Math.abs(a.y - player.y) < 15) {
         endGame('Game Over! Score: ' + score);
       }
     });
 
-    // Code Drops
-    ctx.fillStyle = 'green';
+    // Code Drops (Red Pills with Glow)
+    ctx.fillStyle = 'red';
     codeDrops = codeDrops.filter(c => c.y < 500);
     codeDrops.forEach(c => {
-      ctx.fillRect(c.x, c.y, 10, 10);
+      ctx.beginPath();
+      ctx.ellipse(c.x, c.y, 8, 4, 0, 0, Math.PI * 2); // Oval shape
+      ctx.fill();
+      ctx.shadowColor = 'red';
+      ctx.shadowBlur = 10;
+      ctx.fill();
+      ctx.shadowBlur = 0; // Reset glow
       c.y += c.speed;
       if (Math.abs(c.x - player.x) < 10 && Math.abs(c.y - player.y) < 10) {
         score += 10;
@@ -98,14 +119,16 @@ function startGame() {
     }
 
     // Score and Timer Display
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+    ctx.fillRect(10, 10, 200, 60);
     ctx.fillStyle = 'white';
-    ctx.font = '20px Segoe UI';
-    ctx.fillText('Score: ' + score, 10, 30);
-    ctx.fillText('Time Left: ' + Math.ceil(timeLeft) + 's', 10, 60);
+    ctx.font = '30px Segoe UI';
+    ctx.fillText('Score: ' + score, 20, 40);
+    ctx.fillText('Time: ' + Math.ceil(timeLeft) + 's', 20, 70);
 
     // Countdown Timer
     if (timeLeft > 0) {
-      timeLeft -= 0.016; // Approx 60 FPS
+      timeLeft -= 0.016;
     } else {
       endGame('Time’s Up! Score: ' + score);
     }
@@ -114,21 +137,38 @@ function startGame() {
   }
 
   function endGame(message) {
-  sections.forEach(section => section.style.display = 'block');
-  const popup = document.createElement('div');
-  popup.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.8); color: white; padding: 20px; border-radius: 10px; z-index: 1000; text-align: center; font-size: 1.5rem;';
-  popup.innerHTML = `${message} <br><button onclick="this.parentElement.remove(); location.reload();" style="margin-top: 10px; padding: 5px 10px; background: var(--blood-red); color: white; border: none; cursor: pointer;">OK</button>`;
-  document.body.appendChild(popup);
-}
+    sections.forEach(section => section.style.display = 'block');
+    const existingPopup = document.querySelector('.game-popup');
+    if (existingPopup) existingPopup.remove(); // Clear any existing popup
+    const popup = document.createElement('div');
+    popup.className = 'game-popup';
+    popup.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.8); color: white; padding: 20px; border-radius: 10px; z-index: 1000; text-align: center; font-size: 1.5rem;';
+    popup.innerHTML = `${message} <br><button onclick="document.querySelector('.game-popup').remove(); location.reload();" style="margin-top: 10px; padding: 5px 10px; background: var(--blood-red); color: white; border: none; cursor: pointer;">OK</button>`;
+    document.body.appendChild(popup);
+  }
 
+  // Desktop movement (smoother with sensitivity)
   document.addEventListener('mousemove', (e) => {
-    player.x = e.clientX - 10;
-    player.y = e.clientY - 10;
+    const rect = canvas.getBoundingClientRect();
+    const newX = e.clientX - rect.left - 10;
+    const newY = e.clientY - rect.top - 10;
+    player.x += (newX - player.x) * sensitivity;
+    player.y += (newY - player.y) * sensitivity;
+  });
+
+  // Mobile touch movement
+  document.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    const newX = touch.clientX - rect.left - 10;
+    const newY = touch.clientY - rect.top - 10;
+    player.x += (newX - player.x) * (sensitivity * 0.8); // Slightly less sensitive for mobile
+    player.y += (newY - player.y) * (sensitivity * 0.8);
   });
 
   gameLoop();
 }
-
 /* Particle Effects */
 function createParticle(e) {
   const container = document.getElementById('particles-container');
