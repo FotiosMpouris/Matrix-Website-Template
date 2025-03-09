@@ -410,6 +410,7 @@ body {
 }
 
 /* Translucent Box Styling */
+/* Translucent Box Styling */
 .translucent-box {
   background: rgba(255, 255, 255, 0.07);
   margin: 0 auto;
@@ -417,11 +418,14 @@ body {
   padding: 2rem;
   max-width: 960px;
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
-  max-height: 70vh;
-  overflow-y: auto;
   text-align: center;
 }
 
+/* Specific to Manifesto Page */
+#manifesto .translucent-box {
+  max-height: 70vh;
+  overflow-y: auto;
+}
 /* Spinning Animation for X Logo */
 @keyframes spin {
   0% { transform: rotate(0deg); }
