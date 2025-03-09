@@ -32,93 +32,124 @@ function startGame() {
   const sections = document.querySelectorAll('.section');
   sections.forEach(section => section.style.display = 'none');
 
-  let player = { x: 100, y: 400, speed: 5 };
-  let agents = [];
-  let codeDrops = [];
+  let player = { x: 400, y: 250, angle: 0, speed: 0 };
+  let bullets = [];
+  let enemies = [];
+  let redPill = { x: 400, y: 250, hits: 0, maxHits: 5 };
   let score = 0;
-  let timeLeft = 30;
-  let portal = { x: 700, y: 400, active: false };
-  let sensitivity = 0.5; // Adjust sensitivity for smoother movement
+  let timeLeft = 60;
 
   clearInterval(window.drawMatrixInterval);
-  window.drawMatrixInterval = setInterval(window.drawMatrix, 50);
+  window.drawMatrixInterval = setInterval(() => {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.1)"; // Lower opacity for background
+    ctx.fillRect(0, 0, 800, 500);
+    ctx.fillStyle = "rgba(0, 255, 0, 0.3)"; // Slower, less intense green
+    let letters = Array(100).join("0").split(""); // Fewer letters
+    letters.forEach((y_pos, index) => {
+      const text = String.fromCharCode(3e4 + Math.random() * 33);
+      const x_pos = index * 15;
+      ctx.fillText(text, x_pos, y_pos);
+      if (y_pos > 500) letters[index] = 0;
+      else letters[index] = y_pos + 5; // Slower fall
+    });
+  }, 100); // Slower update
 
-  function spawnAgent() {
-    agents.push({ x: Math.random() * 800, y: -20, speed: 2 + Math.random() * 2 });
-  }
-  function spawnCode() {
-    codeDrops.push({ x: Math.random() * 800, y: -20, speed: 1 });
+  function spawnEnemy() {
+    const edge = Math.floor(Math.random() * 4);
+    let x, y;
+    if (edge === 0) { x = Math.random() * 800; y = -20; }
+    else if (edge === 1) { x = 820; y = Math.random() * 500; }
+    else if (edge === 2) { x = Math.random() * 800; y = 520; }
+    else { x = -20; y = Math.random() * 500; }
+    enemies.push({ x, y, speed: 1, targetX: redPill.x, targetY: redPill.y });
   }
 
-  setInterval(spawnAgent, 1000);
-  setInterval(spawnCode, 1500);
+  setInterval(spawnEnemy, 800);
 
   function gameLoop() {
     ctx.clearRect(0, 0, 800, 500);
-    window.drawMatrix();
 
-    // Player
+    // Background Matrix (already handled by interval)
+    // Draw Red Pill
     ctx.fillStyle = 'red';
     ctx.beginPath();
-    ctx.arc(player.x, player.y, 10, 0, Math.PI * 2);
+    ctx.arc(redPill.x, redPill.y, 20, 0, Math.PI * 2);
     ctx.fill();
+    if (redPill.hits >= redPill.maxHits) {
+      endGame('Red Pill Destroyed! Score: ' + score);
+    }
 
-    // Agents (with tentacles)
+    // Player Ship (Triangle)
+    ctx.save();
+    ctx.translate(player.x, player.y);
+    ctx.rotate(player.angle * Math.PI / 180);
+    ctx.fillStyle = 'white';
+    ctx.beginPath();
+    ctx.moveTo(0, -15);
+    ctx.lineTo(-10, 10);
+    ctx.lineTo(10, 10);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+
+    // Rotate with arrows
+    if (keys.left) player.angle -= 5;
+    if (keys.right) player.angle += 5;
+    if (keys.up && Date.now() - lastFire > 300) {
+      bullets.push({ x: player.x, y: player.y, dx: Math.sin(player.angle * Math.PI / 180) * 5, dy: -Math.cos(player.angle * Math.PI / 180) * 5 });
+      lastFire = Date.now();
+    }
+
+    // Bullets
+    ctx.fillStyle = 'red';
+    bullets = bullets.filter(b => b.x > 0 && b.x < 800 && b.y > 0 && b.y < 500);
+    bullets.forEach(b => {
+      ctx.fillRect(b.x - 2, b.y - 2, 4, 4);
+      b.x += b.dx;
+      b.y += b.dy;
+    });
+
+    // Enemies (with tentacles)
     ctx.fillStyle = 'blue';
-    agents = agents.filter(a => a.y < 500);
-    agents.forEach(a => {
-      // Main body
-      ctx.fillRect(a.x, a.y, 20, 20);
-      // Tentacles (4 small lines)
+    enemies.forEach(e => {
+      let dx = redPill.x - e.x;
+      let dy = redPill.y - e.y;
+      let distance = Math.sqrt(dx * dx + dy * dy);
+      e.speed = Math.min(5, 1 + (200 - distance) / 40); // Accelerate closer to target
+      e.x += (dx / distance) * e.speed;
+      e.y += (dy / distance) * e.speed;
+
+      ctx.fillRect(e.x, e.y, 20, 20);
       ctx.strokeStyle = 'blue';
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.moveTo(a.x + 5, a.y + 20);
-      ctx.lineTo(a.x + 5, a.y + 30);
-      ctx.moveTo(a.x + 15, a.y + 20);
-      ctx.lineTo(a.x + 15, a.y + 30);
-      ctx.moveTo(a.x, a.y + 10);
-      ctx.lineTo(a.x - 10, a.y + 20);
-      ctx.moveTo(a.x + 20, a.y + 10);
-      ctx.lineTo(a.x + 30, a.y + 20);
+      ctx.moveTo(e.x + 5, e.y + 20);
+      ctx.lineTo(e.x + 5, e.y + 30);
+      ctx.moveTo(e.x + 15, e.y + 20);
+      ctx.lineTo(e.x + 15, e.y + 30);
+      ctx.moveTo(e.x, e.y + 10);
+      ctx.lineTo(e.x - 10, e.y + 20);
+      ctx.moveTo(e.x + 20, e.y + 10);
+      ctx.lineTo(e.x + 30, e.y + 20);
       ctx.stroke();
-      a.y += a.speed;
-      if (Math.abs(a.x - player.x) < 15 && Math.abs(a.y - player.y) < 15) {
-        endGame('Game Over! Score: ' + score);
+
+      // Collision with bullets
+      bullets.forEach(b => {
+        if (Math.abs(b.x - e.x) < 10 && Math.abs(b.y - e.y) < 10) {
+          score += 20;
+          enemies.splice(enemies.indexOf(e), 1);
+          bullets.splice(bullets.indexOf(b), 1);
+        }
+      });
+
+      // Collision with red pill
+      if (Math.abs(e.x - redPill.x) < 20 && Math.abs(e.y - redPill.y) < 20) {
+        redPill.hits++;
+        enemies.splice(enemies.indexOf(e), 1);
       }
     });
 
-    // Code Drops (Red Pills with Glow)
-    ctx.fillStyle = 'red';
-    codeDrops = codeDrops.filter(c => c.y < 500);
-    codeDrops.forEach(c => {
-      ctx.beginPath();
-      ctx.ellipse(c.x, c.y, 8, 4, 0, 0, Math.PI * 2); // Oval shape
-      ctx.fill();
-      ctx.shadowColor = 'red';
-      ctx.shadowBlur = 10;
-      ctx.fill();
-      ctx.shadowBlur = 0; // Reset glow
-      c.y += c.speed;
-      if (Math.abs(c.x - player.x) < 10 && Math.abs(c.y - player.y) < 10) {
-        score += 10;
-        codeDrops.splice(codeDrops.indexOf(c), 1);
-      }
-    });
-
-    // Portal
-    if (score > 50) portal.active = true;
-    if (portal.active) {
-      ctx.fillStyle = 'red';
-      ctx.beginPath();
-      ctx.arc(portal.x, portal.y, 20, 0, Math.PI * 2);
-      ctx.fill();
-      if (Math.abs(portal.x - player.x) < 20 && Math.abs(portal.y - player.y) < 20) {
-        endGame('Escaped! You’re a Matrix Rebel! Final Score: ' + score);
-      }
-    }
-
-    // Score and Timer Display
+    // Score and Timer
     ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
     ctx.fillRect(10, 10, 200, 60);
     ctx.fillStyle = 'white';
@@ -126,46 +157,30 @@ function startGame() {
     ctx.fillText('Score: ' + score, 20, 40);
     ctx.fillText('Time: ' + Math.ceil(timeLeft) + 's', 20, 70);
 
-    // Countdown Timer
     if (timeLeft > 0) {
       timeLeft -= 0.016;
     } else {
-      endGame('Time’s Up! Score: ' + score);
+      endGame('Victory! Score: ' + score);
     }
 
     requestAnimationFrame(gameLoop);
   }
 
+  const keys = {};
+  let lastFire = 0;
+  document.addEventListener('keydown', (e) => { keys[e.key] = true; });
+  document.addEventListener('keyup', (e) => { keys[e.key] = false; });
+
   function endGame(message) {
     sections.forEach(section => section.style.display = 'block');
     const existingPopup = document.querySelector('.game-popup');
-    if (existingPopup) existingPopup.remove(); // Clear any existing popup
+    if (existingPopup) existingPopup.remove();
     const popup = document.createElement('div');
     popup.className = 'game-popup';
     popup.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.8); color: white; padding: 20px; border-radius: 10px; z-index: 1000; text-align: center; font-size: 1.5rem;';
     popup.innerHTML = `${message} <br><button onclick="document.querySelector('.game-popup').remove(); location.reload();" style="margin-top: 10px; padding: 5px 10px; background: var(--blood-red); color: white; border: none; cursor: pointer;">OK</button>`;
     document.body.appendChild(popup);
   }
-
-  // Desktop movement (smoother with sensitivity)
-  document.addEventListener('mousemove', (e) => {
-    const rect = canvas.getBoundingClientRect();
-    const newX = e.clientX - rect.left - 10;
-    const newY = e.clientY - rect.top - 10;
-    player.x += (newX - player.x) * sensitivity;
-    player.y += (newY - player.y) * sensitivity;
-  });
-
-  // Mobile touch movement
-  document.addEventListener('touchmove', (e) => {
-    e.preventDefault();
-    const touch = e.touches[0];
-    const rect = canvas.getBoundingClientRect();
-    const newX = touch.clientX - rect.left - 10;
-    const newY = touch.clientY - rect.top - 10;
-    player.x += (newX - player.x) * (sensitivity * 0.8); // Slightly less sensitive for mobile
-    player.y += (newY - player.y) * (sensitivity * 0.8);
-  });
 
   gameLoop();
 }
