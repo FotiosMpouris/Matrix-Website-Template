@@ -3,12 +3,12 @@
   --primary-dark: #0a192f;
   --primary-light: #1a1f35;
   --accent-blue: #007BFF;
-  --accent-glow: #00f0ff; /* Fixed duplicate definition */
+  --accent-glow: #00f0ff;
   --text-primary: #ffffff;
   --text-secondary: rgba(255, 255, 255, 0.7);
   --matrix-color: rgba(0, 183, 255, 0.25);
-  --transition-standard: all 0.3s ease; /* Fixed duplicate definition */
-  --blood-red: #8B0000; /* Fixed duplicate definition */
+  --transition-standard: all 0.3s ease;
+  --blood-red: #8B0000;
 }
 
 /* RESET */
@@ -372,6 +372,10 @@ body {
   margin-top: 1rem;
   padding: 1rem 0;
 }
+.social-links img {
+  width: 40px;
+  animation: spin 10s linear infinite;
+}
 .social-link {
   position: relative;
   color: #fff;
@@ -395,6 +399,9 @@ body {
   .social-links {
     flex-direction: column;
     align-items: center;
+  }
+  .social-links img {
+    width: 30px;
   }
   .social-link {
     width: 80%;
