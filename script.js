@@ -38,6 +38,8 @@ function startGame() {
   let redPill = { x: 400, y: 250, hits: 0, maxHits: 5 };
   let score = 0;
   let timeLeft = 60;
+  let lastFire = 0;
+  const keys = {}; // Initialize keys object here
 
   clearInterval(window.drawMatrixInterval);
   window.drawMatrixInterval = setInterval(() => {
@@ -69,7 +71,7 @@ function startGame() {
   function gameLoop() {
     ctx.clearRect(0, 0, 800, 500);
 
-    // Background Matrix (already handled by interval)
+    // Background Matrix (handled by interval)
     // Draw Red Pill
     ctx.fillStyle = 'red';
     ctx.beginPath();
@@ -92,10 +94,10 @@ function startGame() {
     ctx.fill();
     ctx.restore();
 
-    // Rotate with arrows
-    if (keys.left) player.angle -= 5;
-    if (keys.right) player.angle += 5;
-    if (keys.up && Date.now() - lastFire > 300) {
+    // Rotate and Fire with Arrows
+    if (keys['ArrowLeft']) player.angle -= 5;
+    if (keys['ArrowRight']) player.angle += 5;
+    if (keys['ArrowUp'] && Date.now() - lastFire > 300) {
       bullets.push({ x: player.x, y: player.y, dx: Math.sin(player.angle * Math.PI / 180) * 5, dy: -Math.cos(player.angle * Math.PI / 180) * 5 });
       lastFire = Date.now();
     }
@@ -166,11 +168,6 @@ function startGame() {
     requestAnimationFrame(gameLoop);
   }
 
-  const keys = {};
-  let lastFire = 0;
-  document.addEventListener('keydown', (e) => { keys[e.key] = true; });
-  document.addEventListener('keyup', (e) => { keys[e.key] = false; });
-
   function endGame(message) {
     sections.forEach(section => section.style.display = 'block');
     const existingPopup = document.querySelector('.game-popup');
@@ -181,6 +178,14 @@ function startGame() {
     popup.innerHTML = `${message} <br><button onclick="document.querySelector('.game-popup').remove(); location.reload();" style="margin-top: 10px; padding: 5px 10px; background: var(--blood-red); color: white; border: none; cursor: pointer;">OK</button>`;
     document.body.appendChild(popup);
   }
+
+  // Event Listeners for Keys
+  document.addEventListener('keydown', (e) => {
+    keys[e.key] = true;
+  });
+  document.addEventListener('keyup', (e) => {
+    keys[e.key] = false;
+  });
 
   gameLoop();
 }
