@@ -43,36 +43,37 @@ function startGame() {
   let wave = 1;
   const keys = {};
 
+  // Initialize Matrix Rain
   clearInterval(window.drawMatrixInterval);
   window.drawMatrixInterval = setInterval(() => {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.1)"; // Low opacity background
+    ctx.fillStyle = "rgba(0, 0, 0, 0.05)"; // Even lower opacity to keep visible
     ctx.fillRect(0, 0, 800, 500);
-    ctx.fillStyle = "rgba(0, 255, 0, 0.3)"; // Slower, less intense green
-    let letters = Array(100).join("0").split("");
+    ctx.fillStyle = "rgba(0, 255, 0, 0.5)"; // Brighter green
+    let letters = Array(150).join("0").split(""); // More letters for visibility
     letters.forEach((y_pos, index) => {
       const text = String.fromCharCode(3e4 + Math.random() * 33);
-      const x_pos = index * 15;
+      const x_pos = index * 10; // Closer spacing
       ctx.fillText(text, x_pos, y_pos);
       if (y_pos > 500) letters[index] = 0;
-      else letters[index] = y_pos + 5;
+      else letters[index] = y_pos + 3; // Slower fall
     });
-  }, 100);
+  }, 80); // Faster update for visibility
 
   function spawnEnemyWave() {
-    for (let i = 0; i < wave * 2; i++) { // More enemies per wave
+    for (let i = 0; i < wave * 2; i++) {
       enemies.push({
-        x: Math.random() * 700 + 50, // Random x position
+        x: Math.random() * 700 + 50,
         y: -20,
         width: 20,
         height: 20,
-        speed: 1 + wave * 0.5, // Increase speed with wave
+        speed: 1 + wave * 0.2, // Slower increase (0.2 instead of 0.5)
       });
     }
     wave++;
   }
 
-  setInterval(spawnEnemyWave, 5000); // New wave every 5 seconds
-  spawnEnemyWave(); // Initial wave
+  setInterval(spawnEnemyWave, 5000);
+  spawnEnemyWave();
 
   function gameLoop() {
     ctx.clearRect(0, 0, 800, 500);
@@ -87,14 +88,10 @@ function startGame() {
     ctx.fill();
 
     // Move Player
-    if (keys['ArrowLeft'] && player.x - player.width / 2 > 0) {
-      player.x -= player.speed;
-    }
-    if (keys['ArrowRight'] && player.x + player.width / 2 < 800) {
-      player.x += player.speed;
-    }
-    if (keys['Space'] && Date.now() - lastFire > 200) { // Fire every 200ms
-      bullets.push({ x: player.x, y: player.y - player.height / 2, dy: -7 });
+    if (keys['ArrowLeft'] && player.x - player.width / 2 > 0) player.x -= player.speed;
+    if (keys['ArrowRight'] && player.x + player.width / 2 < 800) player.x += player.speed;
+    if (keys[' '] && Date.now() - lastFire > 200) { // Fixed spacebar firing
+      bullets.push({ x: player.x, y: player.y - player.height / 2, dy: -5 });
       lastFire = Date.now();
     }
 
@@ -112,13 +109,10 @@ function startGame() {
     enemyBullets.forEach(eb => {
       ctx.fillRect(eb.x - 2, eb.y, 4, 10);
       eb.y += eb.dy;
-      // Collision with player
       if (Math.abs(eb.x - player.x) < 20 && Math.abs(eb.y - player.y) < 20) {
         player.lives--;
         enemyBullets.splice(enemyBullets.indexOf(eb), 1);
-        if (player.lives <= 0) {
-          endGame('Game Over! Score: ' + score);
-        }
+        if (player.lives <= 0) endGame('Game Over! Score: ' + score);
       }
     });
 
@@ -128,7 +122,6 @@ function startGame() {
     enemies.forEach((e, eIndex) => {
       e.y += e.speed;
       ctx.fillRect(e.x, e.y, e.width, e.height);
-      // Tentacles
       ctx.strokeStyle = 'blue';
       ctx.lineWidth = 2;
       ctx.beginPath();
@@ -138,13 +131,11 @@ function startGame() {
       ctx.lineTo(e.x + 15, e.y + 30);
       ctx.stroke();
 
-      // Enemy firing
       if (Date.now() - lastEnemyFire > 1000 && Math.random() < 0.02) {
-        enemyBullets.push({ x: e.x + e.width / 2, y: e.y + e.height, dy: 5 });
+        enemyBullets.push({ x: e.x + e.width / 2, y: e.y + e.height, dy: 3 }); // Slower enemy bullets
         lastEnemyFire = Date.now();
       }
 
-      // Collision with player bullets
       bullets.forEach((b, bIndex) => {
         if (Math.abs(b.x - e.x) < 15 && Math.abs(b.y - e.y) < 15) {
           score += 10;
@@ -153,30 +144,24 @@ function startGame() {
         }
       });
 
-      // Collision with player
       if (Math.abs(e.x - player.x) < 30 && Math.abs(e.y - player.y) < 30) {
         player.lives--;
         enemies.splice(eIndex, 1);
-        if (player.lives <= 0) {
-          endGame('Game Over! Score: ' + score);
-        }
+        if (player.lives <= 0) endGame('Game Over! Score: ' + score);
       }
     });
 
     // Score, Lives, and Timer
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-    ctx.fillRect(10, 50, 250, 90); // Below navbar
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.4)'; // Brighter background
+    ctx.fillRect(10, 80, 250, 120); // Moved down further
     ctx.fillStyle = 'white';
     ctx.font = '20px Segoe UI';
-    ctx.fillText('Score: ' + score, 20, 80);
-    ctx.fillText('Lives: ' + player.lives, 20, 110);
-    ctx.fillText('Time: ' + Math.ceil(timeLeft) + 's', 20, 140);
+    ctx.fillText('Score: ' + score, 20, 120);
+    ctx.fillText('Lives: ' + player.lives, 20, 150);
+    ctx.fillText('Time: ' + Math.ceil(timeLeft) + 's', 20, 180);
 
-    if (timeLeft > 0) {
-      timeLeft -= 0.016;
-    } else {
-      endGame('Victory! Score: ' + score);
-    }
+    if (timeLeft > 0) timeLeft -= 0.016;
+    else endGame('Victory! Score: ' + score);
 
     requestAnimationFrame(gameLoop);
   }
@@ -187,8 +172,8 @@ function startGame() {
     if (existingPopup) existingPopup.remove();
     const popup = document.createElement('div');
     popup.className = 'game-popup';
-    popup.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.8); color: white; padding: 20px; border-radius: 10px; z-index: 1000; text-align: center; font-size: 1.5rem;';
-    popup.innerHTML = `${message} <br><button onclick="this.parentElement.remove(); window.location.reload();" style="margin-top: 10px; padding: 5px 10px; background: var(--blood-red); color: white; border: none; cursor: pointer;">OK</button>`;
+    popup.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.8); color: white; padding: 20px; border-radius: 10px; z-index: 1001; text-align: center; font-size: 1.5rem;';
+    popup.innerHTML = `${message} <br><button onclick="window.location.reload();" style="margin-top: 10px; padding: 5px 10px; background: var(--blood-red); color: white; border: none; cursor: pointer;">OK</button>`;
     document.body.appendChild(popup);
   }
 
@@ -201,6 +186,7 @@ function startGame() {
 
   gameLoop();
 }
+
 /* Particle Effects */
 function createParticle(e) {
   const container = document.getElementById('particles-container');
