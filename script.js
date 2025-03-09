@@ -32,18 +32,20 @@ function startGame() {
   const sections = document.querySelectorAll('.section');
   sections.forEach(section => section.style.display = 'none');
 
-  let player = { x: 400, y: 250, angle: 0, speed: 0 };
+  let player = { x: 400, y: 450, width: 30, height: 30, speed: 5, lives: 3 };
   let bullets = [];
+  let enemyBullets = [];
   let enemies = [];
-  let redPill = { x: 400, y: 250, hits: 0, maxHits: 5 };
   let score = 0;
   let timeLeft = 60;
   let lastFire = 0;
+  let lastEnemyFire = 0;
+  let wave = 1;
   const keys = {};
 
   clearInterval(window.drawMatrixInterval);
   window.drawMatrixInterval = setInterval(() => {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.1)"; // Lower opacity for background
+    ctx.fillStyle = "rgba(0, 0, 0, 0.1)"; // Low opacity background
     ctx.fillRect(0, 0, 800, 500);
     ctx.fillStyle = "rgba(0, 255, 0, 0.3)"; // Slower, less intense green
     let letters = Array(100).join("0").split("");
@@ -56,75 +58,77 @@ function startGame() {
     });
   }, 100);
 
-  function spawnEnemy() {
-    const edge = Math.floor(Math.random() * 4);
-    let x, y;
-    if (edge === 0) { x = Math.random() * 800; y = -20; }
-    else if (edge === 1) { x = 820; y = Math.random() * 500; }
-    else if (edge === 2) { x = Math.random() * 800; y = 520; }
-    else { x = -20; y = Math.random() * 500; }
-    enemies.push({ x, y, speed: 2 + Math.random() * 2, targetX: redPill.x, targetY: redPill.y });
-    console.log("Enemy spawned at:", x, y); // Debug log
+  function spawnEnemyWave() {
+    for (let i = 0; i < wave * 2; i++) { // More enemies per wave
+      enemies.push({
+        x: Math.random() * 700 + 50, // Random x position
+        y: -20,
+        width: 20,
+        height: 20,
+        speed: 1 + wave * 0.5, // Increase speed with wave
+      });
+    }
+    wave++;
   }
 
-  setInterval(spawnEnemy, 500); // Increased spawn rate (every 500ms)
+  setInterval(spawnEnemyWave, 5000); // New wave every 5 seconds
+  spawnEnemyWave(); // Initial wave
 
   function gameLoop() {
     ctx.clearRect(0, 0, 800, 500);
 
-    // Draw Red Pill
-    ctx.fillStyle = 'red';
-    ctx.beginPath();
-    ctx.arc(redPill.x, redPill.y, 20, 0, Math.PI * 2);
-    ctx.fill();
-    if (redPill.hits >= redPill.maxHits) {
-      endGame('Red Pill Destroyed! Score: ' + score);
-    }
-
     // Player Ship (Triangle)
-    ctx.save();
-    ctx.translate(player.x, player.y);
-    ctx.rotate(player.angle * Math.PI / 180);
     ctx.fillStyle = 'white';
     ctx.beginPath();
-    ctx.moveTo(0, -15);
-    ctx.lineTo(-10, 10);
-    ctx.lineTo(10, 10);
+    ctx.moveTo(player.x, player.y - player.height / 2);
+    ctx.lineTo(player.x - player.width / 2, player.y + player.height / 2);
+    ctx.lineTo(player.x + player.width / 2, player.y + player.height / 2);
     ctx.closePath();
     ctx.fill();
-    ctx.restore();
 
-    // Rotate and Fire with Arrows
-    if (keys['ArrowLeft']) player.angle -= 5;
-    if (keys['ArrowRight']) player.angle += 5;
-    if (keys['ArrowUp'] && Date.now() - lastFire > 100) { // Even faster firing (100ms cooldown)
-      bullets.push({ x: player.x, y: player.y, dx: Math.sin(player.angle * Math.PI / 180) * 8, dy: -Math.cos(player.angle * Math.PI / 180) * 8 });
+    // Move Player
+    if (keys['ArrowLeft'] && player.x - player.width / 2 > 0) {
+      player.x -= player.speed;
+    }
+    if (keys['ArrowRight'] && player.x + player.width / 2 < 800) {
+      player.x += player.speed;
+    }
+    if (keys['Space'] && Date.now() - lastFire > 200) { // Fire every 200ms
+      bullets.push({ x: player.x, y: player.y - player.height / 2, dy: -7 });
       lastFire = Date.now();
     }
 
-    // Bullets
+    // Player Bullets
     ctx.fillStyle = 'red';
-    bullets = bullets.filter(b => b.x > 0 && b.x < 800 && b.y > 0 && b.y < 500);
+    bullets = bullets.filter(b => b.y > 0);
     bullets.forEach(b => {
-      ctx.fillRect(b.x - 2, b.y - 2, 4, 4);
-      b.x += b.dx;
+      ctx.fillRect(b.x - 2, b.y - 5, 4, 10);
       b.y += b.dy;
+    });
+
+    // Enemy Bullets
+    ctx.fillStyle = 'blue';
+    enemyBullets = enemyBullets.filter(eb => eb.y < 500);
+    enemyBullets.forEach(eb => {
+      ctx.fillRect(eb.x - 2, eb.y, 4, 10);
+      eb.y += eb.dy;
+      // Collision with player
+      if (Math.abs(eb.x - player.x) < 20 && Math.abs(eb.y - player.y) < 20) {
+        player.lives--;
+        enemyBullets.splice(enemyBullets.indexOf(eb), 1);
+        if (player.lives <= 0) {
+          endGame('Game Over! Score: ' + score);
+        }
+      }
     });
 
     // Enemies (with tentacles)
     ctx.fillStyle = 'blue';
-    let enemiesToRemove = [];
-    let bulletsToRemove = [];
+    enemies = enemies.filter(e => e.y < 500);
     enemies.forEach((e, eIndex) => {
-      let dx = redPill.x - e.x;
-      let dy = redPill.y - e.y;
-      let distance = Math.sqrt(dx * dx + dy * dy);
-      if (distance < 1) distance = 1; // Prevent division by zero
-      e.speed = Math.min(6, 2 + (200 - distance) / 30); // More aggressive speed increase
-      e.x += (dx / distance) * e.speed;
-      e.y += (dy / distance) * e.speed;
-
-      ctx.fillRect(e.x, e.y, 20, 20);
+      e.y += e.speed;
+      ctx.fillRect(e.x, e.y, e.width, e.height);
+      // Tentacles
       ctx.strokeStyle = 'blue';
       ctx.lineWidth = 2;
       ctx.beginPath();
@@ -132,41 +136,41 @@ function startGame() {
       ctx.lineTo(e.x + 5, e.y + 30);
       ctx.moveTo(e.x + 15, e.y + 20);
       ctx.lineTo(e.x + 15, e.y + 30);
-      ctx.moveTo(e.x, e.y + 10);
-      ctx.lineTo(e.x - 10, e.y + 20);
-      ctx.moveTo(e.x + 20, e.y + 10);
-      ctx.lineTo(e.x + 30, e.y + 20);
       ctx.stroke();
 
-      // Collision with bullets
+      // Enemy firing
+      if (Date.now() - lastEnemyFire > 1000 && Math.random() < 0.02) {
+        enemyBullets.push({ x: e.x + e.width / 2, y: e.y + e.height, dy: 5 });
+        lastEnemyFire = Date.now();
+      }
+
+      // Collision with player bullets
       bullets.forEach((b, bIndex) => {
         if (Math.abs(b.x - e.x) < 15 && Math.abs(b.y - e.y) < 15) {
-          score += 20;
-          enemiesToRemove.push(eIndex);
-          bulletsToRemove.push(bIndex);
+          score += 10;
+          enemies.splice(eIndex, 1);
+          bullets.splice(bIndex, 1);
         }
       });
 
-      // Collision with red pill
-      if (Math.abs(e.x - redPill.x) < 30 && Math.abs(e.y - redPill.y) < 30) {
-        redPill.hits++;
-        enemiesToRemove.push(eIndex);
+      // Collision with player
+      if (Math.abs(e.x - player.x) < 30 && Math.abs(e.y - player.y) < 30) {
+        player.lives--;
+        enemies.splice(eIndex, 1);
+        if (player.lives <= 0) {
+          endGame('Game Over! Score: ' + score);
+        }
       }
     });
 
-    // Remove marked enemies and bullets
-    enemiesToRemove = [...new Set(enemiesToRemove)].sort((a, b) => b - a);
-    bulletsToRemove = [...new Set(bulletsToRemove)].sort((a, b) => b - a);
-    enemiesToRemove.forEach(index => enemies.splice(index, 1));
-    bulletsToRemove.forEach(index => bullets.splice(index, 1));
-
-    // Score and Timer
+    // Score, Lives, and Timer
     ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-    ctx.fillRect(10, 50, 200, 60);
+    ctx.fillRect(10, 50, 250, 90); // Below navbar
     ctx.fillStyle = 'white';
-    ctx.font = '30px Segoe UI';
+    ctx.font = '20px Segoe UI';
     ctx.fillText('Score: ' + score, 20, 80);
-    ctx.fillText('Time: ' + Math.ceil(timeLeft) + 's', 20, 110);
+    ctx.fillText('Lives: ' + player.lives, 20, 110);
+    ctx.fillText('Time: ' + Math.ceil(timeLeft) + 's', 20, 140);
 
     if (timeLeft > 0) {
       timeLeft -= 0.016;
@@ -197,7 +201,6 @@ function startGame() {
 
   gameLoop();
 }
-
 /* Particle Effects */
 function createParticle(e) {
   const container = document.getElementById('particles-container');
