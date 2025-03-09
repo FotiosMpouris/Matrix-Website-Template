@@ -42,31 +42,34 @@ function startGame() {
   let lastEnemyFire = 0;
   let wave = 1;
   const keys = {};
+  let letters = Array(150).join("0").split(""); // Initialize letters for Matrix rain
 
-  // Initialize Matrix Rain
-  clearInterval(window.drawMatrixInterval);
-  window.drawMatrixInterval = setInterval(() => {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.05)"; // Even lower opacity to keep visible
+  // Matrix Rain (draw separately to ensure it persists)
+  function drawMatrixRain() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
     ctx.fillRect(0, 0, 800, 500);
-    ctx.fillStyle = "rgba(0, 255, 0, 0.5)"; // Brighter green
-    let letters = Array(150).join("0").split(""); // More letters for visibility
+    ctx.fillStyle = "rgba(0, 255, 0, 0.5)";
     letters.forEach((y_pos, index) => {
       const text = String.fromCharCode(3e4 + Math.random() * 33);
-      const x_pos = index * 10; // Closer spacing
+      const x_pos = index * 10;
       ctx.fillText(text, x_pos, y_pos);
       if (y_pos > 500) letters[index] = 0;
-      else letters[index] = y_pos + 3; // Slower fall
+      else letters[index] = y_pos + 3;
     });
-  }, 80); // Faster update for visibility
+  }
+
+  clearInterval(window.drawMatrixInterval);
+  window.drawMatrixInterval = setInterval(drawMatrixRain, 80);
 
   function spawnEnemyWave() {
+    const groupX = Math.random() * 600 + 100; // Cluster enemies closer together
     for (let i = 0; i < wave * 2; i++) {
       enemies.push({
-        x: Math.random() * 700 + 50,
+        x: groupX + (Math.random() * 50 - 25), // Tight clustering
         y: -20,
         width: 20,
         height: 20,
-        speed: 1 + wave * 0.2, // Slower increase (0.2 instead of 0.5)
+        speed: 0.5 + wave * 0.1, // Slower speed
       });
     }
     wave++;
@@ -77,6 +80,7 @@ function startGame() {
 
   function gameLoop() {
     ctx.clearRect(0, 0, 800, 500);
+    drawMatrixRain(); // Ensure Matrix rain is drawn each frame
 
     // Player Ship (Triangle)
     ctx.fillStyle = 'white';
@@ -90,7 +94,7 @@ function startGame() {
     // Move Player
     if (keys['ArrowLeft'] && player.x - player.width / 2 > 0) player.x -= player.speed;
     if (keys['ArrowRight'] && player.x + player.width / 2 < 800) player.x += player.speed;
-    if (keys[' '] && Date.now() - lastFire > 200) { // Fixed spacebar firing
+    if (keys[' '] && Date.now() - lastFire > 200) {
       bullets.push({ x: player.x, y: player.y - player.height / 2, dy: -5 });
       lastFire = Date.now();
     }
@@ -132,12 +136,12 @@ function startGame() {
       ctx.stroke();
 
       if (Date.now() - lastEnemyFire > 1000 && Math.random() < 0.02) {
-        enemyBullets.push({ x: e.x + e.width / 2, y: e.y + e.height, dy: 3 }); // Slower enemy bullets
+        enemyBullets.push({ x: e.x + e.width / 2, y: e.y + e.height, dy: 3 });
         lastEnemyFire = Date.now();
       }
 
       bullets.forEach((b, bIndex) => {
-        if (Math.abs(b.x - e.x) < 15 && Math.abs(b.y - e.y) < 15) {
+        if (Math.abs(b.x - e.x) < 20 && Math.abs(b.y - e.y) < 20) { // Wider hitbox
           score += 10;
           enemies.splice(eIndex, 1);
           bullets.splice(bIndex, 1);
@@ -152,8 +156,8 @@ function startGame() {
     });
 
     // Score, Lives, and Timer
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.4)'; // Brighter background
-    ctx.fillRect(10, 80, 250, 120); // Moved down further
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+    ctx.fillRect(10, 80, 250, 120);
     ctx.fillStyle = 'white';
     ctx.font = '20px Segoe UI';
     ctx.fillText('Score: ' + score, 20, 120);
@@ -173,7 +177,9 @@ function startGame() {
     const popup = document.createElement('div');
     popup.className = 'game-popup';
     popup.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.8); color: white; padding: 20px; border-radius: 10px; z-index: 1001; text-align: center; font-size: 1.5rem;';
-    popup.innerHTML = `${message} <br><button onclick="window.location.reload();" style="margin-top: 10px; padding: 5px 10px; background: var(--blood-red); color: white; border: none; cursor: pointer;">OK</button>`;
+    popup.innerHTML = `${message} <br>
+      <button onclick="this.parentElement.remove(); startGame();" style="margin-top: 10px; margin-right: 10px; padding: 5px 10px; background: var(--blood-red); color: white; border: none; cursor: pointer;">Replay</button>
+      <button onclick="window.location.reload();" style="margin-top: 10px; padding: 5px 10px; background: var(--blood-red); color: white; border: none; cursor: pointer;">OK</button>`;
     document.body.appendChild(popup);
   }
 
