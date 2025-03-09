@@ -469,3 +469,8 @@ body {
   max-height: 70vh;
   overflow-y: auto;
 }
+
+#warroom .title {
+  color: #0f0;
+  text-shadow: 0 0 10px #0f0;
+}
