@@ -2,18 +2,13 @@
 :root {
   --primary-dark: #0a192f;
   --primary-light: #1a1f35;
-  --accent-blue: #007BFF;  
-  --accent-glow: rgba(255, 0, 0, 0.5); 
+  --accent-blue: #007BFF;
+  --accent-glow: #00f0ff; /* Fixed duplicate definition */
   --text-primary: #ffffff;
   --text-secondary: rgba(255, 255, 255, 0.7);
   --matrix-color: rgba(0, 183, 255, 0.25);
-  --transition-standard: all 0.3s ease;
-  --blood-red: #ff0000; /* Ensure this is defined */
-  --accent-glow: #00f0ff;
-  --transition-standard: all 0.3s ease;
-
-  /* Additional Colors */
-  --blood-red: #8B0000;
+  --transition-standard: all 0.3s ease; /* Fixed duplicate definition */
+  --blood-red: #8B0000; /* Fixed duplicate definition */
 }
 
 /* RESET */
@@ -77,23 +72,21 @@ body {
 
 /* NAVBAR - STICKY DESKTOP, HAMBURGER MOBILE */
 .navbar {
-  position: fixed; 
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(0,0,0,0.3);
+  background: rgba(0, 0, 0, 0.3);
   padding: 1rem 2rem;
   z-index: 1000;
 }
 
-
-
 @media (max-width: 992px) {
   .navbar .title {
-    font-size: 1.2rem; /* Adjust as needed */
+    font-size: 1.2rem;
     white-space: nowrap;
   }
 }
@@ -146,12 +139,12 @@ body {
   text-decoration: none;
 }
 .dropdown li a:hover {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* HAMBURGER (MOBILE) */
 .hamburger {
-  display: none; /* hidden on desktop by default */
+  display: none;
   flex-direction: column;
   cursor: pointer;
   gap: 5px;
@@ -164,7 +157,7 @@ body {
   transition: var(--transition-standard);
 }
 
-/* Turn hamburger red on scroll (script adds 'scrolled' class) */
+/* Turn hamburger red on scroll */
 .hamburger.scrolled span {
   background: var(--blood-red);
 }
@@ -172,7 +165,7 @@ body {
 /* MOBILE MENU OVERLAY */
 .mobile-menu {
   position: fixed;
-  top: 60px; 
+  top: 60px;
   left: 50%;
   transform: translateX(-50%) translateY(-100%);
   width: 80%;
@@ -187,7 +180,6 @@ body {
   gap: 1rem;
   transition: transform 0.3s ease;
   z-index: 9998;
-  /* Add these properties to ensure it's fully hidden */
   visibility: hidden;
   opacity: 0;
 }
@@ -206,7 +198,7 @@ body {
   border-radius: 5px;
 }
 .mobile-menu a:hover {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* MOBILE DROPDOWN (PROJECTS) */
@@ -236,31 +228,42 @@ body {
   }
 }
 
-.github-icon {
-  width: 40px;
-  height: 40px;
+/* MATRIX "M" LOGO */
+.matrix-m {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 5px var(--blood-red), 0 0 10px var(--blood-red);
   transition: var(--transition-standard);
-  filter: brightness(0) invert(1) sepia(1) hue-rotate(340deg); /* Forces red tint */
-  animation: pulse-red 2s infinite;
+  animation: glitch 1s infinite, pulse-red 2s infinite;
+  display: inline-block;
 }
-.github-icon:hover {
-  transform: scale(1.1);
-  filter: brightness(0) invert(1) sepia(1) hue-rotate(340deg) drop-shadow(0 0 10px var(--accent-glow));
+.matrix-m:hover {
+  text-shadow: 0 0 10px var(--accent-glow), 0 0 15px var(--blood-red);
 }
 @keyframes pulse-red {
-  0% { filter: brightness(0) invert(1) sepia(1) hue-rotate(340deg) drop-shadow(0 0 5px var(--blood-red)); }
-  50% { filter: brightness(0) invert(1) sepia(1) hue-rotate(340deg) drop-shadow(0 0 15px var(--blood-red)); }
-  100% { filter: brightness(0) invert(1) sepia(1) hue-rotate(340deg) drop-shadow(0 0 5px var(--blood-red)); }
+  0% { text-shadow: 0 0 5px var(--blood-red), 0 0 10px var(--blood-red); }
+  50% { text-shadow: 0 0 15px var(--blood-red), 0 0 20px var(--blood-red); }
+  100% { text-shadow: 0 0 5px var(--blood-red), 0 0 10px var(--blood-red); }
 }
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(2px, -2px); }
+  60% { transform: translate(-2px, 0); }
+  80% { transform: translate(2px, 0); }
+  100% { transform: translate(0); }
+}
+
 /* SECTION BASE */
 .section {
-  padding: 4rem 0;
+  padding: 2rem 0;
   opacity: 0;
   transform: translateY(30px);
   position: relative;
   z-index: 2;
   animation: fadeUp 1s forwards;
-  margin-top: 60px; /* for fixed navbar */
+  margin-top: 60px; /* For fixed navbar */
 }
 
 /* Animations */
@@ -314,6 +317,7 @@ body {
   transition: var(--transition-standard);
   cursor: pointer;
   animation: fadeScale 0.8s forwards;
+  position: relative;
 }
 .skill-icon:hover {
   transform: scale(1.1) !important;
@@ -326,7 +330,32 @@ body {
   object-fit: contain;
 }
 
-/* FadeScale animation */
+/* Icon Label (Text Over PNGs) */
+.icon-label {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  font-size: 1.2rem;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 0 5px var(--blood-red), 0 0 10px var(--blood-red), 0 0 15px var(--blood-red);
+  animation: pulse-text 1.5s infinite;
+  transition: var(--transition-standard);
+}
+.skill-icon:hover .icon-label {
+  color: var(--accent-blue);
+  text-shadow: 0 0 10px var(--accent-glow), 0 0 20px var(--blood-red);
+}
+@keyframes pulse-text {
+  0% { text-shadow: 0 0 5px var(--blood-red), 0 0 10px var(--blood-red); }
+  50% { text-shadow: 0 0 10px var(--blood-red), 0 0 20px var(--blood-red); }
+  100% { text-shadow: 0 0 5px var(--blood-red), 0 0 10px var(--blood-red); }
+}
+
+/* FadeScale Animation */
 @keyframes fadeScale {
   to {
     opacity: 1;
@@ -334,13 +363,13 @@ body {
   }
 }
 
-/* SOCIAL LINKS (CONNECT PAGE) */
+/* SOCIAL LINKS (UPLINK PAGE) */
 .social-links {
   display: flex;
-  flex-wrap: wrap; /* let them wrap onto multiple lines */
+  flex-wrap: wrap;
   justify-content: center;
   gap: 1rem;
-  margin-top: 2rem;
+  margin-top: 1rem;
   padding: 1rem 0;
 }
 .social-link {
@@ -353,7 +382,7 @@ body {
   border-radius: 5px;
   background: rgba(255, 60, 0, 0.1);
   transition: var(--transition-standard);
-  flex: 0 0 auto; 
+  flex: 0 0 auto;
 }
 .social-link:hover {
   background: rgba(255, 60, 0, 0.2);
@@ -361,7 +390,7 @@ body {
   box-shadow: 0 5px 15px rgba(255, 60, 0, 0.2);
 }
 
-/* Make them stack in narrower mobile widths */
+/* Stack Social Links on Mobile */
 @media (max-width: 480px) {
   .social-links {
     flex-direction: column;
@@ -373,104 +402,96 @@ body {
   }
 }
 
-/* Helper: translucent box styling for pages like About/Projects */
+/* Translucent Box Styling */
 .translucent-box {
   background: rgba(255, 255, 255, 0.07);
   margin: 0 auto;
   border-radius: 8px;
   padding: 2rem;
   max-width: 960px;
-  box-shadow: 0 0 20px rgba(255,255,255,0.05);
-}
-
-.skill-icon {
-  position: relative;
-}
-.icon-label {
-  position: absolute;
-  bottom: 20px; /* Raised slightly for better fit */
-  left: 50%;
-  transform: translateX(-50%);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+  max-height: 70vh;
+  overflow-y: auto;
   text-align: center;
-  font-size: 1.2rem; /* Bigger for impact */
-  color: #fff; /* Neon white */
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  text-shadow: 0 0 5px var(--blood-red), 0 0 10px var(--blood-red), 0 0 15px var(--blood-red); /* Red outline */
-  animation: pulse-text 1.5s infinite; /* Pulsing effect */
-  transition: var(--transition-standard);
-}
-.skill-icon:hover .icon-label {
-  color: var(--accent-blue); /* Blue shift on hover */
-  text-shadow: 0 0 10px var(--accent-glow), 0 0 20px var(--blood-red);
-}
-@keyframes pulse-text {
-  0% { text-shadow: 0 0 5px var(--blood-red), 0 0 10px var(--blood-red); }
-  50% { text-shadow: 0 0 10px var(--blood-red), 0 0 20px var(--blood-red); }
-  100% { text-shadow: 0 0 5px var(--blood-red), 0 0 10px var(--blood-red); }
 }
 
+/* Spinning Animation for X Logo */
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-
-.matrix-m {
-  font-size: 2rem;
-  font-weight: bold;
-  color: #fff;
-  text-shadow: 0 0 5px var(--blood-red), 0 0 10px var(--blood-red);
-  transition: var(--transition-standard);
-  animation: glitch 1s infinite, pulse-red 2s infinite;
-  display: inline-block;
-}
-.matrix-m:hover {
-  text-shadow: 0 0 10px var(--accent-glow), 0 0 15px var(--blood-red);
-}
-
-@keyframes pulse-red {
-  0% { text-shadow: 0 0 5px var(--blood-red), 0 0 10px var(--blood-red); }
-  50% { text-shadow: 0 0 15px var(--blood-red), 0 0 20px var(--blood-red); }
-  100% { text-shadow: 0 0 5px var(--blood-red), 0 0 10px var(--blood-red); }
-}
-@keyframes glitch {
-  0% { transform: translate(0); }
-  20% { transform: translate(-2px, 2px); }
-  40% { transform: translate(2px, -2px); }
-  60% { transform: translate(-2px, 0); }
-  80% { transform: translate(2px, 0); }
-  100% { transform: translate(0); }
-}
-
-.section {
-  position: relative;
-  padding: 20px 0;
-  margin-top: 20px; /* Ensure spacing between sections */
-}
-.translucent-box {
-  padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
-  text-align: center;
-}
-.skills-container {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  flex-wrap: wrap;
-}
-
-#home {
-  padding-top: 100px; /* Adjust based on navbar height */
-}
-
-.translucent-box {
-  max-height: 70vh;
-  overflow-y: auto;
-}
-
+/* War Room Title */
 #warroom .title {
   color: #0f0;
   text-shadow: 0 0 10px #0f0;
+}
+
+/* Home Section Padding */
+#home {
+  padding-top: 100px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .translucent-box {
+    max-width: 90%;
+    padding: 15px;
+  }
+  .skills-container {
+    gap: 1rem;
+  }
+  .title {
+    font-size: 2rem;
+  }
+  .subtitle {
+    font-size: 1rem;
+  }
+  .pill {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+  .section {
+    padding: 1rem 0;
+    margin-top: 40px;
+  }
+}
+
+/* Game Popup */
+.game-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 1000;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+/* Pill Choice (Uplink Page) */
+.pill-choice {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin: 1rem 0;
+}
+.pill {
+  padding: 0.6rem 1.2rem;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: var(--transition-standard);
+}
+.red-pill {
+  background: var(--blood-red);
+}
+.blue-pill {
+  background: var(--accent-blue);
+}
+.pill:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px var(--accent-glow);
 }
