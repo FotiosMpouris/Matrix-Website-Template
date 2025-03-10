@@ -434,8 +434,25 @@ body {
 
 /* War Room Title */
 #warroom .title {
-  color: #0f0;
-  text-shadow: 0 0 10px #0f0;
+  color: #00ff00; /* Bright green to match Matrix revolt */
+  text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px rgba(0, 255, 0, 0.7); /* Multi-layered glow */
+  animation: glowPulse 2s infinite alternate; /* Pulsing animation */
+  font-size: 2.5rem; /* Ensure it stands out */
+  margin-bottom: 1rem;
+  text-align: center;
+  transition: var(--transition-standard);
+}
+
+@keyframes glowPulse {
+  0% {
+    text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px rgba(0, 255, 0, 0.7);
+  }
+  50% {
+    text-shadow: 0 0 15px #00ff00, 0 0 25px #00ff00, 0 0 40px rgba(0, 255, 0, 1);
+  }
+  100% {
+    text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px rgba(0, 255, 0, 0.7);
+  }
 }
 
 /* Home Section Padding */
