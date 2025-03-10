@@ -41,46 +41,53 @@ function startGame() {
   let lastFire = 0;
   let lastEnemyFire = 0;
   let wave = 1;
+  let gameActive = true; // New flag to control game state
   const keys = {};
   let letters = Array(150).join("0").split("");
 
   // Matrix Rain
   function drawMatrixRain() {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-    ctx.fillRect(0, 0, 800, 500);
-    ctx.fillStyle = "rgba(0, 255, 0, 0.5)";
-    letters.forEach((y_pos, index) => {
-      const text = String.fromCharCode(3e4 + Math.random() * 33);
-      const x_pos = index * 10;
-      ctx.fillText(text, x_pos, y_pos);
-      if (y_pos > 500) letters[index] = 0;
-      else letters[index] = y_pos + 3;
-    });
+    if (gameActive) {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, 800, 500);
+      ctx.fillStyle = "rgba(0, 255, 0, 0.5)";
+      letters.forEach((y_pos, index) => {
+        const text = String.fromCharCode(3e4 + Math.random() * 33);
+        const x_pos = index * 10;
+        ctx.fillText(text, x_pos, y_pos);
+        if (y_pos > 500) letters[index] = 0;
+        else letters[index] = y_pos + 3;
+      });
+    }
   }
 
   clearInterval(window.drawMatrixInterval);
   window.drawMatrixInterval = setInterval(drawMatrixRain, 80);
 
   function spawnEnemyWave() {
-    const enemyCount = wave * 2;
-    const spacing = 800 / (enemyCount + 1);
-    for (let i = 0; i < enemyCount; i++) {
-      const x = (i + 1) * spacing + (Math.random() * 50 - 25);
-      enemies.push({
-        x: Math.max(20, Math.min(780, x)),
-        y: -20,
-        width: 20,
-        height: 20,
-        speed: 0.5 + wave * 0.1,
-      });
+    if (gameActive) {
+      const enemyCount = wave * 2;
+      const spacing = 800 / (enemyCount + 1);
+      for (let i = 0; i < enemyCount; i++) {
+        const x = (i + 1) * spacing + (Math.random() * 50 - 25);
+        enemies.push({
+          x: Math.max(20, Math.min(780, x)),
+          y: -20,
+          width: 20,
+          height: 20,
+          speed: 0.5 + wave * 0.1,
+        });
+      }
+      wave++;
     }
-    wave++;
   }
 
   setInterval(spawnEnemyWave, 5000);
   spawnEnemyWave();
 
   function gameLoop() {
+    if (!gameActive) return; // Exit if game is over
+
     ctx.clearRect(0, 0, 800, 500);
     drawMatrixRain();
 
@@ -127,7 +134,10 @@ function startGame() {
         player.lives--;
         player.hitTime = 0.5;
         enemyBullets.splice(enemyBullets.indexOf(eb), 1);
-        if (player.lives <= 0) endGame('Game Over! Score: ' + score);
+        if (player.lives <= 0) {
+          gameActive = false;
+          endGame('Game Over! Score: ' + score);
+        }
       }
     });
 
@@ -163,26 +173,32 @@ function startGame() {
         player.lives--;
         player.hitTime = 0.5;
         enemies.splice(eIndex, 1);
-        if (player.lives <= 0) endGame('Game Over! Score: ' + score);
+        if (player.lives <= 0) {
+          gameActive = false;
+          endGame('Game Over! Score: ' + score);
+        }
       }
     });
 
     // Enhanced Scoreboard
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.2)'; // Lighter background
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
     ctx.shadowBlur = 10;
-    ctx.shadowColor = 'rgba(0, 255, 0, 0.7)'; // Neon green glow
-    ctx.fillRect(10, 100, 250, 140); // Moved down further
+    ctx.shadowColor = 'rgba(0, 255, 0, 0.7)';
+    ctx.fillRect(10, 100, 250, 140);
     ctx.shadowBlur = 0;
-    ctx.fillStyle = 'rgba(0, 255, 0, 0.9)'; // Bright green text
+    ctx.fillStyle = 'rgba(0, 255, 0, 0.9)';
     ctx.font = '24px Segoe UI';
     ctx.fillText('Score: ' + score, 20, 140);
     ctx.fillText('Lives: ' + player.lives, 20, 170);
     ctx.fillText('Time: ' + Math.ceil(timeLeft) + 's', 20, 200);
 
     if (timeLeft > 0) timeLeft -= 0.016;
-    else endGame('Victory! Score: ' + score);
+    else {
+      gameActive = false;
+      endGame('Victory! Score: ' + score);
+    }
 
-    requestAnimationFrame(gameLoop);
+    if (gameActive) requestAnimationFrame(gameLoop);
   }
 
   function endGame(message) {
@@ -227,7 +243,6 @@ function startGame() {
 
   gameLoop();
 }
-
 /* Particle Effects */
 function createParticle(e) {
   const container = document.getElementById('particles-container');
