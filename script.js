@@ -63,11 +63,11 @@ function startGame() {
 
   function spawnEnemyWave() {
     const enemyCount = wave * 2;
-    const spacing = 800 / (enemyCount + 1); // Even horizontal distribution
+    const spacing = 800 / (enemyCount + 1);
     for (let i = 0; i < enemyCount; i++) {
-      const x = (i + 1) * spacing + (Math.random() * 50 - 25); // Spread with slight variation
+      const x = (i + 1) * spacing + (Math.random() * 50 - 25);
       enemies.push({
-        x: Math.max(20, Math.min(780, x)), // Keep within canvas
+        x: Math.max(20, Math.min(780, x)),
         y: -20,
         width: 20,
         height: 20,
@@ -99,7 +99,7 @@ function startGame() {
     ctx.lineTo(player.x + player.width / 2, player.y + player.height / 2);
     ctx.closePath();
     ctx.fill();
-    ctx.shadowBlur = 0; // Reset shadow
+    ctx.shadowBlur = 0;
 
     // Move Player
     if (keys['ArrowLeft'] && player.x - player.width / 2 > 0) player.x -= player.speed;
@@ -125,7 +125,7 @@ function startGame() {
       eb.y += eb.dy;
       if (Math.abs(eb.x - player.x) < 20 && Math.abs(eb.y - player.y) < 20) {
         player.lives--;
-        player.hitTime = 0.5; // Glow for 0.5 seconds
+        player.hitTime = 0.5;
         enemyBullets.splice(enemyBullets.indexOf(eb), 1);
         if (player.lives <= 0) endGame('Game Over! Score: ' + score);
       }
@@ -161,20 +161,23 @@ function startGame() {
 
       if (Math.abs(e.x - player.x) < 30 && Math.abs(e.y - player.y) < 30) {
         player.lives--;
-        player.hitTime = 0.5; // Glow on hit
+        player.hitTime = 0.5;
         enemies.splice(eIndex, 1);
         if (player.lives <= 0) endGame('Game Over! Score: ' + score);
       }
     });
 
-    // Score, Lives, and Timer
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
-    ctx.fillRect(10, 80, 250, 120);
-    ctx.fillStyle = 'white';
-    ctx.font = '20px Segoe UI';
-    ctx.fillText('Score: ' + score, 20, 120);
-    ctx.fillText('Lives: ' + player.lives, 20, 150);
-    ctx.fillText('Time: ' + Math.ceil(timeLeft) + 's', 20, 180);
+    // Enhanced Scoreboard
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.2)'; // Lighter background
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = 'rgba(0, 255, 0, 0.7)'; // Neon green glow
+    ctx.fillRect(10, 100, 250, 140); // Moved down further
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = 'rgba(0, 255, 0, 0.9)'; // Bright green text
+    ctx.font = '24px Segoe UI';
+    ctx.fillText('Score: ' + score, 20, 140);
+    ctx.fillText('Lives: ' + player.lives, 20, 170);
+    ctx.fillText('Time: ' + Math.ceil(timeLeft) + 's', 20, 200);
 
     if (timeLeft > 0) timeLeft -= 0.016;
     else endGame('Victory! Score: ' + score);
@@ -188,18 +191,29 @@ function startGame() {
     if (existingPopup) existingPopup.remove();
     const popup = document.createElement('div');
     popup.className = 'game-popup';
-    popup.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.8); color: white; padding: 20px; border-radius: 10px; z-index: 1001; text-align: center; font-size: 1.5rem;';
+    popup.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); color: white; padding: 20px; border-radius: 10px; z-index: 1001; text-align: center; font-size: 1.5rem; box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);';
     popup.innerHTML = `${message} <br>
-      <button onclick="this.parentElement.remove(); startGame();" style="margin-top: 10px; margin-right: 10px; padding: 5px 10px; background: var(--blood-red); color: white; border: none; cursor: pointer;">Replay</button>
-      <button onclick="window.location.reload();" style="margin-top: 10px; padding: 5px 10px; background: var(--blood-red); color: white; border: none; cursor: pointer;">OK</button>`;
+      <button id="replay-btn" style="margin-top: 10px; margin-right: 10px; padding: 5px 10px; background: var(--blood-red); color: white; border: none; cursor: pointer;">Replay</button>
+      <button id="ok-btn" style="margin-top: 10px; padding: 5px 10px; background: var(--blood-red); color: white; border: none; cursor: pointer;">OK</button>`;
     document.body.appendChild(popup);
+
+    // Event delegation for buttons
+    popup.addEventListener('click', (e) => {
+      if (e.target.id === 'replay-btn') {
+        popup.remove();
+        startGame();
+      } else if (e.target.id === 'ok-btn') {
+        popup.remove();
+        window.location.reload();
+      }
+    });
   }
 
   // Mobile Check for Play Button
   document.querySelector('button[onclick="startGame()"]').addEventListener('click', (e) => {
     if (/Mobi|Android/i.test(navigator.userAgent)) {
       e.preventDefault();
-      alert("It's too late for you, your game is already over!");
+      alert("It's too late for you to play. The Machines have taken over.");
       return false;
     }
   });
@@ -213,6 +227,7 @@ function startGame() {
 
   gameLoop();
 }
+
 /* Particle Effects */
 function createParticle(e) {
   const container = document.getElementById('particles-container');
