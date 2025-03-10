@@ -32,7 +32,7 @@ function startGame() {
   const sections = document.querySelectorAll('.section');
   sections.forEach(section => section.style.display = 'none');
 
-  let player = { x: 400, y: 450, width: 30, height: 30, speed: 5, lives: 3 };
+  let player = { x: 400, y: 450, width: 30, height: 30, speed: 5, lives: 5, hitTime: 0 };
   let bullets = [];
   let enemyBullets = [];
   let enemies = [];
@@ -42,9 +42,9 @@ function startGame() {
   let lastEnemyFire = 0;
   let wave = 1;
   const keys = {};
-  let letters = Array(150).join("0").split(""); // Initialize letters for Matrix rain
+  let letters = Array(150).join("0").split("");
 
-  // Matrix Rain (draw separately to ensure it persists)
+  // Matrix Rain
   function drawMatrixRain() {
     ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
     ctx.fillRect(0, 0, 800, 500);
@@ -62,14 +62,16 @@ function startGame() {
   window.drawMatrixInterval = setInterval(drawMatrixRain, 80);
 
   function spawnEnemyWave() {
-    const groupX = Math.random() * 600 + 100; // Cluster enemies closer together
-    for (let i = 0; i < wave * 2; i++) {
+    const enemyCount = wave * 2;
+    const spacing = 800 / (enemyCount + 1); // Even horizontal distribution
+    for (let i = 0; i < enemyCount; i++) {
+      const x = (i + 1) * spacing + (Math.random() * 50 - 25); // Spread with slight variation
       enemies.push({
-        x: groupX + (Math.random() * 50 - 25), // Tight clustering
+        x: Math.max(20, Math.min(780, x)), // Keep within canvas
         y: -20,
         width: 20,
         height: 20,
-        speed: 0.5 + wave * 0.1, // Slower speed
+        speed: 0.5 + wave * 0.1,
       });
     }
     wave++;
@@ -80,9 +82,16 @@ function startGame() {
 
   function gameLoop() {
     ctx.clearRect(0, 0, 800, 500);
-    drawMatrixRain(); // Ensure Matrix rain is drawn each frame
+    drawMatrixRain();
 
-    // Player Ship (Triangle)
+    // Player Ship (Triangle with glow on hit)
+    if (player.hitTime > 0) {
+      ctx.shadowBlur = 20;
+      ctx.shadowColor = "red";
+      player.hitTime -= 0.016;
+    } else {
+      ctx.shadowBlur = 0;
+    }
     ctx.fillStyle = 'white';
     ctx.beginPath();
     ctx.moveTo(player.x, player.y - player.height / 2);
@@ -90,6 +99,7 @@ function startGame() {
     ctx.lineTo(player.x + player.width / 2, player.y + player.height / 2);
     ctx.closePath();
     ctx.fill();
+    ctx.shadowBlur = 0; // Reset shadow
 
     // Move Player
     if (keys['ArrowLeft'] && player.x - player.width / 2 > 0) player.x -= player.speed;
@@ -115,6 +125,7 @@ function startGame() {
       eb.y += eb.dy;
       if (Math.abs(eb.x - player.x) < 20 && Math.abs(eb.y - player.y) < 20) {
         player.lives--;
+        player.hitTime = 0.5; // Glow for 0.5 seconds
         enemyBullets.splice(enemyBullets.indexOf(eb), 1);
         if (player.lives <= 0) endGame('Game Over! Score: ' + score);
       }
@@ -141,7 +152,7 @@ function startGame() {
       }
 
       bullets.forEach((b, bIndex) => {
-        if (Math.abs(b.x - e.x) < 20 && Math.abs(b.y - e.y) < 20) { // Wider hitbox
+        if (Math.abs(b.x - e.x) < 20 && Math.abs(b.y - e.y) < 20) {
           score += 10;
           enemies.splice(eIndex, 1);
           bullets.splice(bIndex, 1);
@@ -150,6 +161,7 @@ function startGame() {
 
       if (Math.abs(e.x - player.x) < 30 && Math.abs(e.y - player.y) < 30) {
         player.lives--;
+        player.hitTime = 0.5; // Glow on hit
         enemies.splice(eIndex, 1);
         if (player.lives <= 0) endGame('Game Over! Score: ' + score);
       }
@@ -183,6 +195,15 @@ function startGame() {
     document.body.appendChild(popup);
   }
 
+  // Mobile Check for Play Button
+  document.querySelector('button[onclick="startGame()"]').addEventListener('click', (e) => {
+    if (/Mobi|Android/i.test(navigator.userAgent)) {
+      e.preventDefault();
+      alert("It's too late for you, your game is already over!");
+      return false;
+    }
+  });
+
   document.addEventListener('keydown', (e) => {
     keys[e.key] = true;
   });
@@ -192,7 +213,6 @@ function startGame() {
 
   gameLoop();
 }
-
 /* Particle Effects */
 function createParticle(e) {
   const container = document.getElementById('particles-container');
