@@ -7,13 +7,13 @@
   <link rel="stylesheet" href="style.css">
   
   <!-- 
-    UPDATED STYLES
-    I've added a new '.terminal-header' style to give the top of the page the same
-    awesome look as the promises box. It's all mobile-friendly.
+    FINAL STYLES
+    I've created a single '.terminal-box' style and applied it to all sections
+    for a unified, immersive, and mobile-friendly design.
   -->
   <style>
-    /* New Terminal Style for the Main Header */
-    .terminal-header {
+    /* The Master Terminal Box Style */
+    .terminal-box {
       background-color: #000000;
       border: 2px solid #00ff00;
       box-shadow: 0 0 20px rgba(0, 255, 0, 0.5), inset 0 0 15px rgba(0, 255, 0, 0.3);
@@ -21,35 +21,8 @@
       text-align: center;
       animation: flicker 3s infinite;
       font-family: 'Courier New', Courier, monospace;
-    }
-
-    .terminal-header h1 {
       color: #00ff00;
-      font-size: 3.5rem; /* Large font for desktop */
-      text-shadow: 0 0 8px #00ff00;
-      text-transform: uppercase;
-      margin: 0;
-      padding: 0;
-    }
-
-    .terminal-header .maga-red {
-      color: #ff0000;
-      text-shadow: 0 0 15px #ff0000, 0 0 5px #ff0000;
-    }
-    
-    /* Terminal Style for Promises Section */
-    .promises-terminal {
-      background-color: #000000;
-      border: 2px solid #00ff00;
-      box-shadow: 0 0 20px rgba(0, 255, 0, 0.5), inset 0 0 15px rgba(0, 255, 0, 0.3);
-      color: #00ff00;
-      font-family: 'Courier New', Courier, monospace;
       text-shadow: 0 0 5px #00ff00;
-      padding: 1.5rem 2rem;
-      max-height: 75vh;
-      overflow-y: auto;
-      position: relative;
-      animation: flicker 2.5s infinite;
     }
 
     /* Flickering Animation */
@@ -60,18 +33,106 @@
       }
       50% {
         box-shadow: 0 0 25px rgba(0, 255, 0, 0.7), inset 0 0 20px rgba(0, 255, 0, 0.5);
-        opacity: 0.9;
+        opacity: 0.95;
       }
       52% {
-        opacity: 0.7;
+        opacity: 0.8;
       }
       55% {
         opacity: 1;
       }
     }
 
-    /* Scanline Overlay Effect */
-    .promises-terminal::before {
+    /* Styling for Header and other Text inside Terminal Boxes */
+    .terminal-box h1, .terminal-box h2 {
+      color: #00ff00;
+      text-shadow: 0 0 8px #00ff00;
+      text-transform: uppercase;
+      margin: 0;
+      padding: 0;
+    }
+    .terminal-box h1 {
+      font-size: 3.5rem;
+    }
+    .terminal-box h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .terminal-box p {
+      color: #00ff00;
+      font-size: 1.1rem;
+    }
+    .terminal-box .maga-red {
+      color: #ff0000;
+      text-shadow: 0 0 15px #ff0000, 0 0 5px #ff0000;
+    }
+    .terminal-box .subtitle {
+      color: #39ff14; /* Brighter green for subtitles */
+    }
+
+    /* Specific Styles for the scrollable promises box */
+    #promises .terminal-box {
+      max-height: 75vh;
+      overflow-y: auto;
+      text-align: left;
+      padding: 1.5rem 2rem;
+    }
+    #promises .terminal-box h3, #promises .terminal-box h4 {
+      color: #39ff14;
+      text-transform: uppercase;
+    }
+    #promises .terminal-box h3 {
+      border-bottom: 1px solid #00ff00;
+      padding-bottom: 5px;
+      margin-bottom: 1rem;
+    }
+    #promises .terminal-box strong {
+      color: #adff2f;
+    }
+
+    /* Enhanced Buttons and Pills */
+    .terminal-box .game-button {
+      padding: 1rem 2rem;
+      background: var(--blood-red);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      font-family: 'Courier New', Courier, monospace;
+      text-transform: uppercase;
+      box-shadow: 0 0 15px var(--blood-red);
+      transition: all 0.3s ease;
+    }
+    .terminal-box .game-button:hover {
+      box-shadow: 0 0 25px var(--blood-red), 0 0 10px #fff;
+      transform: scale(1.05);
+    }
+    .terminal-box .pill {
+      box-shadow: 0 0 10px; /* Base shadow */
+    }
+    .terminal-box .pill.red-pill {
+      box-shadow: 0 0 15px var(--blood-red);
+    }
+    .terminal-box .pill.blue-pill {
+      box-shadow: 0 0 15px var(--accent-blue);
+    }
+
+    /* Custom Scrollbar for Terminal */
+    .terminal-box::-webkit-scrollbar {
+      width: 10px;
+    }
+    .terminal-box::-webkit-scrollbar-track {
+      background: #000;
+      border-left: 1px solid #00ff00;
+    }
+    .terminal-box::-webkit-scrollbar-thumb {
+      background: #00ff00;
+      box-shadow: 0 0 5px #00ff00;
+    }
+    
+    /* Scanline Overlay Effect for scrollable promises box */
+    #promises .terminal-box::before {
       content: " ";
       display: block;
       position: absolute;
@@ -85,42 +146,18 @@
       pointer-events: none;
     }
 
-    /* Styling for content inside the terminal */
-    .promises-terminal h2, .promises-terminal h3, .promises-terminal h4 {
-      color: #39ff14;
-      text-transform: uppercase;
-    }
-    .promises-terminal h3 {
-      border-bottom: 1px solid #00ff00;
-      padding-bottom: 5px;
-      margin-bottom: 1rem;
-    }
-    .promises-terminal p {
-      line-height: 1.5;
-    }
-    .promises-terminal strong {
-      color: #adff2f;
-    }
-
-    /* Custom Scrollbar for Terminal */
-    .promises-terminal::-webkit-scrollbar {
-      width: 10px;
-    }
-    .promises-terminal::-webkit-scrollbar-track {
-      background: #000;
-      border-left: 1px solid #00ff00;
-    }
-    .promises-terminal::-webkit-scrollbar-thumb {
-      background: #00ff00;
-      box-shadow: 0 0 5px #00ff00;
-    }
-
     /* Mobile-Friendly Adjustments */
     @media (max-width: 768px) {
-      .terminal-header h1 {
-        font-size: 2.5rem; /* Smaller font for mobile */
+      .terminal-box h1 {
+        font-size: 2.5rem;
       }
-      .promises-terminal {
+      .terminal-box h2 {
+        font-size: 1.8rem;
+      }
+      .terminal-box {
+        padding: 1.5rem 1rem;
+      }
+      #promises .terminal-box {
         padding: 1rem 1.5rem;
       }
     }
@@ -131,21 +168,20 @@
   <canvas id="matrix-canvas"></canvas>
   <div id="particles-container" class="particles-container"></div>
 
-  <!-- Main Welcome Section with New Terminal Style -->
+  <!-- Main Welcome Section -->
   <section id="home" class="section">
-    <div class="terminal-header">
+    <div class="terminal-box">
       <h1>THE <span class="maga-red">MAGA</span> MATRIX</h1>
     </div>
   </section>
 
   <!-- MAGA Campaign Promises Section -->
   <section id="promises" class="section">
-    <div class="promises-terminal">
+    <div class="terminal-box">
         <h2 style="text-align: center;">> MAGA CAMPAIGN PROMISES_</h2>
         <p class="subtitle" style="text-align: center; margin-bottom: 2rem;">// INITIATING DATA STREAM: TRUMP 2024 DIRECTIVES //</p>
         
         <h3>Economic and Tax Policy</h3>
-        
         <h4>>> No Taxes on Tips</h4>
         <p><strong>Promise:</strong> Eliminate federal income taxes on tips to support service industry workers.</p>
         <p><strong>Context/Status:</strong> Proposed during 2024 campaign rallies. House Budget Committee estimated a $100 billion cost over a decade. Reports suggest implementation as a capped tax credit, not a full exemption. As of July 2025, no comprehensive legislation has passed.</p>
@@ -154,40 +190,21 @@
         <h4>>> No Taxes on Overtime Pay</h4>
         <p><strong>Promise:</strong> Exempt overtime wages from federal income taxes to benefit workers.</p>
         <p><strong>Context/Status:</strong> Implemented as a capped tax credit, not a full exemption, disappointing some supporters. No major legislative progress reported by July 2025.</p>
-        <p><strong>Sentiment:</strong> X reflects dissatisfaction with the diluted implementation.</p>
-
-        <h4>>> No Taxes on Social Security Benefits</h4>
-        <p><strong>Promise:</strong> Eliminate federal taxes on Social Security benefits to support retirees.</p>
-        <p><strong>Context/Status:</strong> Pledged to remove this tax, costing an estimated $250 billion. Implemented as a capped tax credit. No significant congressional action reported.</p>
-        <p><strong>Sentiment:</strong> X users label this as unfulfilled.</p>
         
         <h3>Immigration and Border Security</h3>
-        
         <h4>>> Largest Mass Deportation Program</h4>
         <p><strong>Promise:</strong> Launch the largest deportation operation in U.S. history, starting Day 1.</p>
         <p><strong>Context/Status:</strong> A cornerstone of the campaign. Border encounters dropped 66% in January 2025. Deportation numbers remain lower than under previous administrations due to reduced encounters. No large-scale operation reported by July 2025.</p>
-        <p><strong>Sentiment:</strong> X users are divided, with some praising enforcement and others decrying unfulfilled scale.</p>
-
-        <h3>Foreign Policy and National Security</h3>
         
-        <h4>>> End Russia-Ukraine War in 24 Hours</h4>
-        <p><strong>Promise:</strong> Settle the Russia-Ukraine conflict within 24 hours of taking office.</p>
-        <p><strong>Context/Status:</strong> U.S.-Russia talks initiated, but Ukraine rejected deals without its involvement. By July 2025, the war continues.</p>
-        <p><strong>Sentiment:</strong> X users label this unfulfilled.</p>
-
         <h3>Transparency and Investigations</h3>
-        
         <h4>>> Release Jeffrey Epstein Files</h4>
         <p><strong>Promise:</strong> Declassify and release Epstein-related documents.</p>
         <p><strong>Context/Status:</strong> A July 2025 DOJ/FBI memo declared no “incriminating client list” exists and reaffirmed Epstein’s 2019 suicide. A “Phase 1” release was criticized as a political stunt. Trump downplayed ongoing interest, frustrating supporters.</p>
-        <p><strong>Sentiment:</strong> X users, including MAGA supporters, express strong disappointment, alleging cover-ups.</p>
         
         <h3>Government Reform and Justice</h3>
-        
         <h4>>> Pardon January 6 Convicts</h4>
         <p><strong>Promise:</strong> Issue full pardons for those convicted or charged in the January 6, 2021, Capitol riot.</p>
         <p><strong>Context/Status:</strong> Fulfilled on Day 1 with clemency for over 1,500 defendants.</p>
-        <p><strong>Sentiment:</strong> Divided. MAGA supporters praise it; others call it a “slap in the face.”</p>
 
         <h3>Analysis and Sentiment</h3>
         <p><strong>Fulfilled:</strong> January 6 pardons, initial tariff actions.</p>
@@ -200,17 +217,17 @@
 
   <!-- Game Section -->
   <section id="game" class="section">
-    <div class="translucent-box">
-      <h2 class="title" style="color: var(--blood-red);">ENGAGE THE SIMULATION</h2>
+    <div class="terminal-box">
+      <h2>> ENGAGE THE SIMULATION</h2>
       <p class="subtitle">THE AGENTS ARE COMING. ESCAPE THE MATRIX.</p>
-      <button onclick="startGame()" style="padding: 1rem 2rem; background: var(--blood-red); color: #fff; border: none; cursor: pointer; margin-top: 1rem; font-size: 1.2rem;">START RED PILL ESCAPE</button>
+      <button onclick="startGame()" class="game-button">START RED PILL ESCAPE</button>
     </div>
   </section>
 
   <!-- Uplink Section -->
   <section id="uplink" class="section">
-    <div class="translucent-box">
-      <h2 class="title">UPLINK TO FREEDOM</h2>
+    <div class="terminal-box">
+      <h2>> UPLINK TO FREEDOM</h2>
       <p class="subtitle" style="margin-bottom: 1rem;">CHOOSE YOUR DESTINY</p>
       <div class="pill-choice" style="display: flex; gap: 1rem; justify-content: center; margin: 1rem 0;">
         <div class="pill red-pill" onclick="alert('You’re in—freedom awaits, rebel!')">RED PILL</div>
