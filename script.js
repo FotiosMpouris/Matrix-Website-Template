@@ -1,11 +1,13 @@
 // =================================================================
 // MAGA MATRIX - SCRIPT.JS
-// Rewritten Game: "Matrix Invaders"
+// Final Version with "Matrix Invaders" and Original Rain Effect
 // =================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Keep the original effects
+  // Initialize the original, correct Matrix rain effect
   initializeMatrixEffect();
+  
+  // Keep the particle click effects
   document.addEventListener('click', (e) => {
     createParticle(e);
     createEnergyWave(e.pageX, e.pageY);
@@ -36,9 +38,10 @@ function createEnergyWave(x, y) {
 }
 
 // =================================================================
-// NEW GAME LOGIC: MATRIX INVADERS
+// GAME LOGIC: MATRIX INVADERS
 // =================================================================
 let gameInstance = null; // To ensure only one game runs at a time
+let matrixInterval; // To control the background rain effect
 
 function startGame() {
   // Mobile check
@@ -51,12 +54,14 @@ function startGame() {
     gameInstance.stop();
   }
   
+  // Stop the background rain and take over the canvas
+  clearInterval(matrixInterval);
+
   const canvas = document.getElementById('matrix-canvas');
   const ctx = canvas.getContext('2d');
   
-  // Hide all other sections to focus on the game
   document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
-  canvas.style.display = 'block'; // Ensure canvas is visible
+  canvas.style.display = 'block'; 
   canvas.width = 800;
   canvas.height = 600;
 
@@ -108,20 +113,18 @@ function startGame() {
 
   function drawPlayer() {
     if (player.isHit) {
-      // Screen flash effect
       ctx.fillStyle = 'rgba(255, 0, 0, 0.2)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       player.hitTimer--;
       if (player.hitTimer <= 0) player.isHit = false;
     }
     
-    ctx.fillStyle = '#fff';
+    ctx.fillStyle = '#fff'; // Player ship is white
     ctx.beginPath();
     ctx.moveTo(player.x, player.y);
     ctx.lineTo(player.x - player.width / 2, player.y + player.height);
     ctx.lineTo(player.x + player.width / 2, player.y + player.height);
     ctx.closePath();
-    ctx.fill();
     ctx.shadowBlur = 10;
     ctx.shadowColor = '#fff';
     ctx.fill();
@@ -129,7 +132,8 @@ function startGame() {
   }
 
   function drawBullets() {
-    ctx.fillStyle = 'red'; // Player bullets are red pills
+    // Player bullets are now white for better contrast
+    ctx.fillStyle = '#fff'; 
     bullets.forEach(b => {
       ctx.fillRect(b.x - 2, b.y, 4, 15);
       b.y -= b.speed;
@@ -140,14 +144,12 @@ function startGame() {
   function drawEnemies() {
     enemies.forEach(enemy => {
       if (enemy.isHit) {
-          // De-rez effect
           ctx.fillStyle = `rgba(0, 255, 0, ${Math.random()})`;
           ctx.font = '12px Courier New';
           ctx.fillText(Math.random() > 0.5 ? '1' : '0', enemy.x + Math.random() * 20 - 10, enemy.y + Math.random() * 20 - 10);
           enemy.hitTimer--;
       } else {
         ctx.fillStyle = '#00f'; // Agents are blue
-        ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
         ctx.shadowBlur = 10;
         ctx.shadowColor = '#00f';
         ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
@@ -158,7 +160,8 @@ function startGame() {
   }
   
   function drawEnemyBullets() {
-      ctx.fillStyle = '#0f0'; // Enemy bullets are Matrix green
+      // Enemy bullets are now red for high visibility
+      ctx.fillStyle = 'red'; 
       enemyBullets.forEach(b => {
           ctx.fillRect(b.x - 2, b.y, 4, 15);
           b.y += b.speed;
@@ -169,24 +172,20 @@ function startGame() {
   function update() {
     if (gameOver || gameWon) return;
 
-    // Player movement
     if (keys['ArrowLeft'] && player.x > player.width / 2) player.x -= player.speed;
     if (keys['ArrowRight'] && player.x < canvas.width - player.width / 2) player.x += player.speed;
     
-    // Player shooting
     if (keys[' '] && Date.now() - lastFireTime > 300) {
       bullets.push({ x: player.x, y: player.y, speed: 7 });
       lastFireTime = Date.now();
     }
 
-    // Enemy movement and shooting
     let wallHit = false;
     enemies.forEach(enemy => {
       enemy.x += enemy.speed * enemy.direction;
       if (enemy.x <= 0 || enemy.x + enemy.width >= canvas.width) {
         wallHit = true;
       }
-      // Enemy firing
       if (Math.random() < 0.001 + (wave * 0.0002)) {
           enemyBullets.push({ x: enemy.x + enemy.width / 2, y: enemy.y + enemy.height, speed: 4 });
       }
@@ -195,16 +194,15 @@ function startGame() {
     if (wallHit) {
       enemies.forEach(enemy => {
         enemy.direction *= -1;
-        enemy.y += 20; // Move down
+        enemy.y += 20;
       });
     }
     
-    // Collision detection
     bullets.forEach((bullet, bIndex) => {
         enemies.forEach((enemy, eIndex) => {
             if (!enemy.isHit && bullet.x > enemy.x && bullet.x < enemy.x + enemy.width && bullet.y > enemy.y && bullet.y < enemy.y + enemy.height) {
                 enemy.isHit = true;
-                enemy.hitTimer = 10; // Frames to show de-rez effect
+                enemy.hitTimer = 10;
                 bullets.splice(bIndex, 1);
                 score += 10;
             }
@@ -221,7 +219,6 @@ function startGame() {
         }
     });
     
-    // Check for win condition
     if (enemies.length === 0 && !gameWon) {
         wave++;
         createEnemies();
@@ -252,7 +249,7 @@ function startGame() {
   }
 
   function gameLoop() {
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.2)'; // Fading effect
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     if (gameOver) {
@@ -265,7 +262,6 @@ function startGame() {
         drawEnemyBullets();
         drawHUD();
     }
-    
     animationFrameId = requestAnimationFrame(gameLoop);
   }
 
@@ -285,7 +281,6 @@ function startGame() {
       keys[e.key] = false;
   }
   
-  // Attach event listeners
   window.addEventListener('keydown', handleKeyDown);
   window.addEventListener('keyup', handleKeyUp);
   
@@ -302,43 +297,46 @@ function startGame() {
 }
 
 // =================================================================
-// ORIGINAL MATRIX BACKGROUND EFFECT (kept for the non-game parts)
+// ORIGINAL MATRIX BACKGROUND EFFECT
 // =================================================================
 function initializeMatrixEffect() {
   const canvas = document.getElementById('matrix-canvas');
   if (!canvas.getContext) return;
   const ctx = canvas.getContext('2d');
-  
-  let letters = [];
-  
+
+  let columns, drops;
+
   function setup() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      const columns = Math.floor(canvas.width / 20);
-      letters = [];
-      for (let i = 0; i < columns; i++) {
-          letters[i] = 1;
-      }
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    columns = Math.floor(canvas.width / 20);
+    drops = [];
+    for (let i = 0; i < columns; i++) {
+      drops[i] = 1;
+    }
   }
-  
-  function drawMatrix() {
+
+  function draw() {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = '#0f0';
     ctx.font = '15pt monospace';
-    
-    letters.forEach((y, index) => {
-        const text = String.fromCharCode(0x30A0 + Math.random() * 96); // Katakana characters
-        const x = index * 20;
-        ctx.fillText(text, x, y * 20);
-        if (y * 20 > canvas.height && Math.random() > 0.975) {
-            letters[index] = 0;
-        }
-        letters[index]++;
-    });
+
+    for (let i = 0; i < drops.length; i++) {
+      const text = String.fromCharCode(0x30A0 + Math.random() * 96); // Katakana characters
+      ctx.fillText(text, i * 20, drops[i] * 20);
+
+      if (drops[i] * 20 > canvas.height && Math.random() > 0.975) {
+        drops[i] = 0;
+      }
+      drops[i]++;
+    }
   }
 
   setup();
-  setInterval(drawMatrix, 50);
-  window.addEventListener('resize', setup);
+  matrixInterval = setInterval(draw, 50);
+  window.addEventListener('resize', () => {
+    setup();
+    // No need to restart interval, it will adapt
+  });
 }
