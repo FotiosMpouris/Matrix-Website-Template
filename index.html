@@ -7,24 +7,49 @@
   <link rel="stylesheet" href="style.css">
   
   <!-- 
-    NEW STYLES ADDED HERE
-    To create the flickering terminal effect without modifying your external style.css file,
-    I've added these new CSS rules directly into the HTML.
+    UPDATED STYLES
+    I've added a new '.terminal-header' style to give the top of the page the same
+    awesome look as the promises box. It's all mobile-friendly.
   -->
   <style>
-    /* New Terminal Style for Promises Section */
+    /* New Terminal Style for the Main Header */
+    .terminal-header {
+      background-color: #000000;
+      border: 2px solid #00ff00;
+      box-shadow: 0 0 20px rgba(0, 255, 0, 0.5), inset 0 0 15px rgba(0, 255, 0, 0.3);
+      padding: 2rem 1rem;
+      text-align: center;
+      animation: flicker 3s infinite;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    .terminal-header h1 {
+      color: #00ff00;
+      font-size: 3.5rem; /* Large font for desktop */
+      text-shadow: 0 0 8px #00ff00;
+      text-transform: uppercase;
+      margin: 0;
+      padding: 0;
+    }
+
+    .terminal-header .maga-red {
+      color: #ff0000;
+      text-shadow: 0 0 15px #ff0000, 0 0 5px #ff0000;
+    }
+    
+    /* Terminal Style for Promises Section */
     .promises-terminal {
       background-color: #000000;
       border: 2px solid #00ff00;
       box-shadow: 0 0 20px rgba(0, 255, 0, 0.5), inset 0 0 15px rgba(0, 255, 0, 0.3);
       color: #00ff00;
-      font-family: 'Courier New', Courier, monospace; /* Classic terminal font */
+      font-family: 'Courier New', Courier, monospace;
       text-shadow: 0 0 5px #00ff00;
       padding: 1.5rem 2rem;
       max-height: 75vh;
       overflow-y: auto;
-      position: relative; /* Needed for scanlines */
-      animation: flicker 2.5s infinite; /* The cringe-worthy flicker effect */
+      position: relative;
+      animation: flicker 2.5s infinite;
     }
 
     /* Flickering Animation */
@@ -62,7 +87,7 @@
 
     /* Styling for content inside the terminal */
     .promises-terminal h2, .promises-terminal h3, .promises-terminal h4 {
-      color: #39ff14; /* A slightly different green for headings */
+      color: #39ff14;
       text-transform: uppercase;
     }
     .promises-terminal h3 {
@@ -74,7 +99,7 @@
       line-height: 1.5;
     }
     .promises-terminal strong {
-      color: #adff2f; /* Brighter green for keywords */
+      color: #adff2f;
     }
 
     /* Custom Scrollbar for Terminal */
@@ -89,6 +114,16 @@
       background: #00ff00;
       box-shadow: 0 0 5px #00ff00;
     }
+
+    /* Mobile-Friendly Adjustments */
+    @media (max-width: 768px) {
+      .terminal-header h1 {
+        font-size: 2.5rem; /* Smaller font for mobile */
+      }
+      .promises-terminal {
+        padding: 1rem 1.5rem;
+      }
+    }
   </style>
 
 </head>
@@ -96,17 +131,14 @@
   <canvas id="matrix-canvas"></canvas>
   <div id="particles-container" class="particles-container"></div>
 
-  <!-- Main Welcome Section -->
+  <!-- Main Welcome Section with New Terminal Style -->
   <section id="home" class="section">
-    <div class="translucent-box">
-      <h1 class="title" style="font-size: 3.5rem; text-shadow: 0 0 10px var(--accent-glow);">
-        WELCOME TO THE <span style="color: var(--blood-red);">MAGA</span> MATRIX
-      </h1>
-      <p class="subtitle">WHERE REALITY BENDS AND FREEDOM REIGNS</p>
+    <div class="terminal-header">
+      <h1>THE <span class="maga-red">MAGA</span> MATRIX</h1>
     </div>
   </section>
 
-  <!-- New MAGA Campaign Promises Section -->
+  <!-- MAGA Campaign Promises Section -->
   <section id="promises" class="section">
     <div class="promises-terminal">
         <h2 style="text-align: center;">> MAGA CAMPAIGN PROMISES_</h2>
@@ -166,7 +198,7 @@
     </div>
   </section>
 
-  <!-- New Game Section -->
+  <!-- Game Section -->
   <section id="game" class="section">
     <div class="translucent-box">
       <h2 class="title" style="color: var(--blood-red);">ENGAGE THE SIMULATION</h2>
@@ -183,11 +215,6 @@
       <div class="pill-choice" style="display: flex; gap: 1rem; justify-content: center; margin: 1rem 0;">
         <div class="pill red-pill" onclick="alert('You’re in—freedom awaits, rebel!')">RED PILL</div>
         <div class="pill blue-pill" onclick="alert('Coward’s way out—back to the simulation.')">BLUE PILL</div>
-      </div>
-      <div class="social-links" style="margin-top: 1rem; text-align: center;">
-        <a href="x.html" target="_blank">
-          <img src="images/x-logo.png" alt="X" style="width: 40px; animation: spin 10s linear infinite;">
-        </a>
       </div>
     </div>
   </section>
