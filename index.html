@@ -5,6 +5,92 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ENTER THE MAGA MATRIX</title>
   <link rel="stylesheet" href="style.css">
+  
+  <!-- 
+    NEW STYLES ADDED HERE
+    To create the flickering terminal effect without modifying your external style.css file,
+    I've added these new CSS rules directly into the HTML.
+  -->
+  <style>
+    /* New Terminal Style for Promises Section */
+    .promises-terminal {
+      background-color: #000000;
+      border: 2px solid #00ff00;
+      box-shadow: 0 0 20px rgba(0, 255, 0, 0.5), inset 0 0 15px rgba(0, 255, 0, 0.3);
+      color: #00ff00;
+      font-family: 'Courier New', Courier, monospace; /* Classic terminal font */
+      text-shadow: 0 0 5px #00ff00;
+      padding: 1.5rem 2rem;
+      max-height: 75vh;
+      overflow-y: auto;
+      position: relative; /* Needed for scanlines */
+      animation: flicker 2.5s infinite; /* The cringe-worthy flicker effect */
+    }
+
+    /* Flickering Animation */
+    @keyframes flicker {
+      0%, 100% {
+        box-shadow: 0 0 20px rgba(0, 255, 0, 0.5), inset 0 0 15px rgba(0, 255, 0, 0.3);
+        opacity: 1;
+      }
+      50% {
+        box-shadow: 0 0 25px rgba(0, 255, 0, 0.7), inset 0 0 20px rgba(0, 255, 0, 0.5);
+        opacity: 0.9;
+      }
+      52% {
+        opacity: 0.7;
+      }
+      55% {
+        opacity: 1;
+      }
+    }
+
+    /* Scanline Overlay Effect */
+    .promises-terminal::before {
+      content: " ";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+      z-index: 2;
+      background-size: 100% 3px, 4px 100%;
+      pointer-events: none;
+    }
+
+    /* Styling for content inside the terminal */
+    .promises-terminal h2, .promises-terminal h3, .promises-terminal h4 {
+      color: #39ff14; /* A slightly different green for headings */
+      text-transform: uppercase;
+    }
+    .promises-terminal h3 {
+      border-bottom: 1px solid #00ff00;
+      padding-bottom: 5px;
+      margin-bottom: 1rem;
+    }
+    .promises-terminal p {
+      line-height: 1.5;
+    }
+    .promises-terminal strong {
+      color: #adff2f; /* Brighter green for keywords */
+    }
+
+    /* Custom Scrollbar for Terminal */
+    .promises-terminal::-webkit-scrollbar {
+      width: 10px;
+    }
+    .promises-terminal::-webkit-scrollbar-track {
+      background: #000;
+      border-left: 1px solid #00ff00;
+    }
+    .promises-terminal::-webkit-scrollbar-thumb {
+      background: #00ff00;
+      box-shadow: 0 0 5px #00ff00;
+    }
+  </style>
+
 </head>
 <body>
   <canvas id="matrix-canvas"></canvas>
@@ -17,86 +103,75 @@
         WELCOME TO THE <span style="color: var(--blood-red);">MAGA</span> MATRIX
       </h1>
       <p class="subtitle">WHERE REALITY BENDS AND FREEDOM REIGNS</p>
-      <button onclick="startGame()" style="padding: 1rem 2rem; background: var(--blood-red); color: #fff; border: none; cursor: pointer; margin-top: 2rem;">START RED PILL ESCAPE</button>
     </div>
   </section>
 
   <!-- New MAGA Campaign Promises Section -->
   <section id="promises" class="section">
-    <div class="translucent-box" style="max-height: 75vh; overflow-y: auto; text-align: left; padding: 2rem 3rem;">
-        <h2 class="title" style="text-align: center;">MAGA Campaign Promises</h2>
-        <p class="subtitle" style="text-align: center; margin-bottom: 2rem;">A Comprehensive List of Trump’s 2024 Main Points</p>
+    <div class="promises-terminal">
+        <h2 style="text-align: center;">> MAGA CAMPAIGN PROMISES_</h2>
+        <p class="subtitle" style="text-align: center; margin-bottom: 2rem;">// INITIATING DATA STREAM: TRUMP 2024 DIRECTIVES //</p>
         
-        <h3 style="color: var(--accent-blue); margin-top: 1.5rem; border-bottom: 1px solid var(--accent-blue);">Economic and Tax Policy</h3>
+        <h3>Economic and Tax Policy</h3>
         
-        <h4 style="color: var(--blood-red); margin-top: 1rem;">No Taxes on Tips</h4>
+        <h4>>> No Taxes on Tips</h4>
         <p><strong>Promise:</strong> Eliminate federal income taxes on tips to support service industry workers.</p>
-        <p><strong>Context/Status:</strong> Proposed during 2024 campaign rallies, popular with working-class voters. The House Budget Committee estimated a $100 billion cost over a decade. Reports suggest implementation as a capped tax credit rather than a full exemption, leading to criticism for not fully delivering. As of July 2025, no comprehensive legislation has passed, and X posts express frustration over limited impact or delays.</p>
+        <p><strong>Context/Status:</strong> Proposed during 2024 campaign rallies. House Budget Committee estimated a $100 billion cost over a decade. Reports suggest implementation as a capped tax credit, not a full exemption. As of July 2025, no comprehensive legislation has passed.</p>
         <p><strong>Sentiment:</strong> Supporters on X view this as partially unfulfilled due to the capped credit structure.</p>
 
-        <h4 style="color: var(--blood-red); margin-top: 1rem;">No Taxes on Overtime Pay</h4>
+        <h4>>> No Taxes on Overtime Pay</h4>
         <p><strong>Promise:</strong> Exempt overtime wages from federal income taxes to benefit workers.</p>
-        <p><strong>Context/Status:</strong> Similar to the tips promise, implemented as a capped tax credit, not a full exemption, disappointing some supporters. No major legislative progress reported by July 2025, with X users noting it as an unkept promise.</p>
+        <p><strong>Context/Status:</strong> Implemented as a capped tax credit, not a full exemption, disappointing some supporters. No major legislative progress reported by July 2025.</p>
         <p><strong>Sentiment:</strong> X reflects dissatisfaction with the diluted implementation.</p>
 
-        <h4 style="color: var(--blood-red); margin-top: 1rem;">No Taxes on Social Security Benefits</h4>
+        <h4>>> No Taxes on Social Security Benefits</h4>
         <p><strong>Promise:</strong> Eliminate federal taxes on Social Security benefits to support retirees.</p>
-        <p><strong>Context/Status:</strong> About 40% of Social Security recipients pay taxes on benefits if their income exceeds $25,000 (individual) or $32,000 (joint). Trump pledged to remove this tax, costing an estimated $250 billion. Implemented as a capped tax credit, not a full exemption, leading to criticism. No significant congressional action reported, with economists warning of increased deficits.</p>
-        <p><strong>Sentiment:</strong> X users label this as unfulfilled, citing limited progress.</p>
-
-        <h4 style="color: var(--blood-red); margin-top: 1rem;">Extend and Expand 2017 Tax Cuts</h4>
-        <p><strong>Promise:</strong> Renew the 2017 Tax Cuts and Jobs Act and lower the corporate tax rate from 21% to 15%.</p>
-        <p><strong>Context/Status:</strong> Aimed at preventing tax increases set to occur if the 2017 law expires in 2025. Includes rolling back Biden’s tax hikes on high earners and Inflation Reduction Act levies. Faces challenges with a narrow Republican congressional majority, and no major legislation has been finalized by July 2025.</p>
-        <p><strong>Sentiment:</strong> X posts show mixed support, with some praising tax cuts and others skeptical of corporate focus.</p>
-
-        <h3 style="color: var(--accent-blue); margin-top: 1.5rem; border-bottom: 1px solid var(--accent-blue);">Immigration and Border Security</h3>
+        <p><strong>Context/Status:</strong> Pledged to remove this tax, costing an estimated $250 billion. Implemented as a capped tax credit. No significant congressional action reported.</p>
+        <p><strong>Sentiment:</strong> X users label this as unfulfilled.</p>
         
-        <h4 style="color: var(--blood-red); margin-top: 1rem;">Largest Mass Deportation Program in U.S. History</h4>
-        <p><strong>Promise:</strong> Launch the largest deportation operation, starting Day 1, targeting “criminals” using local police, National Guard, and potentially military. Invoke the Alien Enemies Act of 1798 for gang members and drug traffickers.</p>
-        <p><strong>Context/Status:</strong> A cornerstone of Trump’s campaign, emphasized at every rally. Border encounters dropped 66% in January 2025 from 2024 highs. Deportation numbers are lower than under Obama or Biden due to reduced border encounters. No large-scale operation reported by July 2025.</p>
+        <h3>Immigration and Border Security</h3>
+        
+        <h4>>> Largest Mass Deportation Program</h4>
+        <p><strong>Promise:</strong> Launch the largest deportation operation in U.S. history, starting Day 1.</p>
+        <p><strong>Context/Status:</strong> A cornerstone of the campaign. Border encounters dropped 66% in January 2025. Deportation numbers remain lower than under previous administrations due to reduced encounters. No large-scale operation reported by July 2025.</p>
         <p><strong>Sentiment:</strong> X users are divided, with some praising enforcement and others decrying unfulfilled scale.</p>
 
-        <h4 style="color: var(--blood-red); margin-top: 1rem;">End Birthright Citizenship</h4>
-        <p><strong>Promise:</strong> Issue an executive order to end automatic citizenship for children of undocumented immigrants born in the U.S.</p>
-        <p><strong>Context/Status:</strong> Requires amending the 14th Amendment, a daunting task needing congressional and state approval. Trump acknowledged this in a December 2024 interview. No progress reported by July 2025, deemed “extremely unlikely” by experts.</p>
-        <p><strong>Sentiment:</strong> X users see this as stalled, with some calling it unrealistic.</p>
+        <h3>Foreign Policy and National Security</h3>
         
-        <h3 style="color: var(--accent-blue); margin-top: 1.5rem; border-bottom: 1px solid var(--accent-blue);">Foreign Policy and National Security</h3>
-        
-        <h4 style="color: var(--blood-red); margin-top: 1rem;">End Russia-Ukraine War in 24 Hours</h4>
-        <p><strong>Promise:</strong> Settle the Russia-Ukraine conflict before or within 24 hours of taking office.</p>
-        <p><strong>Context/Status:</strong> Repeated at rallies, e.g., Waco, Texas (March 2023). Trump initiated U.S.-Russia talks, but Ukraine rejected deals without its involvement. By July 2025, the war continues, with Trump comparing leaders to “squabbling children,” expressing frustration.</p>
-        <p><strong>Sentiment:</strong> X users label this unfulfilled, with disappointment growing.</p>
+        <h4>>> End Russia-Ukraine War in 24 Hours</h4>
+        <p><strong>Promise:</strong> Settle the Russia-Ukraine conflict within 24 hours of taking office.</p>
+        <p><strong>Context/Status:</strong> U.S.-Russia talks initiated, but Ukraine rejected deals without its involvement. By July 2025, the war continues.</p>
+        <p><strong>Sentiment:</strong> X users label this unfulfilled.</p>
 
-        <h3 style="color: var(--accent-blue); margin-top: 1.5rem; border-bottom: 1px solid var(--accent-blue);">Transparency and Investigations</h3>
+        <h3>Transparency and Investigations</h3>
         
-        <h4 style="color: var(--blood-red); margin-top: 1rem;">Release Jeffrey Epstein Files</h4>
-        <p><strong>Promise:</strong> Declassify and release Epstein-related documents, including a purported “client list.”</p>
-        <p><strong>Context/Status:</strong> Attorney General Pam Bondi claimed in February 2025 that files were under review, but a July 2025 DOJ/FBI memo declared no “incriminating client list” exists and reaffirmed Epstein’s 2019 suicide. A “Phase 1” release in February 2025 included mostly public-domain data, criticized as a political stunt. Trump downplayed ongoing interest, frustrating supporters.</p>
-        <p><strong>Sentiment:</strong> X users, including MAGA supporters, express strong disappointment, with some alleging cover-ups.</p>
+        <h4>>> Release Jeffrey Epstein Files</h4>
+        <p><strong>Promise:</strong> Declassify and release Epstein-related documents.</p>
+        <p><strong>Context/Status:</strong> A July 2025 DOJ/FBI memo declared no “incriminating client list” exists and reaffirmed Epstein’s 2019 suicide. A “Phase 1” release was criticized as a political stunt. Trump downplayed ongoing interest, frustrating supporters.</p>
+        <p><strong>Sentiment:</strong> X users, including MAGA supporters, express strong disappointment, alleging cover-ups.</p>
         
-        <h3 style="color: var(--accent-blue); margin-top: 1.5rem; border-bottom: 1px solid var(--accent-blue);">Healthcare and Social Policy</h3>
+        <h3>Government Reform and Justice</h3>
         
-        <h4 style="color: var(--blood-red); margin-top: 1rem;">Make America Healthy Again</h4>
-        <p><strong>Promise:</strong> Tackle chronic diseases by targeting pharmaceutical industries and ultraprocessed foods, with Robert F. Kennedy Jr. leading health policy.</p>
-        <p><strong>Context/Status:</strong> RFK Jr., appointed Health Secretary, pushes vaccine skepticism and pesticide reforms. No major policy changes reported by July 2025. Trump distanced himself from repealing the Affordable Care Act, claiming he “never thought about it.”</p>
-        <p><strong>Sentiment:</strong> X users are divided, with some supporting RFK Jr.’s agenda and others wary of health policy shifts.</p>
-        
-        <h3 style="color: var(--accent-blue); margin-top: 1.5rem; border-bottom: 1px solid var(--accent-blue);">Government Reform and Justice</h3>
-        
-        <h4 style="color: var(--blood-red); margin-top: 1rem;">Pardon January 6 Convicts</h4>
+        <h4>>> Pardon January 6 Convicts</h4>
         <p><strong>Promise:</strong> Issue full pardons for those convicted or charged in the January 6, 2021, Capitol riot.</p>
-        <p><strong>Context/Status:</strong> Fulfilled on Day 1 with clemency for over 1,500 defendants, despite criticism from law enforcement.</p>
-        <p><strong>Sentiment:</strong> X users are divided, with MAGA supporters praising it and others calling it a “slap in the face.”</p>
+        <p><strong>Context/Status:</strong> Fulfilled on Day 1 with clemency for over 1,500 defendants.</p>
+        <p><strong>Sentiment:</strong> Divided. MAGA supporters praise it; others call it a “slap in the face.”</p>
 
-        <!-- NOTE: I have included a selection of the promises for brevity. The full list can be added by following the same HTML pattern. -->
-        
-        <h3 style="color: var(--accent-blue); margin-top: 1.5rem; border-bottom: 1px solid var(--accent-blue);">Analysis and Sentiment</h3>
-        <p><strong>Fulfilled Promises:</strong> The January 6 pardons and initial tariff actions (e.g., 10% universal tariff) are the most concrete achievements, though tariffs face economic criticism.</p>
-        <p><strong>Partially Fulfilled:</strong> Promises like no taxes on tips, overtime, and Social Security benefits have seen limited progress via capped credits, not full exemptions, leading to accusations of dilution. Border security shows reduced crossings, but mass deportations and wall construction lag.</p>
-        <p><strong>Unfulfilled Promises:</strong> High-profile pledges like Epstein, JFK, and MLK file releases, Fort Knox audit, ending the Russia-Ukraine war, and abolishing the Department of Education show no significant progress, fueling frustration on X.</p>
-        <p><strong>Challenges:</strong> Legal, logistical, and political hurdles (e.g., narrow GOP congressional majority, constitutional barriers) have stalled promises like birthright citizenship and mass deportations. Economic policies risk deficits and inflation.</p>
-        <p><strong>Sentiment on X:</strong> MAGA supporters express growing disillusionment, particularly over transparency promises (Epstein, JFK). Critics like Elon Musk and Steve Bannon have warned of political fallout, while some X users allege cover-ups or resignations (e.g., Kash Patel).</p>
+        <h3>Analysis and Sentiment</h3>
+        <p><strong>Fulfilled:</strong> January 6 pardons, initial tariff actions.</p>
+        <p><strong>Partially Fulfilled:</strong> Tax promises on tips/overtime (capped credits), border security (reduced crossings but no mass deportation).</p>
+        <p><strong>Unfulfilled:</strong> Epstein/JFK file releases, Fort Knox audit, ending Russia-Ukraine war.</p>
+        <p><strong>Sentiment on X:</strong> Growing disillusionment, particularly over transparency promises.
+        <br>> END DATA STREAM_</p>
+    </div>
+  </section>
+
+  <!-- New Game Section -->
+  <section id="game" class="section">
+    <div class="translucent-box">
+      <h2 class="title" style="color: var(--blood-red);">ENGAGE THE SIMULATION</h2>
+      <p class="subtitle">THE AGENTS ARE COMING. ESCAPE THE MATRIX.</p>
+      <button onclick="startGame()" style="padding: 1rem 2rem; background: var(--blood-red); color: #fff; border: none; cursor: pointer; margin-top: 1rem; font-size: 1.2rem;">START RED PILL ESCAPE</button>
     </div>
   </section>
 
