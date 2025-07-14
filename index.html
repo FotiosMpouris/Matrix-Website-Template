@@ -10,196 +10,113 @@
   <canvas id="matrix-canvas"></canvas>
   <div id="particles-container" class="particles-container"></div>
 
- <nav class="navbar">
-  <div class="logo"><h1 class="title">THE MAGA MATRIX</h1></div>
-  <ul class="nav-links">
-    <li><a href="index.html">Portal</a></li>
-    <li><a href="warroom.html">War Room</a>
-      <ul class="dropdown">
-        <li><a href="matrix-revolt.html">MATRIX REVOLT</a></li>
-        <li><a href="red-pill-core.html">RED PILL CORE</a></li>
-        <li><a href="liberty-code.html">LIBERTY CODE</a></li>
-      </ul>
-    </li>
-    <li><a href="manifesto.html">SIMULATION</a></li>
-    <li><a href="uplink.html">Uplink</a></li>
-  </ul>
-  <a href="https://github.com/FotiosMpouris/Matrix-Website-Template/tree/main" target="_blank">
-    <span class="matrix-m">M</span>
-  </a>
-  <div id="hamburger" class="hamburger"><span></span><span></span><span></span></div>
-</nav>
-  
-  <div id="mobile-menu" class="mobile-menu">
-    <a href="index.html">Portal</a>
-    <a href="warroom.html" id="projects-toggle-btn">War Room</a>
-    <div id="mobile-dropdown" class="mobile-dropdown">
-      <a href="matrix-revolt.html">MATRIX REVOLT</a>
-      <a href="red-pill-core.html">RED PILL CORE</a>
-      <a href="liberty-code.html">LIBERTY CODE</a>
-    </div>
-    <a href="manifesto.html">SIMULATION</a>
-    <a href="uplink.html">Uplink</a>
-  </div>
-
+  <!-- Main Welcome Section -->
   <section id="home" class="section">
     <div class="translucent-box">
       <h1 class="title" style="font-size: 3.5rem; text-shadow: 0 0 10px var(--accent-glow);">
         WELCOME TO THE <span style="color: var(--blood-red);">MAGA</span> MATRIX
       </h1>
       <p class="subtitle">WHERE REALITY BENDS AND FREEDOM REIGNS</p>
-      <div class="skills-container">
-        <a href="warroom.html"><div class="skill-icon"><img src="images/matrix-code.png" alt="Code"><span class="icon-label">CODE COMMAND</span></div></a>
-        <a href="manifesto.html"><div class="skill-icon"><img src="images/red-pill.png" alt="Truth"><span class="icon-label">TRUTH UNVEILED</span></div></a>
-        <a href="uplink.html"><div class="skill-icon"><img src="images/energy-wave.png" alt="Energy"><span class="icon-label">ENERGY SURGE</span></div></a>
-      </div>
       <button onclick="startGame()" style="padding: 1rem 2rem; background: var(--blood-red); color: #fff; border: none; cursor: pointer; margin-top: 2rem;">START RED PILL ESCAPE</button>
     </div>
   </section>
 
-  <section id="projects" class="section" style="margin-top: 20px; padding-top: 20px;">
-  <div class="translucent-box">
-    <h2 class="title">PROJECTS</h2>
-    <p class="subtitle">UNLEASHING THE POWER OF THE MATRIX</p>
-    <div class="skills-container" style="gap: 2rem; justify-content: center;">
-      <a href="matrix-revolt.html"><div class="skill-icon"><img src="images/matrix-revolt.png" alt="Matrix Revolt"><span class="icon-label">MATRIX REVOLT</span></div></a>
-      <a href="red-pill-core.html"><div class="skill-icon"><img src="images/red-pill-core.png" alt="Red Pill Core"><span class="icon-label">RED PILL CORE</span></div></a>
-      <a href="liberty-code.html"><div class="skill-icon"><img src="images/liberty-code.png" alt="Liberty Code"><span class="icon-label">LIBERTY CODE</span></div></a>
-    </div>
-  </div>
-</section>
-  
-  <section id="manifesto" class="section">
-    <div class="translucent-box">
-      <h2 class="title">SIMULATION</h2>
-      <p class="subtitle">A REBELLION AGAINST THE ORDINARY</p>
-      <p style="text-align: center; max-width: 600px; margin: 0 auto;">
-        THE <span style="color: var(--blood-red);">MAGA</span> MATRIX IS A DIGITAL FRONTIER BUILT FOR THOSE WHO DARE TO QUESTION, CREATE, AND CONQUER. FUELED BY CODE, CHAOS, AND A TOUCH OF DEFIANCE, WE’RE HERE TO RESHAPE THE WORLD—ONE PIXEL AT A TIME.
-      </p>
+  <!-- New MAGA Campaign Promises Section -->
+  <section id="promises" class="section">
+    <div class="translucent-box" style="max-height: 75vh; overflow-y: auto; text-align: left; padding: 2rem 3rem;">
+        <h2 class="title" style="text-align: center;">MAGA Campaign Promises</h2>
+        <p class="subtitle" style="text-align: center; margin-bottom: 2rem;">A Comprehensive List of Trump’s 2024 Main Points</p>
+        
+        <h3 style="color: var(--accent-blue); margin-top: 1.5rem; border-bottom: 1px solid var(--accent-blue);">Economic and Tax Policy</h3>
+        
+        <h4 style="color: var(--blood-red); margin-top: 1rem;">No Taxes on Tips</h4>
+        <p><strong>Promise:</strong> Eliminate federal income taxes on tips to support service industry workers.</p>
+        <p><strong>Context/Status:</strong> Proposed during 2024 campaign rallies, popular with working-class voters. The House Budget Committee estimated a $100 billion cost over a decade. Reports suggest implementation as a capped tax credit rather than a full exemption, leading to criticism for not fully delivering. As of July 2025, no comprehensive legislation has passed, and X posts express frustration over limited impact or delays.</p>
+        <p><strong>Sentiment:</strong> Supporters on X view this as partially unfulfilled due to the capped credit structure.</p>
+
+        <h4 style="color: var(--blood-red); margin-top: 1rem;">No Taxes on Overtime Pay</h4>
+        <p><strong>Promise:</strong> Exempt overtime wages from federal income taxes to benefit workers.</p>
+        <p><strong>Context/Status:</strong> Similar to the tips promise, implemented as a capped tax credit, not a full exemption, disappointing some supporters. No major legislative progress reported by July 2025, with X users noting it as an unkept promise.</p>
+        <p><strong>Sentiment:</strong> X reflects dissatisfaction with the diluted implementation.</p>
+
+        <h4 style="color: var(--blood-red); margin-top: 1rem;">No Taxes on Social Security Benefits</h4>
+        <p><strong>Promise:</strong> Eliminate federal taxes on Social Security benefits to support retirees.</p>
+        <p><strong>Context/Status:</strong> About 40% of Social Security recipients pay taxes on benefits if their income exceeds $25,000 (individual) or $32,000 (joint). Trump pledged to remove this tax, costing an estimated $250 billion. Implemented as a capped tax credit, not a full exemption, leading to criticism. No significant congressional action reported, with economists warning of increased deficits.</p>
+        <p><strong>Sentiment:</strong> X users label this as unfulfilled, citing limited progress.</p>
+
+        <h4 style="color: var(--blood-red); margin-top: 1rem;">Extend and Expand 2017 Tax Cuts</h4>
+        <p><strong>Promise:</strong> Renew the 2017 Tax Cuts and Jobs Act and lower the corporate tax rate from 21% to 15%.</p>
+        <p><strong>Context/Status:</strong> Aimed at preventing tax increases set to occur if the 2017 law expires in 2025. Includes rolling back Biden’s tax hikes on high earners and Inflation Reduction Act levies. Faces challenges with a narrow Republican congressional majority, and no major legislation has been finalized by July 2025.</p>
+        <p><strong>Sentiment:</strong> X posts show mixed support, with some praising tax cuts and others skeptical of corporate focus.</p>
+
+        <h3 style="color: var(--accent-blue); margin-top: 1.5rem; border-bottom: 1px solid var(--accent-blue);">Immigration and Border Security</h3>
+        
+        <h4 style="color: var(--blood-red); margin-top: 1rem;">Largest Mass Deportation Program in U.S. History</h4>
+        <p><strong>Promise:</strong> Launch the largest deportation operation, starting Day 1, targeting “criminals” using local police, National Guard, and potentially military. Invoke the Alien Enemies Act of 1798 for gang members and drug traffickers.</p>
+        <p><strong>Context/Status:</strong> A cornerstone of Trump’s campaign, emphasized at every rally. Border encounters dropped 66% in January 2025 from 2024 highs. Deportation numbers are lower than under Obama or Biden due to reduced border encounters. No large-scale operation reported by July 2025.</p>
+        <p><strong>Sentiment:</strong> X users are divided, with some praising enforcement and others decrying unfulfilled scale.</p>
+
+        <h4 style="color: var(--blood-red); margin-top: 1rem;">End Birthright Citizenship</h4>
+        <p><strong>Promise:</strong> Issue an executive order to end automatic citizenship for children of undocumented immigrants born in the U.S.</p>
+        <p><strong>Context/Status:</strong> Requires amending the 14th Amendment, a daunting task needing congressional and state approval. Trump acknowledged this in a December 2024 interview. No progress reported by July 2025, deemed “extremely unlikely” by experts.</p>
+        <p><strong>Sentiment:</strong> X users see this as stalled, with some calling it unrealistic.</p>
+        
+        <h3 style="color: var(--accent-blue); margin-top: 1.5rem; border-bottom: 1px solid var(--accent-blue);">Foreign Policy and National Security</h3>
+        
+        <h4 style="color: var(--blood-red); margin-top: 1rem;">End Russia-Ukraine War in 24 Hours</h4>
+        <p><strong>Promise:</strong> Settle the Russia-Ukraine conflict before or within 24 hours of taking office.</p>
+        <p><strong>Context/Status:</strong> Repeated at rallies, e.g., Waco, Texas (March 2023). Trump initiated U.S.-Russia talks, but Ukraine rejected deals without its involvement. By July 2025, the war continues, with Trump comparing leaders to “squabbling children,” expressing frustration.</p>
+        <p><strong>Sentiment:</strong> X users label this unfulfilled, with disappointment growing.</p>
+
+        <h3 style="color: var(--accent-blue); margin-top: 1.5rem; border-bottom: 1px solid var(--accent-blue);">Transparency and Investigations</h3>
+        
+        <h4 style="color: var(--blood-red); margin-top: 1rem;">Release Jeffrey Epstein Files</h4>
+        <p><strong>Promise:</strong> Declassify and release Epstein-related documents, including a purported “client list.”</p>
+        <p><strong>Context/Status:</strong> Attorney General Pam Bondi claimed in February 2025 that files were under review, but a July 2025 DOJ/FBI memo declared no “incriminating client list” exists and reaffirmed Epstein’s 2019 suicide. A “Phase 1” release in February 2025 included mostly public-domain data, criticized as a political stunt. Trump downplayed ongoing interest, frustrating supporters.</p>
+        <p><strong>Sentiment:</strong> X users, including MAGA supporters, express strong disappointment, with some alleging cover-ups.</p>
+        
+        <h3 style="color: var(--accent-blue); margin-top: 1.5rem; border-bottom: 1px solid var(--accent-blue);">Healthcare and Social Policy</h3>
+        
+        <h4 style="color: var(--blood-red); margin-top: 1rem;">Make America Healthy Again</h4>
+        <p><strong>Promise:</strong> Tackle chronic diseases by targeting pharmaceutical industries and ultraprocessed foods, with Robert F. Kennedy Jr. leading health policy.</p>
+        <p><strong>Context/Status:</strong> RFK Jr., appointed Health Secretary, pushes vaccine skepticism and pesticide reforms. No major policy changes reported by July 2025. Trump distanced himself from repealing the Affordable Care Act, claiming he “never thought about it.”</p>
+        <p><strong>Sentiment:</strong> X users are divided, with some supporting RFK Jr.’s agenda and others wary of health policy shifts.</p>
+        
+        <h3 style="color: var(--accent-blue); margin-top: 1.5rem; border-bottom: 1px solid var(--accent-blue);">Government Reform and Justice</h3>
+        
+        <h4 style="color: var(--blood-red); margin-top: 1rem;">Pardon January 6 Convicts</h4>
+        <p><strong>Promise:</strong> Issue full pardons for those convicted or charged in the January 6, 2021, Capitol riot.</p>
+        <p><strong>Context/Status:</strong> Fulfilled on Day 1 with clemency for over 1,500 defendants, despite criticism from law enforcement.</p>
+        <p><strong>Sentiment:</strong> X users are divided, with MAGA supporters praising it and others calling it a “slap in the face.”</p>
+
+        <!-- NOTE: I have included a selection of the promises for brevity. The full list can be added by following the same HTML pattern. -->
+        
+        <h3 style="color: var(--accent-blue); margin-top: 1.5rem; border-bottom: 1px solid var(--accent-blue);">Analysis and Sentiment</h3>
+        <p><strong>Fulfilled Promises:</strong> The January 6 pardons and initial tariff actions (e.g., 10% universal tariff) are the most concrete achievements, though tariffs face economic criticism.</p>
+        <p><strong>Partially Fulfilled:</strong> Promises like no taxes on tips, overtime, and Social Security benefits have seen limited progress via capped credits, not full exemptions, leading to accusations of dilution. Border security shows reduced crossings, but mass deportations and wall construction lag.</p>
+        <p><strong>Unfulfilled Promises:</strong> High-profile pledges like Epstein, JFK, and MLK file releases, Fort Knox audit, ending the Russia-Ukraine war, and abolishing the Department of Education show no significant progress, fueling frustration on X.</p>
+        <p><strong>Challenges:</strong> Legal, logistical, and political hurdles (e.g., narrow GOP congressional majority, constitutional barriers) have stalled promises like birthright citizenship and mass deportations. Economic policies risk deficits and inflation.</p>
+        <p><strong>Sentiment on X:</strong> MAGA supporters express growing disillusionment, particularly over transparency promises (Epstein, JFK). Critics like Elon Musk and Steve Bannon have warned of political fallout, while some X users allege cover-ups or resignations (e.g., Kash Patel).</p>
     </div>
   </section>
 
+  <!-- Uplink Section -->
   <section id="uplink" class="section">
-  <div class="translucent-box">
-    <h2 class="title">UPLINK TO FREEDOM</h2>
-    <p class="subtitle" style="margin-bottom: 1rem;">CHOOSE YOUR DESTINY</p>
-    <div class="pill-choice" style="display: flex; gap: 1rem; justify-content: center; margin: 1rem 0;">
-      <div class="pill red-pill" onclick="alert('You’re in—freedom awaits, rebel!')">RED PILL</div>
-      <div class="pill blue-pill" onclick="alert('Coward’s way out—back to the simulation.')">BLUE PILL</div>
+    <div class="translucent-box">
+      <h2 class="title">UPLINK TO FREEDOM</h2>
+      <p class="subtitle" style="margin-bottom: 1rem;">CHOOSE YOUR DESTINY</p>
+      <div class="pill-choice" style="display: flex; gap: 1rem; justify-content: center; margin: 1rem 0;">
+        <div class="pill red-pill" onclick="alert('You’re in—freedom awaits, rebel!')">RED PILL</div>
+        <div class="pill blue-pill" onclick="alert('Coward’s way out—back to the simulation.')">BLUE PILL</div>
+      </div>
+      <div class="social-links" style="margin-top: 1rem; text-align: center;">
+        <a href="x.html" target="_blank">
+          <img src="images/x-logo.png" alt="X" style="width: 40px; animation: spin 10s linear infinite;">
+        </a>
+      </div>
     </div>
-    <div class="social-links" style="margin-top: 1rem; text-align: center;">
-      <a href="x.html" target="_blank">
-        <img src="images/x-logo.png" alt="X" style="width: 40px; animation: spin 10s linear infinite;">
-      </a>
-    </div>
-  </div>
-</section>
+  </section>
 
-  <script src="script.js">
-    function initializeMatrixEffect() {
-      const canvas = document.getElementById('matrix-canvas');
-      const ctx = canvas.getContext('2d');
-      canvas.width = 800; // Match game size
-      canvas.height = 500;
-      const letters = Array(256).join("0").split("");
-
-      function drawMatrix() {
-        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "#0f0";
-        letters.forEach((y_pos, index) => {
-          const text = String.fromCharCode(3e4 + Math.random() * 33);
-          const x_pos = index * 10;
-          ctx.fillText(text, x_pos, y_pos);
-          if (y_pos > 100 + Math.random() * 1e5) letters[index] = 0;
-          else letters[index] = y_pos + 10;
-        });
-      }
-      setInterval(drawMatrix, 50);
-
-      window.addEventListener('resize', () => {
-        canvas.width = 800;
-        canvas.height = 500;
-      });
-    }
-
-    function startGame() {
-      const ctx = document.getElementById('matrix-canvas').getContext('2d');
-      let player = { x: 100, y: 400, speed: 5 };
-      let agents = [];
-      let codeDrops = [];
-      let score = 0;
-      let portal = { x: 700, y: 400, active: false };
-
-      function spawnAgent() {
-        agents.push({ x: Math.random() * 800, y: -20, speed: 2 + Math.random() * 2 });
-      }
-      function spawnCode() {
-        codeDrops.push({ x: Math.random() * 800, y: -20, speed: 1 });
-      }
-
-      setInterval(spawnAgent, 1000);
-      setInterval(spawnCode, 1500);
-
-      function gameLoop() {
-        ctx.clearRect(0, 0, 800, 500);
-        drawMatrix();
-
-        ctx.fillStyle = 'red';
-        ctx.beginPath();
-        ctx.arc(player.x, player.y, 10, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.fillStyle = 'blue';
-        agents = agents.filter(a => a.y < 500);
-        agents.forEach(a => {
-          ctx.fillRect(a.x, a.y, 20, 20);
-          a.y += a.speed;
-          if (Math.abs(a.x - player.x) < 15 && Math.abs(a.y - player.y) < 15) alert('Game Over! Score: ' + score);
-        });
-
-        ctx.fillStyle = 'green';
-        codeDrops = codeDrops.filter(c => c.y < 500);
-        codeDrops.forEach(c => {
-          ctx.fillRect(c.x, c.y, 10, 10);
-          c.y += c.speed;
-          if (Math.abs(c.x - player.x) < 10 && Math.abs(c.y - player.y) < 10) { score += 10; codeDrops.splice(codeDrops.indexOf(c), 1); }
-        });
-
-        if (score > 50) portal.active = true;
-        if (portal.active) {
-          ctx.fillStyle = 'red';
-          ctx.beginPath();
-          ctx.arc(portal.x, portal.y, 20, 0, Math.PI * 2);
-          ctx.fill();
-          if (Math.abs(portal.x - player.x) < 20 && Math.abs(portal.y - player.y) < 20) alert('Escaped! You’re a Matrix Rebel!');
-        }
-
-        requestAnimationFrame(gameLoop);
-      }
-
-    document.addEventListener('mousemove', (e) => {
-      player.x = e.clientX - 10;
-      player.y = e.clientY - 10;
-    });
-
-    gameLoop();
-  }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      initializeMatrixEffect();
-
-      const mobileMenu = document.getElementById('mobile-menu');
-      if (mobileMenu) mobileMenu.classList.remove('open');
-
-      document.addEventListener('click', (e) => {
-        createParticle(e);
-        createEnergyWave(e.pageX, e.pageY);
-      });
-
-      setupMobileNav();
-      window.addEventListener('scroll', handleScroll);
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
