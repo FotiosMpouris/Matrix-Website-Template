@@ -1,9 +1,10 @@
 // =================================================================
 // MAGA MATRIX - SCRIPT.JS
-// Corrected Version: Original rain restored, enemy fire color changed.
+// Rewritten Game: "Matrix Invaders"
 // =================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Keep the original effects
   initializeMatrixEffect();
   document.addEventListener('click', (e) => {
     createParticle(e);
@@ -35,15 +36,17 @@ function createEnergyWave(x, y) {
 }
 
 // =================================================================
-// GAME LOGIC: MATRIX INVADERS (UNCHANGED EXCEPT FOR ENEMY BULLET COLOR)
+// NEW GAME LOGIC: MATRIX INVADERS
 // =================================================================
-let gameInstance = null; 
+let gameInstance = null; // To ensure only one game runs at a time
 
 function startGame() {
+  // Mobile check
   if (/Mobi|Android/i.test(navigator.userAgent)) {
     alert("This simulation requires a physical keyboard for full engagement. Please connect from a desktop terminal.");
     return;
   }
+
   if (gameInstance) {
     gameInstance.stop();
   }
@@ -51,13 +54,15 @@ function startGame() {
   const canvas = document.getElementById('matrix-canvas');
   const ctx = canvas.getContext('2d');
   
+  // Hide all other sections to focus on the game
   document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
-  canvas.style.display = 'block';
+  canvas.style.display = 'block'; // Ensure canvas is visible
   canvas.width = 800;
   canvas.height = 600;
 
   const keys = {};
   
+  // --- Game State ---
   let player = {
     x: canvas.width / 2 - 25,
     y: canvas.height - 60,
@@ -103,6 +108,7 @@ function startGame() {
 
   function drawPlayer() {
     if (player.isHit) {
+      // Screen flash effect
       ctx.fillStyle = 'rgba(255, 0, 0, 0.2)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       player.hitTimer--;
@@ -123,7 +129,7 @@ function startGame() {
   }
 
   function drawBullets() {
-    ctx.fillStyle = 'red';
+    ctx.fillStyle = 'red'; // Player bullets are red pills
     bullets.forEach(b => {
       ctx.fillRect(b.x - 2, b.y, 4, 15);
       b.y -= b.speed;
@@ -134,12 +140,13 @@ function startGame() {
   function drawEnemies() {
     enemies.forEach(enemy => {
       if (enemy.isHit) {
+          // De-rez effect
           ctx.fillStyle = `rgba(0, 255, 0, ${Math.random()})`;
           ctx.font = '12px Courier New';
           ctx.fillText(Math.random() > 0.5 ? '1' : '0', enemy.x + Math.random() * 20 - 10, enemy.y + Math.random() * 20 - 10);
           enemy.hitTimer--;
       } else {
-        ctx.fillStyle = '#00f';
+        ctx.fillStyle = '#00f'; // Agents are blue
         ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
         ctx.shadowBlur = 10;
         ctx.shadowColor = '#00f';
@@ -151,7 +158,7 @@ function startGame() {
   }
   
   function drawEnemyBullets() {
-      ctx.fillStyle = 'cyan'; // CHANGED: Enemy fire is now cyan for high visibility.
+      ctx.fillStyle = '#0f0'; // Enemy bullets are Matrix green
       enemyBullets.forEach(b => {
           ctx.fillRect(b.x - 2, b.y, 4, 15);
           b.y += b.speed;
@@ -162,20 +169,24 @@ function startGame() {
   function update() {
     if (gameOver || gameWon) return;
 
+    // Player movement
     if (keys['ArrowLeft'] && player.x > player.width / 2) player.x -= player.speed;
     if (keys['ArrowRight'] && player.x < canvas.width - player.width / 2) player.x += player.speed;
     
+    // Player shooting
     if (keys[' '] && Date.now() - lastFireTime > 300) {
       bullets.push({ x: player.x, y: player.y, speed: 7 });
       lastFireTime = Date.now();
     }
 
+    // Enemy movement and shooting
     let wallHit = false;
     enemies.forEach(enemy => {
       enemy.x += enemy.speed * enemy.direction;
       if (enemy.x <= 0 || enemy.x + enemy.width >= canvas.width) {
         wallHit = true;
       }
+      // Enemy firing
       if (Math.random() < 0.001 + (wave * 0.0002)) {
           enemyBullets.push({ x: enemy.x + enemy.width / 2, y: enemy.y + enemy.height, speed: 4 });
       }
@@ -184,15 +195,16 @@ function startGame() {
     if (wallHit) {
       enemies.forEach(enemy => {
         enemy.direction *= -1;
-        enemy.y += 20;
+        enemy.y += 20; // Move down
       });
     }
     
+    // Collision detection
     bullets.forEach((bullet, bIndex) => {
         enemies.forEach((enemy, eIndex) => {
             if (!enemy.isHit && bullet.x > enemy.x && bullet.x < enemy.x + enemy.width && bullet.y > enemy.y && bullet.y < enemy.y + enemy.height) {
                 enemy.isHit = true;
-                enemy.hitTimer = 10;
+                enemy.hitTimer = 10; // Frames to show de-rez effect
                 bullets.splice(bIndex, 1);
                 score += 10;
             }
@@ -209,6 +221,7 @@ function startGame() {
         }
     });
     
+    // Check for win condition
     if (enemies.length === 0 && !gameWon) {
         wave++;
         createEnemies();
@@ -239,8 +252,9 @@ function startGame() {
   }
 
   function gameLoop() {
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.2)'; // Fading effect
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+
     if (gameOver) {
         drawGameOver();
     } else {
@@ -251,6 +265,7 @@ function startGame() {
         drawEnemyBullets();
         drawHUD();
     }
+    
     animationFrameId = requestAnimationFrame(gameLoop);
   }
 
@@ -270,6 +285,7 @@ function startGame() {
       keys[e.key] = false;
   }
   
+  // Attach event listeners
   window.addEventListener('keydown', handleKeyDown);
   window.addEventListener('keyup', handleKeyUp);
   
@@ -286,7 +302,7 @@ function startGame() {
 }
 
 // =================================================================
-// ORIGINAL MATRIX BACKGROUND EFFECT (RESTORED TO ORIGINAL CODE)
+// ORIGINAL MATRIX BACKGROUND EFFECT (kept for the non-game parts)
 // =================================================================
 function initializeMatrixEffect() {
   const canvas = document.getElementById('matrix-canvas');
@@ -298,7 +314,7 @@ function initializeMatrixEffect() {
   function setup() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      const columns = Math.floor(canvas.width / 10); // Using 10px columns like original
+      const columns = Math.floor(canvas.width / 20);
       letters = [];
       for (let i = 0; i < columns; i++) {
           letters[i] = 1;
@@ -309,14 +325,13 @@ function initializeMatrixEffect() {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = '#0f0';
-    // Font size is not set, to match the original feel
+    ctx.font = '15pt monospace';
     
     letters.forEach((y, index) => {
-        // RESTORED: This is the original character generation code.
-        const text = String.fromCharCode(3e4 + Math.random() * 33); 
-        const x = index * 10;
-        ctx.fillText(text, x, y * 10);
-        if (y * 10 > canvas.height && Math.random() > 0.975) {
+        const text = String.fromCharCode(0x30A0 + Math.random() * 96); // Katakana characters
+        const x = index * 20;
+        ctx.fillText(text, x, y * 20);
+        if (y * 20 > canvas.height && Math.random() > 0.975) {
             letters[index] = 0;
         }
         letters[index]++;
