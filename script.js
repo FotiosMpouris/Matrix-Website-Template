@@ -1,241 +1,331 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ENTER THE MAGA MATRIX</title>
-  <link rel="stylesheet" href="style.css">
+function initializeMatrixEffect() {
+  const canvas = document.getElementById('matrix-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = 800; // Fixed size for game
+  canvas.height = 500;
+  const letters = Array(256).join("0").split("");
+
+  // Make drawMatrix accessible globally for the game
+  window.drawMatrix = function() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#0f0";
+    letters.forEach((y_pos, index) => {
+      const text = String.fromCharCode(3e4 + Math.random() * 33);
+      const x_pos = index * 10;
+      ctx.fillText(text, x_pos, y_pos);
+      if (y_pos > 100 + Math.random() * 1e5) letters[index] = 0;
+      else letters[index] = y_pos + 10;
+    });
+  };
+  setInterval(window.drawMatrix, 50);
+
+  window.addEventListener('resize', () => {
+    canvas.width = 800;
+    canvas.height = 500;
+  });
+}
+
+function startGame() {
+  const canvas = document.getElementById('matrix-canvas');
+  const ctx = canvas.getContext('2d');
+  const sections = document.querySelectorAll('.section');
+  sections.forEach(section => section.style.display = 'none');
+
+  let player = { x: 400, y: 450, width: 30, height: 30, speed: 5, lives: 5, hitTime: 0 };
+  let bullets = [];
+  let enemyBullets = [];
+  let enemies = [];
+  let score = 0;
+  let timeLeft = 60;
+  let lastFire = 0;
+  let lastEnemyFire = 0;
+  let wave = 1;
+  let gameActive = true; // New flag to control game state
+  const keys = {};
+  let letters = Array(150).join("0").split("");
+
+  // Matrix Rain
+  function drawMatrixRain() {
+    if (gameActive) {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, 800, 500);
+      ctx.fillStyle = "rgba(0, 255, 0, 0.5)";
+      letters.forEach((y_pos, index) => {
+        const text = String.fromCharCode(3e4 + Math.random() * 33);
+        const x_pos = index * 10;
+        ctx.fillText(text, x_pos, y_pos);
+        if (y_pos > 500) letters[index] = 0;
+        else letters[index] = y_pos + 3;
+      });
+    }
+  }
+
+  clearInterval(window.drawMatrixInterval);
+  window.drawMatrixInterval = setInterval(drawMatrixRain, 80);
+
+  function spawnEnemyWave() {
+    if (gameActive) {
+      const enemyCount = wave * 2;
+      const spacing = 800 / (enemyCount + 1);
+      for (let i = 0; i < enemyCount; i++) {
+        const x = (i + 1) * spacing + (Math.random() * 50 - 25);
+        enemies.push({
+          x: Math.max(20, Math.min(780, x)),
+          y: -20,
+          width: 20,
+          height: 20,
+          speed: 0.5 + wave * 0.1,
+        });
+      }
+      wave++;
+    }
+  }
+
+  setInterval(spawnEnemyWave, 5000);
+  spawnEnemyWave();
+
+  function gameLoop() {
+    if (!gameActive) return; // Exit if game is over
+
+    ctx.clearRect(0, 0, 800, 500);
+    drawMatrixRain();
+
+    // Player Ship (Triangle with glow on hit)
+    if (player.hitTime > 0) {
+      ctx.shadowBlur = 20;
+      ctx.shadowColor = "red";
+      player.hitTime -= 0.016;
+    } else {
+      ctx.shadowBlur = 0;
+    }
+    ctx.fillStyle = 'white';
+    ctx.beginPath();
+    ctx.moveTo(player.x, player.y - player.height / 2);
+    ctx.lineTo(player.x - player.width / 2, player.y + player.height / 2);
+    ctx.lineTo(player.x + player.width / 2, player.y + player.height / 2);
+    ctx.closePath();
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Move Player
+    if (keys['ArrowLeft'] && player.x - player.width / 2 > 0) player.x -= player.speed;
+    if (keys['ArrowRight'] && player.x + player.width / 2 < 800) player.x += player.speed;
+    if (keys[' '] && Date.now() - lastFire > 200) {
+      bullets.push({ x: player.x, y: player.y - player.height / 2, dy: -5 });
+      lastFire = Date.now();
+    }
+
+    // Player Bullets
+    ctx.fillStyle = 'red';
+    bullets = bullets.filter(b => b.y > 0);
+    bullets.forEach(b => {
+      ctx.fillRect(b.x - 2, b.y - 5, 4, 10);
+      b.y += b.dy;
+    });
+
+    // Enemy Bullets
+    ctx.fillStyle = 'blue';
+    enemyBullets = enemyBullets.filter(eb => eb.y < 500);
+    enemyBullets.forEach(eb => {
+      ctx.fillRect(eb.x - 2, eb.y, 4, 10);
+      eb.y += eb.dy;
+      if (Math.abs(eb.x - player.x) < 20 && Math.abs(eb.y - player.y) < 20) {
+        player.lives--;
+        player.hitTime = 0.5;
+        enemyBullets.splice(enemyBullets.indexOf(eb), 1);
+        if (player.lives <= 0) {
+          gameActive = false;
+          endGame('Game Over! Score: ' + score);
+        }
+      }
+    });
+
+    // Enemies (with tentacles)
+    ctx.fillStyle = 'blue';
+    enemies = enemies.filter(e => e.y < 500);
+    enemies.forEach((e, eIndex) => {
+      e.y += e.speed;
+      ctx.fillRect(e.x, e.y, e.width, e.height);
+      ctx.strokeStyle = 'blue';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(e.x + 5, e.y + 20);
+      ctx.lineTo(e.x + 5, e.y + 30);
+      ctx.moveTo(e.x + 15, e.y + 20);
+      ctx.lineTo(e.x + 15, e.y + 30);
+      ctx.stroke();
+
+      if (Date.now() - lastEnemyFire > 1000 && Math.random() < 0.02) {
+        enemyBullets.push({ x: e.x + e.width / 2, y: e.y + e.height, dy: 3 });
+        lastEnemyFire = Date.now();
+      }
+
+      bullets.forEach((b, bIndex) => {
+        if (Math.abs(b.x - e.x) < 20 && Math.abs(b.y - e.y) < 20) {
+          score += 10;
+          enemies.splice(eIndex, 1);
+          bullets.splice(bIndex, 1);
+        }
+      });
+
+      if (Math.abs(e.x - player.x) < 30 && Math.abs(e.y - player.y) < 30) {
+        player.lives--;
+        player.hitTime = 0.5;
+        enemies.splice(eIndex, 1);
+        if (player.lives <= 0) {
+          gameActive = false;
+          endGame('Game Over! Score: ' + score);
+        }
+      }
+    });
+
+    // Enhanced Scoreboard
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = 'rgba(0, 255, 0, 0.7)';
+    ctx.fillRect(10, 100, 250, 140);
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = 'rgba(0, 255, 0, 0.9)';
+    ctx.font = '24px Segoe UI';
+    ctx.fillText('Score: ' + score, 20, 140);
+    ctx.fillText('Lives: ' + player.lives, 20, 170);
+    ctx.fillText('Time: ' + Math.ceil(timeLeft) + 's', 20, 200);
+
+    if (timeLeft > 0) timeLeft -= 0.016;
+    else {
+      gameActive = false;
+      endGame('Victory! Score: ' + score);
+    }
+
+    if (gameActive) requestAnimationFrame(gameLoop);
+  }
+
+  function endGame(message) {
+    sections.forEach(section => section.style.display = 'block');
+    const existingPopup = document.querySelector('.game-popup');
+    if (existingPopup) existingPopup.remove();
+    const popup = document.createElement('div');
+    popup.className = 'game-popup';
+    popup.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); color: white; padding: 20px; border-radius: 10px; z-index: 1001; text-align: center; font-size: 1.5rem; box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);';
+    popup.innerHTML = `${message} <br>
+      <button id="replay-btn" style="margin-top: 10px; margin-right: 10px; padding: 5px 10px; background: var(--blood-red); color: white; border: none; cursor: pointer;">Replay</button>
+      <button id="ok-btn" style="margin-top: 10px; padding: 5px 10px; background: var(--blood-red); color: white; border: none; cursor: pointer;">OK</button>`;
+    document.body.appendChild(popup);
+
+    // Event delegation for buttons
+    popup.addEventListener('click', (e) => {
+      if (e.target.id === 'replay-btn') {
+        popup.remove();
+        startGame();
+      } else if (e.target.id === 'ok-btn') {
+        popup.remove();
+        window.location.reload();
+      }
+    });
+  }
+
+  // Mobile Check for Play Button
+  document.querySelector('button[onclick="startGame()"]').addEventListener('click', (e) => {
+    if (/Mobi|Android/i.test(navigator.userAgent)) {
+      e.preventDefault();
+      alert("It's too late for you to play. The Machines have taken over.");
+      return false;
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    keys[e.key] = true;
+  });
+  document.addEventListener('keyup', (e) => {
+    keys[e.key] = false;
+  });
+
+  gameLoop();
+}
+/* Particle Effects */
+function createParticle(e) {
+  const container = document.getElementById('particles-container');
+  if (!container) return;
+
+  const particle = document.createElement('div');
+  particle.className = 'particle';
+  particle.style.left = e.pageX + 'px';
+  particle.style.top = e.pageY + 'px';
+  container.appendChild(particle);
+
+  setTimeout(() => {
+    container.removeChild(particle);
+  }, 2000);
+}
+
+function createEnergyWave(x, y) {
+  const container = document.getElementById('particles-container');
+  if (!container) return;
+
+  const wave = document.createElement('div');
+  wave.className = 'energy-wave';
+  wave.style.left = (x - 100) + 'px';
+  wave.style.top = (y - 100) + 'px';
+  container.appendChild(wave);
+
+  setTimeout(() => {
+    container.removeChild(wave);
+  }, 3000);
+}
+
+/* Mobile Nav Toggles */
+function setupMobileNav() {
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const projectsToggleBtn = document.getElementById('projects-toggle-btn');
+  const mobileProjectsDropdown = document.getElementById('mobile-dropdown');
+
+  if (!hamburger || !mobileMenu) return;
   
-  <!-- 
-    FINAL STYLES
-    I've created a single '.terminal-box' style and applied it to all sections
-    for a unified, immersive, and mobile-friendly design.
-  -->
-  <style>
-    /* The Master Terminal Box Style */
-    .terminal-box {
-      background-color: #000000;
-      border: 2px solid #00ff00;
-      box-shadow: 0 0 20px rgba(0, 255, 0, 0.5), inset 0 0 15px rgba(0, 255, 0, 0.3);
-      padding: 2rem 1rem;
-      text-align: center;
-      animation: flicker 3s infinite;
-      font-family: 'Courier New', Courier, monospace;
-      color: #00ff00;
-      text-shadow: 0 0 5px #00ff00;
-    }
+  mobileMenu.classList.remove('open');
 
-    /* Flickering Animation */
-    @keyframes flicker {
-      0%, 100% {
-        box-shadow: 0 0 20px rgba(0, 255, 0, 0.5), inset 0 0 15px rgba(0, 255, 0, 0.3);
-        opacity: 1;
-      }
-      50% {
-        box-shadow: 0 0 25px rgba(0, 255, 0, 0.7), inset 0 0 20px rgba(0, 255, 0, 0.5);
-        opacity: 0.95;
-      }
-      52% {
-        opacity: 0.8;
-      }
-      55% {
-        opacity: 1;
-      }
-    }
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+  });
 
-    /* Styling for Header and other Text inside Terminal Boxes */
-    .terminal-box h1, .terminal-box h2 {
-      color: #00ff00;
-      text-shadow: 0 0 8px #00ff00;
-      text-transform: uppercase;
-      margin: 0;
-      padding: 0;
+  if (projectsToggleBtn && mobileProjectsDropdown) {
+    projectsToggleBtn.addEventListener('click', () => {
+      mobileProjectsDropdown.classList.toggle('open');
+    });
+  }
+  
+  document.addEventListener('click', (e) => {
+    if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+      mobileMenu.classList.remove('open');
     }
-    .terminal-box h1 {
-      font-size: 3.5rem;
-    }
-    .terminal-box h2 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-    .terminal-box p {
-      color: #00ff00;
-      font-size: 1.1rem;
-    }
-    .terminal-box .maga-red {
-      color: #ff0000;
-      text-shadow: 0 0 15px #ff0000, 0 0 5px #ff0000;
-    }
-    .terminal-box .subtitle {
-      color: #39ff14; /* Brighter green for subtitles */
-    }
+  });
+}
 
-    /* Specific Styles for the scrollable promises box */
-    #promises .terminal-box {
-      max-height: 75vh;
-      overflow-y: auto;
-      text-align: left;
-      padding: 1.5rem 2rem;
-    }
-    #promises .terminal-box h3, #promises .terminal-box h4 {
-      color: #39ff14;
-      text-transform: uppercase;
-    }
-    #promises .terminal-box h3 {
-      border-bottom: 1px solid #00ff00;
-      padding-bottom: 5px;
-      margin-bottom: 1rem;
-    }
-    #promises .terminal-box strong {
-      color: #adff2f;
-    }
+function handleScroll() {
+  const hamburger = document.getElementById('hamburger');
+  if (!hamburger) return;
 
-    /* Enhanced Buttons and Pills */
-    .terminal-box .game-button {
-      padding: 1rem 2rem;
-      background: var(--blood-red);
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      margin-top: 1rem;
-      font-size: 1.2rem;
-      font-family: 'Courier New', Courier, monospace;
-      text-transform: uppercase;
-      box-shadow: 0 0 15px var(--blood-red);
-      transition: all 0.3s ease;
-    }
-    .terminal-box .game-button:hover {
-      box-shadow: 0 0 25px var(--blood-red), 0 0 10px #fff;
-      transform: scale(1.05);
-    }
-    .terminal-box .pill {
-      box-shadow: 0 0 10px; /* Base shadow */
-    }
-    .terminal-box .pill.red-pill {
-      box-shadow: 0 0 15px var(--blood-red);
-    }
-    .terminal-box .pill.blue-pill {
-      box-shadow: 0 0 15px var(--accent-blue);
-    }
+  if (window.scrollY > 50) {
+    hamburger.classList.add('scrolled');
+  } else {
+    hamburger.classList.remove('scrolled');
+  }
+}
 
-    /* Custom Scrollbar for Terminal */
-    .terminal-box::-webkit-scrollbar {
-      width: 10px;
-    }
-    .terminal-box::-webkit-scrollbar-track {
-      background: #000;
-      border-left: 1px solid #00ff00;
-    }
-    .terminal-box::-webkit-scrollbar-thumb {
-      background: #00ff00;
-      box-shadow: 0 0 5px #00ff00;
-    }
-    
-    /* Scanline Overlay Effect for scrollable promises box */
-    #promises .terminal-box::before {
-      content: " ";
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-      z-index: 2;
-      background-size: 100% 3px, 4px 100%;
-      pointer-events: none;
-    }
+document.addEventListener('DOMContentLoaded', () => {
+  initializeMatrixEffect();
 
-    /* Mobile-Friendly Adjustments */
-    @media (max-width: 768px) {
-      .terminal-box h1 {
-        font-size: 2.5rem;
-      }
-      .terminal-box h2 {
-        font-size: 1.8rem;
-      }
-      .terminal-box {
-        padding: 1.5rem 1rem;
-      }
-      #promises .terminal-box {
-        padding: 1rem 1.5rem;
-      }
-    }
-  </style>
+  const mobileMenu = document.getElementById('mobile-menu');
+  if (mobileMenu) mobileMenu.classList.remove('open');
 
-</head>
-<body>
-  <canvas id="matrix-canvas"></canvas>
-  <div id="particles-container" class="particles-container"></div>
+  document.addEventListener('click', (e) => {
+    createParticle(e);
+    createEnergyWave(e.pageX, e.pageY);
+  });
 
-  <!-- Main Welcome Section -->
-  <section id="home" class="section">
-    <div class="terminal-box">
-      <h1>THE <span class="maga-red">MAGA</span> MATRIX</h1>
-    </div>
-  </section>
+  setupMobileNav();
+  window.addEventListener('scroll', handleScroll);
+});
 
-  <!-- MAGA Campaign Promises Section -->
-  <section id="promises" class="section">
-    <div class="terminal-box">
-        <h2 style="text-align: center;">> MAGA CAMPAIGN PROMISES_</h2>
-        <p class="subtitle" style="text-align: center; margin-bottom: 2rem;">// INITIATING DATA STREAM: TRUMP 2024 DIRECTIVES //</p>
-        
-        <h3>Economic and Tax Policy</h3>
-        <h4>>> No Taxes on Tips</h4>
-        <p><strong>Promise:</strong> Eliminate federal income taxes on tips to support service industry workers.</p>
-        <p><strong>Context/Status:</strong> Proposed during 2024 campaign rallies. House Budget Committee estimated a $100 billion cost over a decade. Reports suggest implementation as a capped tax credit, not a full exemption. As of July 2025, no comprehensive legislation has passed.</p>
-        <p><strong>Sentiment:</strong> Supporters on X view this as partially unfulfilled due to the capped credit structure.</p>
 
-        <h4>>> No Taxes on Overtime Pay</h4>
-        <p><strong>Promise:</strong> Exempt overtime wages from federal income taxes to benefit workers.</p>
-        <p><strong>Context/Status:</strong> Implemented as a capped tax credit, not a full exemption, disappointing some supporters. No major legislative progress reported by July 2025.</p>
-        
-        <h3>Immigration and Border Security</h3>
-        <h4>>> Largest Mass Deportation Program</h4>
-        <p><strong>Promise:</strong> Launch the largest deportation operation in U.S. history, starting Day 1.</p>
-        <p><strong>Context/Status:</strong> A cornerstone of the campaign. Border encounters dropped 66% in January 2025. Deportation numbers remain lower than under previous administrations due to reduced encounters. No large-scale operation reported by July 2025.</p>
-        
-        <h3>Transparency and Investigations</h3>
-        <h4>>> Release Jeffrey Epstein Files</h4>
-        <p><strong>Promise:</strong> Declassify and release Epstein-related documents.</p>
-        <p><strong>Context/Status:</strong> A July 2025 DOJ/FBI memo declared no “incriminating client list” exists and reaffirmed Epstein’s 2019 suicide. A “Phase 1” release was criticized as a political stunt. Trump downplayed ongoing interest, frustrating supporters.</p>
-        
-        <h3>Government Reform and Justice</h3>
-        <h4>>> Pardon January 6 Convicts</h4>
-        <p><strong>Promise:</strong> Issue full pardons for those convicted or charged in the January 6, 2021, Capitol riot.</p>
-        <p><strong>Context/Status:</strong> Fulfilled on Day 1 with clemency for over 1,500 defendants.</p>
-
-        <h3>Analysis and Sentiment</h3>
-        <p><strong>Fulfilled:</strong> January 6 pardons, initial tariff actions.</p>
-        <p><strong>Partially Fulfilled:</strong> Tax promises on tips/overtime (capped credits), border security (reduced crossings but no mass deportation).</p>
-        <p><strong>Unfulfilled:</strong> Epstein/JFK file releases, Fort Knox audit, ending Russia-Ukraine war.</p>
-        <p><strong>Sentiment on X:</strong> Growing disillusionment, particularly over transparency promises.
-        <br>> END DATA STREAM_</p>
-    </div>
-  </section>
-
-  <!-- Game Section -->
-  <section id="game" class="section">
-    <div class="terminal-box">
-      <h2>> ENGAGE THE SIMULATION</h2>
-      <p class="subtitle">THE AGENTS ARE COMING. ESCAPE THE MATRIX.</p>
-      <button onclick="startGame()" class="game-button">START RED PILL ESCAPE</button>
-    </div>
-  </section>
-
-  <!-- Uplink Section -->
-  <section id="uplink" class="section">
-    <div class="terminal-box">
-      <h2>> UPLINK TO FREEDOM</h2>
-      <p class="subtitle" style="margin-bottom: 1rem;">CHOOSE YOUR DESTINY</p>
-      <div class="pill-choice" style="display: flex; gap: 1rem; justify-content: center; margin: 1rem 0;">
-        <div class="pill red-pill" onclick="alert('You’re in—freedom awaits, rebel!')">RED PILL</div>
-        <div class="pill blue-pill" onclick="alert('Coward’s way out—back to the simulation.')">BLUE PILL</div>
-      </div>
-    </div>
-  </section>
-
-  <script src="script.js"></script>
-</body>
-</html>
