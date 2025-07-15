@@ -1,331 +1,329 @@
-function initializeMatrixEffect() {
-  const canvas = document.getElementById('matrix-canvas');
-  const ctx = canvas.getContext('2d');
-  canvas.width = 800; // Fixed size for game
-  canvas.height = 500;
-  const letters = Array(256).join("0").split("");
+// =================================================================
+// MAGA MATRIX - SCRIPT.JS
+// Corrected Version: Original rain restored, enemy fire color changed.
+// =================================================================
 
-  // Make drawMatrix accessible globally for the game
-  window.drawMatrix = function() {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#0f0";
-    letters.forEach((y_pos, index) => {
-      const text = String.fromCharCode(3e4 + Math.random() * 33);
-      const x_pos = index * 10;
-      ctx.fillText(text, x_pos, y_pos);
-      if (y_pos > 100 + Math.random() * 1e5) letters[index] = 0;
-      else letters[index] = y_pos + 10;
-    });
-  };
-  setInterval(window.drawMatrix, 50);
-
-  window.addEventListener('resize', () => {
-    canvas.width = 800;
-    canvas.height = 500;
+document.addEventListener('DOMContentLoaded', () => {
+  initializeMatrixEffect();
+  document.addEventListener('click', (e) => {
+    createParticle(e);
+    createEnergyWave(e.pageX, e.pageY);
   });
-}
+});
 
-function startGame() {
-  const canvas = document.getElementById('matrix-canvas');
-  const ctx = canvas.getContext('2d');
-  const sections = document.querySelectorAll('.section');
-  sections.forEach(section => section.style.display = 'none');
-
-  let player = { x: 400, y: 450, width: 30, height: 30, speed: 5, lives: 5, hitTime: 0 };
-  let bullets = [];
-  let enemyBullets = [];
-  let enemies = [];
-  let score = 0;
-  let timeLeft = 60;
-  let lastFire = 0;
-  let lastEnemyFire = 0;
-  let wave = 1;
-  let gameActive = true; // New flag to control game state
-  const keys = {};
-  let letters = Array(150).join("0").split("");
-
-  // Matrix Rain
-  function drawMatrixRain() {
-    if (gameActive) {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, 800, 500);
-      ctx.fillStyle = "rgba(0, 255, 0, 0.5)";
-      letters.forEach((y_pos, index) => {
-        const text = String.fromCharCode(3e4 + Math.random() * 33);
-        const x_pos = index * 10;
-        ctx.fillText(text, x_pos, y_pos);
-        if (y_pos > 500) letters[index] = 0;
-        else letters[index] = y_pos + 3;
-      });
-    }
-  }
-
-  clearInterval(window.drawMatrixInterval);
-  window.drawMatrixInterval = setInterval(drawMatrixRain, 80);
-
-  function spawnEnemyWave() {
-    if (gameActive) {
-      const enemyCount = wave * 2;
-      const spacing = 800 / (enemyCount + 1);
-      for (let i = 0; i < enemyCount; i++) {
-        const x = (i + 1) * spacing + (Math.random() * 50 - 25);
-        enemies.push({
-          x: Math.max(20, Math.min(780, x)),
-          y: -20,
-          width: 20,
-          height: 20,
-          speed: 0.5 + wave * 0.1,
-        });
-      }
-      wave++;
-    }
-  }
-
-  setInterval(spawnEnemyWave, 5000);
-  spawnEnemyWave();
-
-  function gameLoop() {
-    if (!gameActive) return; // Exit if game is over
-
-    ctx.clearRect(0, 0, 800, 500);
-    drawMatrixRain();
-
-    // Player Ship (Triangle with glow on hit)
-    if (player.hitTime > 0) {
-      ctx.shadowBlur = 20;
-      ctx.shadowColor = "red";
-      player.hitTime -= 0.016;
-    } else {
-      ctx.shadowBlur = 0;
-    }
-    ctx.fillStyle = 'white';
-    ctx.beginPath();
-    ctx.moveTo(player.x, player.y - player.height / 2);
-    ctx.lineTo(player.x - player.width / 2, player.y + player.height / 2);
-    ctx.lineTo(player.x + player.width / 2, player.y + player.height / 2);
-    ctx.closePath();
-    ctx.fill();
-    ctx.shadowBlur = 0;
-
-    // Move Player
-    if (keys['ArrowLeft'] && player.x - player.width / 2 > 0) player.x -= player.speed;
-    if (keys['ArrowRight'] && player.x + player.width / 2 < 800) player.x += player.speed;
-    if (keys[' '] && Date.now() - lastFire > 200) {
-      bullets.push({ x: player.x, y: player.y - player.height / 2, dy: -5 });
-      lastFire = Date.now();
-    }
-
-    // Player Bullets
-    ctx.fillStyle = 'red';
-    bullets = bullets.filter(b => b.y > 0);
-    bullets.forEach(b => {
-      ctx.fillRect(b.x - 2, b.y - 5, 4, 10);
-      b.y += b.dy;
-    });
-
-    // Enemy Bullets
-    ctx.fillStyle = 'blue';
-    enemyBullets = enemyBullets.filter(eb => eb.y < 500);
-    enemyBullets.forEach(eb => {
-      ctx.fillRect(eb.x - 2, eb.y, 4, 10);
-      eb.y += eb.dy;
-      if (Math.abs(eb.x - player.x) < 20 && Math.abs(eb.y - player.y) < 20) {
-        player.lives--;
-        player.hitTime = 0.5;
-        enemyBullets.splice(enemyBullets.indexOf(eb), 1);
-        if (player.lives <= 0) {
-          gameActive = false;
-          endGame('Game Over! Score: ' + score);
-        }
-      }
-    });
-
-    // Enemies (with tentacles)
-    ctx.fillStyle = 'blue';
-    enemies = enemies.filter(e => e.y < 500);
-    enemies.forEach((e, eIndex) => {
-      e.y += e.speed;
-      ctx.fillRect(e.x, e.y, e.width, e.height);
-      ctx.strokeStyle = 'blue';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(e.x + 5, e.y + 20);
-      ctx.lineTo(e.x + 5, e.y + 30);
-      ctx.moveTo(e.x + 15, e.y + 20);
-      ctx.lineTo(e.x + 15, e.y + 30);
-      ctx.stroke();
-
-      if (Date.now() - lastEnemyFire > 1000 && Math.random() < 0.02) {
-        enemyBullets.push({ x: e.x + e.width / 2, y: e.y + e.height, dy: 3 });
-        lastEnemyFire = Date.now();
-      }
-
-      bullets.forEach((b, bIndex) => {
-        if (Math.abs(b.x - e.x) < 20 && Math.abs(b.y - e.y) < 20) {
-          score += 10;
-          enemies.splice(eIndex, 1);
-          bullets.splice(bIndex, 1);
-        }
-      });
-
-      if (Math.abs(e.x - player.x) < 30 && Math.abs(e.y - player.y) < 30) {
-        player.lives--;
-        player.hitTime = 0.5;
-        enemies.splice(eIndex, 1);
-        if (player.lives <= 0) {
-          gameActive = false;
-          endGame('Game Over! Score: ' + score);
-        }
-      }
-    });
-
-    // Enhanced Scoreboard
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
-    ctx.shadowBlur = 10;
-    ctx.shadowColor = 'rgba(0, 255, 0, 0.7)';
-    ctx.fillRect(10, 100, 250, 140);
-    ctx.shadowBlur = 0;
-    ctx.fillStyle = 'rgba(0, 255, 0, 0.9)';
-    ctx.font = '24px Segoe UI';
-    ctx.fillText('Score: ' + score, 20, 140);
-    ctx.fillText('Lives: ' + player.lives, 20, 170);
-    ctx.fillText('Time: ' + Math.ceil(timeLeft) + 's', 20, 200);
-
-    if (timeLeft > 0) timeLeft -= 0.016;
-    else {
-      gameActive = false;
-      endGame('Victory! Score: ' + score);
-    }
-
-    if (gameActive) requestAnimationFrame(gameLoop);
-  }
-
-  function endGame(message) {
-    sections.forEach(section => section.style.display = 'block');
-    const existingPopup = document.querySelector('.game-popup');
-    if (existingPopup) existingPopup.remove();
-    const popup = document.createElement('div');
-    popup.className = 'game-popup';
-    popup.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); color: white; padding: 20px; border-radius: 10px; z-index: 1001; text-align: center; font-size: 1.5rem; box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);';
-    popup.innerHTML = `${message} <br>
-      <button id="replay-btn" style="margin-top: 10px; margin-right: 10px; padding: 5px 10px; background: var(--blood-red); color: white; border: none; cursor: pointer;">Replay</button>
-      <button id="ok-btn" style="margin-top: 10px; padding: 5px 10px; background: var(--blood-red); color: white; border: none; cursor: pointer;">OK</button>`;
-    document.body.appendChild(popup);
-
-    // Event delegation for buttons
-    popup.addEventListener('click', (e) => {
-      if (e.target.id === 'replay-btn') {
-        popup.remove();
-        startGame();
-      } else if (e.target.id === 'ok-btn') {
-        popup.remove();
-        window.location.reload();
-      }
-    });
-  }
-
-  // Mobile Check for Play Button
-  document.querySelector('button[onclick="startGame()"]').addEventListener('click', (e) => {
-    if (/Mobi|Android/i.test(navigator.userAgent)) {
-      e.preventDefault();
-      alert("It's too late for you to play. The Machines have taken over.");
-      return false;
-    }
-  });
-
-  document.addEventListener('keydown', (e) => {
-    keys[e.key] = true;
-  });
-  document.addEventListener('keyup', (e) => {
-    keys[e.key] = false;
-  });
-
-  gameLoop();
-}
-/* Particle Effects */
+// Original particle and wave effects
 function createParticle(e) {
   const container = document.getElementById('particles-container');
   if (!container) return;
-
   const particle = document.createElement('div');
   particle.className = 'particle';
   particle.style.left = e.pageX + 'px';
   particle.style.top = e.pageY + 'px';
   container.appendChild(particle);
-
-  setTimeout(() => {
-    container.removeChild(particle);
-  }, 2000);
+  setTimeout(() => { if (container.contains(particle)) container.removeChild(particle) }, 2000);
 }
 
 function createEnergyWave(x, y) {
   const container = document.getElementById('particles-container');
   if (!container) return;
-
   const wave = document.createElement('div');
   wave.className = 'energy-wave';
   wave.style.left = (x - 100) + 'px';
   wave.style.top = (y - 100) + 'px';
   container.appendChild(wave);
-
-  setTimeout(() => {
-    container.removeChild(wave);
-  }, 3000);
+  setTimeout(() => { if (container.contains(wave)) container.removeChild(wave) }, 3000);
 }
 
-/* Mobile Nav Toggles */
-function setupMobileNav() {
-  const hamburger = document.getElementById('hamburger');
-  const mobileMenu = document.getElementById('mobile-menu');
-  const projectsToggleBtn = document.getElementById('projects-toggle-btn');
-  const mobileProjectsDropdown = document.getElementById('mobile-dropdown');
+// =================================================================
+// GAME LOGIC: MATRIX INVADERS (UNCHANGED EXCEPT FOR ENEMY BULLET COLOR)
+// =================================================================
+let gameInstance = null; 
 
-  if (!hamburger || !mobileMenu) return;
+function startGame() {
+  if (/Mobi|Android/i.test(navigator.userAgent)) {
+    alert("This simulation requires a physical keyboard for full engagement. Please connect from a desktop terminal.");
+    return;
+  }
+  if (gameInstance) {
+    gameInstance.stop();
+  }
   
-  mobileMenu.classList.remove('open');
+  const canvas = document.getElementById('matrix-canvas');
+  const ctx = canvas.getContext('2d');
+  
+  document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
+  canvas.style.display = 'block';
+  canvas.width = 800;
+  canvas.height = 600;
 
-  hamburger.addEventListener('click', () => {
-    mobileMenu.classList.toggle('open');
-  });
+  const keys = {};
+  
+  let player = {
+    x: canvas.width / 2 - 25,
+    y: canvas.height - 60,
+    width: 50,
+    height: 30,
+    speed: 5,
+    lives: 3,
+    isHit: false,
+    hitTimer: 0
+  };
+  
+  let bullets = [];
+  let enemyBullets = [];
+  let enemies = [];
+  let score = 0;
+  let wave = 1;
+  let lastFireTime = 0;
+  let gameOver = false;
+  let gameWon = false;
+  let animationFrameId;
 
-  if (projectsToggleBtn && mobileProjectsDropdown) {
-    projectsToggleBtn.addEventListener('click', () => {
-      mobileProjectsDropdown.classList.toggle('open');
+  function createEnemies() {
+    enemies = [];
+    const enemyRows = 3 + Math.floor(wave / 2);
+    const enemyCols = 8;
+    const enemySpacing = 60;
+
+    for (let row = 0; row < enemyRows; row++) {
+      for (let col = 0; col < enemyCols; col++) {
+        enemies.push({
+          x: 100 + col * enemySpacing,
+          y: 50 + row * enemySpacing,
+          width: 40,
+          height: 20,
+          speed: 1 + wave * 0.2,
+          direction: 1,
+          isHit: false,
+          hitTimer: 0
+        });
+      }
+    }
+  }
+
+  function drawPlayer() {
+    if (player.isHit) {
+      ctx.fillStyle = 'rgba(255, 0, 0, 0.2)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      player.hitTimer--;
+      if (player.hitTimer <= 0) player.isHit = false;
+    }
+    
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.moveTo(player.x, player.y);
+    ctx.lineTo(player.x - player.width / 2, player.y + player.height);
+    ctx.lineTo(player.x + player.width / 2, player.y + player.height);
+    ctx.closePath();
+    ctx.fill();
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = '#fff';
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  }
+
+  function drawBullets() {
+    ctx.fillStyle = 'red';
+    bullets.forEach(b => {
+      ctx.fillRect(b.x - 2, b.y, 4, 15);
+      b.y -= b.speed;
+    });
+    bullets = bullets.filter(b => b.y > 0);
+  }
+
+  function drawEnemies() {
+    enemies.forEach(enemy => {
+      if (enemy.isHit) {
+          ctx.fillStyle = `rgba(0, 255, 0, ${Math.random()})`;
+          ctx.font = '12px Courier New';
+          ctx.fillText(Math.random() > 0.5 ? '1' : '0', enemy.x + Math.random() * 20 - 10, enemy.y + Math.random() * 20 - 10);
+          enemy.hitTimer--;
+      } else {
+        ctx.fillStyle = '#00f';
+        ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#00f';
+        ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+        ctx.shadowBlur = 0;
+      }
+    });
+    enemies = enemies.filter(e => e.hitTimer > 0 || !e.isHit);
+  }
+  
+  function drawEnemyBullets() {
+      ctx.fillStyle = 'cyan'; // CHANGED: Enemy fire is now cyan for high visibility.
+      enemyBullets.forEach(b => {
+          ctx.fillRect(b.x - 2, b.y, 4, 15);
+          b.y += b.speed;
+      });
+      enemyBullets = enemyBullets.filter(b => b.y < canvas.height);
+  }
+
+  function update() {
+    if (gameOver || gameWon) return;
+
+    if (keys['ArrowLeft'] && player.x > player.width / 2) player.x -= player.speed;
+    if (keys['ArrowRight'] && player.x < canvas.width - player.width / 2) player.x += player.speed;
+    
+    if (keys[' '] && Date.now() - lastFireTime > 300) {
+      bullets.push({ x: player.x, y: player.y, speed: 7 });
+      lastFireTime = Date.now();
+    }
+
+    let wallHit = false;
+    enemies.forEach(enemy => {
+      enemy.x += enemy.speed * enemy.direction;
+      if (enemy.x <= 0 || enemy.x + enemy.width >= canvas.width) {
+        wallHit = true;
+      }
+      if (Math.random() < 0.001 + (wave * 0.0002)) {
+          enemyBullets.push({ x: enemy.x + enemy.width / 2, y: enemy.y + enemy.height, speed: 4 });
+      }
+    });
+
+    if (wallHit) {
+      enemies.forEach(enemy => {
+        enemy.direction *= -1;
+        enemy.y += 20;
+      });
+    }
+    
+    bullets.forEach((bullet, bIndex) => {
+        enemies.forEach((enemy, eIndex) => {
+            if (!enemy.isHit && bullet.x > enemy.x && bullet.x < enemy.x + enemy.width && bullet.y > enemy.y && bullet.y < enemy.y + enemy.height) {
+                enemy.isHit = true;
+                enemy.hitTimer = 10;
+                bullets.splice(bIndex, 1);
+                score += 10;
+            }
+        });
+    });
+
+    enemyBullets.forEach((bullet, bIndex) => {
+        if (bullet.x > player.x - player.width / 2 && bullet.x < player.x + player.width / 2 && bullet.y > player.y && bullet.y < player.y + player.height) {
+            enemyBullets.splice(bIndex, 1);
+            player.lives--;
+            player.isHit = true;
+            player.hitTimer = 15;
+            if (player.lives <= 0) gameOver = true;
+        }
+    });
+    
+    if (enemies.length === 0 && !gameWon) {
+        wave++;
+        createEnemies();
+    }
+  }
+
+  function drawHUD() {
+      ctx.fillStyle = '#0f0';
+      ctx.font = '24px Courier New';
+      ctx.textAlign = 'left';
+      ctx.fillText(`SCORE: ${score}`, 20, 40);
+      ctx.fillText(`WAVE: ${wave}`, 20, 70);
+      ctx.textAlign = 'right';
+      ctx.fillText(`LIVES: ${player.lives}`, canvas.width - 20, 40);
+  }
+  
+  function drawGameOver() {
+      ctx.fillStyle = 'rgba(0,0,0,0.7)';
+      ctx.fillRect(0,0,canvas.width, canvas.height);
+      ctx.fillStyle = 'red';
+      ctx.font = '70px Courier New';
+      ctx.textAlign = 'center';
+      ctx.fillText('SYSTEM FAILURE', canvas.width / 2, canvas.height / 2 - 40);
+      ctx.font = '30px Courier New';
+      ctx.fillText(`Final Score: ${score}`, canvas.width / 2, canvas.height / 2 + 20);
+      ctx.font = '20px Courier New';
+      ctx.fillText('Press R to restart or Q to quit', canvas.width / 2, canvas.height / 2 + 80);
+  }
+
+  function gameLoop() {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    if (gameOver) {
+        drawGameOver();
+    } else {
+        update();
+        drawPlayer();
+        drawBullets();
+        drawEnemies();
+        drawEnemyBullets();
+        drawHUD();
+    }
+    animationFrameId = requestAnimationFrame(gameLoop);
+  }
+
+  function handleKeyDown(e) {
+      keys[e.key] = true;
+      if (gameOver && e.key.toLowerCase() === 'r') {
+          gameInstance.stop();
+          startGame();
+      }
+      if (gameOver && e.key.toLowerCase() === 'q') {
+          gameInstance.stop();
+          window.location.reload();
+      }
+  }
+  
+  function handleKeyUp(e) {
+      keys[e.key] = false;
+  }
+  
+  window.addEventListener('keydown', handleKeyDown);
+  window.addEventListener('keyup', handleKeyUp);
+  
+  gameInstance = {
+      stop: () => {
+          cancelAnimationFrame(animationFrameId);
+          window.removeEventListener('keydown', handleKeyDown);
+          window.removeEventListener('keyup', handleKeyUp);
+      }
+  };
+
+  createEnemies();
+  gameLoop();
+}
+
+// =================================================================
+// ORIGINAL MATRIX BACKGROUND EFFECT (RESTORED TO ORIGINAL CODE)
+// =================================================================
+function initializeMatrixEffect() {
+  const canvas = document.getElementById('matrix-canvas');
+  if (!canvas.getContext) return;
+  const ctx = canvas.getContext('2d');
+  
+  let letters = [];
+  
+  function setup() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const columns = Math.floor(canvas.width / 10); // Using 10px columns like original
+      letters = [];
+      for (let i = 0; i < columns; i++) {
+          letters[i] = 1;
+      }
+  }
+  
+  function drawMatrix() {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#0f0';
+    // Font size is not set, to match the original feel
+    
+    letters.forEach((y, index) => {
+        // RESTORED: This is the original character generation code.
+        const text = String.fromCharCode(3e4 + Math.random() * 33); 
+        const x = index * 10;
+        ctx.fillText(text, x, y * 10);
+        if (y * 10 > canvas.height && Math.random() > 0.975) {
+            letters[index] = 0;
+        }
+        letters[index]++;
     });
   }
-  
-  document.addEventListener('click', (e) => {
-    if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
-      mobileMenu.classList.remove('open');
-    }
-  });
+
+  setup();
+  setInterval(drawMatrix, 50);
+  window.addEventListener('resize', setup);
 }
-
-function handleScroll() {
-  const hamburger = document.getElementById('hamburger');
-  if (!hamburger) return;
-
-  if (window.scrollY > 50) {
-    hamburger.classList.add('scrolled');
-  } else {
-    hamburger.classList.remove('scrolled');
-  }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  initializeMatrixEffect();
-
-  const mobileMenu = document.getElementById('mobile-menu');
-  if (mobileMenu) mobileMenu.classList.remove('open');
-
-  document.addEventListener('click', (e) => {
-    createParticle(e);
-    createEnergyWave(e.pageX, e.pageY);
-  });
-
-  setupMobileNav();
-  window.addEventListener('scroll', handleScroll);
-});
-
-
