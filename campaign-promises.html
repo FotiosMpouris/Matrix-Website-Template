@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAGA CAMPAIGN PROMISES - MAGA MATRIX</title>
+  <link rel="stylesheet" href="style.css">
+  
+  <style>
+    /* Time warp vortex effect */
+    #time-warp {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, 
+        transparent 0%, 
+        rgba(255, 0, 0, 0.1) 25%,
+        rgba(0, 255, 0, 0.2) 50%,
+        rgba(0, 0, 0, 0.9) 75%,
+        #000 100%);
+      animation: vortexSpin 3s ease-out forwards, vortexFade 3s ease-out forwards;
+      z-index: 10000;
+      pointer-events: none;
+    }
+
+    @keyframes vortexSpin {
+      0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(2) rotate(360deg);
+        opacity: 0.8;
+      }
+      100% {
+        transform: scale(10) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    @keyframes vortexFade {
+      0%, 70% {
+        visibility: visible;
+      }
+      100% {
+        visibility: hidden;
+      }
+    }
+
+    /* Glitch text effect on load */
+    .glitch-title {
+      animation: glitchText 0.5s infinite;
+    }
+
+    @keyframes glitchText {
+      0% {
+        text-shadow: 0 0 5px #ff0000, 0 0 10px #00ff00;
+        transform: translate(0);
+      }
+      20% {
+        text-shadow: -2px 0 #ff0000, 2px 0 #00ff00;
+        transform: translate(-2px, 2px);
+      }
+      40% {
+        text-shadow: 2px 0 #ff0000, -2px 0 #00ff00;
+        transform: translate(2px, -2px);
+      }
+      60% {
+        text-shadow: 0 2px #ff0000, 0 -2px #00ff00;
+        transform: translate(-2px, 0);
+      }
+      80% {
+        text-shadow: 2px -2px #ff0000, -2px 2px #00ff00;
+        transform: translate(2px, 0);
+      }
+      100% {
+        text-shadow: 0 0 5px #ff0000, 0 0 10px #00ff00;
+        transform: translate(0);
+      }
+    }
+
+    /* Make back button visible */
+    .back-button {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      padding: 10px 20px;
+      background: rgba(255, 0, 0, 0.3);
+      border: 2px solid #ff0000;
+      color: #fff;
+      text-decoration: none;
+      font-family: 'Courier New', monospace;
+      text-transform: uppercase;
+      z-index: 1001;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    }
+
+    .back-button:hover {
+      background: rgba(255, 0, 0, 0.6);
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+      transform: scale(1.05);
+    }
+
+    /* Dark overlay for readability */
+    #promises .terminal-box {
+      background: rgba(0, 0, 0, 0.85);
+      position: relative;
+    }
+
+    /* Ensure text is bright and crisp */
+    #promises .terminal-box p,
+    #promises .terminal-box h3,
+    #promises .terminal-box h4 {
+      text-shadow: none;
+      position: relative;
+      z-index: 1;
+    }
+
+    #promises .terminal-box h3 {
+      color: #39ff14;
+    }
+
+    #promises .terminal-box h4 {
+      color: #adff2f;
+    }
+
+    #promises .terminal-box p {
+      color: #c0ffc0;
+      line-height: 1.8;
+    }
+
+    #promises .terminal-box strong {
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <!-- Time Warp Vortex Effect -->
+  <div id="time-warp"></div>
+
+  <!-- Matrix Canvas Background -->
+  <canvas id="matrix-canvas"></canvas>
+
+  <!-- Back Button -->
+  <a href="index.html#home" class="back-button">← RETURN TO MATRIX</a>
+
+  <!-- MAGA Campaign Promises Section -->
+  <section id="promises" class="section">
+    <div class="terminal-box">
+        <h2 class="glitch-title" style="text-align: center;">> MAGA CAMPAIGN PROMISES_</h2>
+        <p class="subtitle" style="text-align: center; margin-bottom: 2rem;">// INITIATING DATA STREAM: TRUMP 2024 DIRECTIVES //</p>
+        
+    <h3>Economic and Tax Policy</h3>
+    <h4>>> No Taxes on Tips</h4>
+    <p><strong>Promise:</strong> Eliminate federal income taxes on tips to support service industry workers.</p>
+    <p><strong>Context/Status:</strong> Implemented via the "One Big Beautiful Bill Act" signed on July 4, 2025, providing a deduction of up to $25,000 on qualified tips through 2028. Effective for tax year 2025 with IRS guidance for transition relief. Critics note it's capped and sunsets after 2028, limiting full exemption. As of October 3, 2025, the policy is in effect but faces scrutiny for not fully eliminating taxes as promised.</p>
+    <p><strong>Sentiment:</strong> Mixed on X; supporters praise worker relief, but many criticize caps and sunsetting as partial fulfillment, calling it a "broken promise."</p>
+
+    <h4>>> No Taxes on Overtime Pay</h4>
+    <p><strong>Promise:</strong> Exempt overtime wages from federal income taxes to benefit workers.</p>
+    <p><strong>Context/Status:</strong> Included in the "One Big Beautiful Bill Act" of July 2025, offering a deduction through 2028 with similar caps. No full exemption achieved. As of October 3, 2025, it's partially implemented but criticized for limitations.</p>
+    <p><strong>Sentiment:</strong> Frustration on X over the capped structure, with users labeling it unfulfilled.</p>
+
+    <h4>>> No Taxes on Social Security Benefits</h4>
+    <p><strong>Promise:</strong> Eliminate taxes on Social Security benefits for retirees.</p>
+    <p><strong>Context/Status:</strong> Partially addressed in the July 2025 bill with deductions for seniors, but no full elimination. Facing trims amid shutdown fights. As of October 3, 2025, remains under threat from deficit concerns.</p>
+    <p><strong>Sentiment:</strong> Popular among seniors on X, but disappointment over incomplete delivery.</p>
+
+    <h4>>> Extend and Expand 2017 Tax Cuts</h4>
+    <p><strong>Promise:</strong> Renew the Tax Cuts and Jobs Act and lower corporate tax rate to 15%.</p>
+    <p><strong>Context/Status:</strong> Partial extensions via executive actions; full renewal pending in 2026 budget amid shutdown. As of October 3, 2025, in progress with GOP priority.</p>
+    <p><strong>Sentiment:</strong> Favored by businesses on X; critics highlight inequality.</p>
+
+    <h4>>> Impose Tariffs on Imports</h4>
+    <p><strong>Promise:</strong> 10-20% tariffs on allies, up to 60% on China.</p>
+    <p><strong>Context/Status:</strong> 10% universal tariff implemented; ongoing negotiations with China, Canada, Mexico. As of October 3, 2025, fulfilled in part but delayed by talks, with economic impacts debated.</p>
+    <p><strong>Sentiment:</strong> Praise for protectionism on X, but concerns over inflation.</p>
+
+    <h4>>> Cap Credit Card Interest at 10%</h4>
+    <p><strong>Promise:</strong> Limit rates to 10% for consumer relief.</p>
+    <p><strong>Context/Status:</strong> No action taken; opposed by banking lobby. As of October 3, 2025, stalled with legal challenges likely.</p>
+    <p><strong>Sentiment:</strong> Skepticism on X about feasibility.</p>
+
+    <h4>>> Tax Deduction for Home Generators</h4>
+    <p><strong>Promise:</strong> Retroactive deduction post-hurricanes.</p>
+    <p><strong>Context/Status:</strong> Included in disaster relief; partial implementation. As of October 3, 2025, in progress tied to IRS rules.</p>
+
+    <h4>>> Expand School Choice and Housing Credits</h4>
+    <p><strong>Promise:</strong> Increase incentives for education and housing.</p>
+    <p><strong>Context/Status:</strong> Bill introduced but no passage. As of October 3, 2025, stalled due to opposition.</p>
+
+    <h4>>> End Inflation and Make America Affordable</h4>
+    <p><strong>Promise:</strong> Lower costs for housing, groceries.</p>
+    <p><strong>Context/Status:</strong> Inflation down from peaks, but prices remain high. As of October 3, 2025, partial via deregulation, but market forces limit impact.</p>
+    <p><strong>Sentiment:</strong> Frustration on X over high costs.</p>
+
+    <h4>>> Cut Federal Spending by $2 Trillion</h4>
+    <p><strong>Promise:</strong> Via DOGE efficiency department.</p>
+    <p><strong>Context/Status:</strong> $50B in cuts; ongoing shutdown stalls more. As of October 3, 2025, partial with reinstated contracts.</p>
+    <p><strong>Sentiment:</strong> Mixed on X; chaotic but necessary to some.</p>
+
+    <h3>Immigration and Border Security</h3>
+    <h4>>> Largest Mass Deportation Program</h4>
+    <p><strong>Promise:</strong> Launch the largest deportation operation, starting Day 1.</p>
+    <p><strong>Context/Status:</strong> Over 2 million deported or self-deported by September 2025 per DHS, but estimates vary (140K-300K). Scaled back due to logistics and courts. As of October 3, 2025, partial with military involvement but not at promised scale.</p>
+    <p><strong>Sentiment:</strong> Divided on X; base supports, others protest scale.</p>
+
+    <h4>>> End Birthright Citizenship</h4>
+    <p><strong>Promise:</strong> Executive order to limit for undocumented children.</p>
+    <p><strong>Context/Status:</strong> Blocked by courts; no amendment. As of October 3, 2025, stalled.</p>
+    <p><strong>Sentiment:</strong> Seen as symbolic on X.</p>
+
+    <h4>>> Reinstate and Expand Travel Ban</h4>
+    <p><strong>Promise:</strong> Restore 2017 ban and extend.</p>
+    <p><strong>Context/Status:</strong> Reinstated Day 1; expansions challenged. As of October 3, 2025, partial.</p>
+
+    <h4>>> Build and Complete Border Wall</h4>
+    <p><strong>Promise:</strong> Finish the wall from first term.</p>
+    <p><strong>Context/Status:</strong> Crossings down 66%; minimal new construction. As of October 3, 2025, partial via enforcement.</p>
+
+    <h4>>> Ban Sanctuary Cities</h4>
+    <p><strong>Promise:</strong> Legislation to defund and deport.</p>
+    <p><strong>Context/Status:</strong> Bill stalled. As of October 3, 2025, limited enforcement.</p>
+
+    <h3>Foreign Policy and National Security</h3>
+    <h4>>> End Russia-Ukraine War</h4>
+    <p><strong>Promise:</strong> Resolve in 24 hours or Day 1.</p>
+    <p><strong>Context/Status:</strong> War ongoing; talks started but no end. Trump backed away, calling it "in jest." As of October 3, 2025, unfulfilled with shifting tone.</p>
+    <p><strong>Sentiment:</strong> Major disappointment on X; labeled unfulfilled.</p>
+
+    <h4>>> End Gaza Conflict</h4>
+    <p><strong>Promise:</strong> Swift resolution.</p>
+    <p><strong>Context/Status:</strong> Ongoing; no U.S.-led peace. As of October 3, 2025, stalled.</p>
+
+    <h4>>> Prevent World War III</h4>
+    <p><strong>Promise:</strong> Avoid new wars.</p>
+    <p><strong>Context/Status:</strong> No new U.S. wars; tensions high. As of October 3, 2025, partial.</p>
+
+    <h4>>> Build Iron Dome System</h4>
+    <p><strong>Promise:</strong> U.S. missile defense shield.</p>
+    <p><strong>Context/Status:</strong> No funding advanced. As of October 3, 2025, stalled.</p>
+
+    <h4>>> Reduce NATO Involvement</h4>
+    <p><strong>Promise:</strong> Standby role if allies don't pay.</p>
+    <p><strong>Context/Status:</strong> Pressure on allies; no formal changes. As of October 3, 2025, in progress.</p>
+
+    <h4>>> Wage War on Drug Cartels</h4>
+    <p><strong>Promise:</strong> Death penalty for traffickers.</p>
+    <p><strong>Context/Status:</strong> Enforcement up; no new laws. As of October 3, 2025, partial.</p>
+
+    <h3>Transparency and Investigations</h3>
+    <h4>>> Release Jeffrey Epstein Files</h4>
+    <p><strong>Promise:</strong> Declassify and release Epstein-related documents.</p>
+    <p><strong>Context/Status:</strong> Partial releases in September 2025 by House Democrats, mentioning Musk, Thiel, Bannon. Trump admin pushed first batch, but redactions heavy and sealed by courts. July 2025 DOJ memo denied client list. As of October 3, 2025, stalled with legal blocks.</p>
+    <p><strong>Sentiment:</strong> Backlash on X; seen as cover-up by base.</p>
+
+    <h4>>> Release JFK Files</h4>
+    <p><strong>Promise:</strong> Full declassification of JFK assassination files.</p>
+    <p><strong>Context/Status:</strong> Over 64,000 pages released in March 2025 via executive order; no major revelations. As of October 3, 2025, fulfilled but underwhelming.</p>
+    <p><strong>Sentiment:</strong> Transparency win on X, but content disappointing.</p>
+
+    <h4>>> Release MLK Files</h4>
+    <p><strong>Promise:</strong> Declassify MLK assassination files.</p>
+    <p><strong>Context/Status:</strong> Partial inclusion in JFK batch. As of October 3, 2025, partial.</p>
+
+    <h4>>> UFO Disclosure</h4>
+    <p><strong>Promise:</strong> Release UFO information.</p>
+    <p><strong>Context/Status:</strong> No major releases. As of October 3, 2025, stalled.</p>
+
+    <h4>>> Fort Knox Gold Deposit Confirmations</h4>
+    <p><strong>Promise:</strong> Audit U.S. gold reserves at Fort Knox.</p>
+    <p><strong>Context/Status:</strong> Vowed in January 2025; bill introduced June 2025, but Trump dropped plan by May 2025. Gold reserves valued at $1T amid shutdown. As of October 3, 2025, stalled.</p>
+    <p><strong>Sentiment:</strong> Disappointment on X; conspiracy fuel.</p>
+
+    <h4>>> Investigate Biden Family</h4>
+    <p><strong>Promise:</strong> Special prosecutor for corruption.</p>
+    <p><strong>Context/Status:</strong> Ongoing probes; no appointment. As of October 3, 2025, stalled.</p>
+
+    <h3>Healthcare and Social Policy</h3>
+    <h4>>> Make America Healthy Again</h4>
+    <p><strong>Promise:</strong> Tackle chronic diseases via RFK Jr.</p>
+    <p><strong>Context/Status:</strong> Vaccine skepticism pushed; no major reforms. As of October 3, 2025, in progress.</p>
+    <p><strong>Sentiment:</strong> Divided on X over health shifts.</p>
+
+    <h4>>> Protect Medicare and Social Security</h4>
+    <p><strong>Promise:</strong> No cuts.</p>
+    <p><strong>Context/Status:</strong> Under threat in shutdown. As of October 3, 2025, partial.</p>
+
+    <h4>>> Ban Transgender Athletes from Women's Sports</h4>
+    <p><strong>Promise:</strong> Federal prohibition.</p>
+    <p><strong>Context/Status:</strong> Executive actions; no full ban. As of October 3, 2025, partial.</p>
+    <p><strong>Sentiment:</strong> Base support on X; controversy.</p>
+
+    <h4>>> Define Gender as Determined at Birth</h4>
+    <p><strong>Promise:</strong> Biological gender for federal policy.</p>
+    <p><strong>Context/Status:</strong> Partial implementations via Project 2025. As of October 3, 2025, in progress.</p>
+
+    <h4>>> Free IVF Treatment</h4>
+    <p><strong>Promise:</strong> Mandate coverage.</p>
+    <p><strong>Context/Status:</strong> No national plan. As of October 3, 2025, stalled.</p>
+
+    <h3>Government Reform and Justice</h3>
+    <h4>>> Pardon January 6 Convicts</h4>
+    <p><strong>Promise:</strong> Full pardons for January 6 participants.</p>
+    <p><strong>Context/Status:</strong> Issued Day 1 for over 1,500. As of October 3, 2025, fulfilled.</p>
+    <p><strong>Sentiment:</strong> Divisive on X; base cheers.</p>
+
+    <h4>>> Eliminate the Department of Education</h4>
+    <p><strong>Promise:</strong> Abolish federal education department.</p>
+    <p><strong>Context/Status:</strong> Process started; control shifted to states. As of October 3, 2025, in progress.</p>
+
+    <h4>>> End the Deep State</h4>
+    <p><strong>Promise:</strong> Dismantle bureaucracy.</p>
+    <p><strong>Context/Status:</strong> DOGE cuts; shutdown ongoing. As of October 3, 2025, partial.</p>
+    <p><strong>Sentiment:</strong> Core MAGA goal on X; chaotic to critics.</p>
+
+    <h4>>> Reclassify Federal Workers</h4>
+    <p><strong>Promise:</strong> Easier firing via Schedule F.</p>
+    <p><strong>Context/Status:</strong> Revived; challenges ongoing. As of October 3, 2025, in progress.</p>
+
+    <h3>Energy and Environment</h3>
+    <h4>>> Drill, Baby, Drill</h4>
+    <p><strong>Promise:</strong> Expand oil and gas production.</p>
+    <p><strong>Context/Status:</strong> Deregulation; rig counts slightly down. As of October 3, 2025, partial.</p>
+
+    <h4>>> Roll Back Clean Energy Initiatives</h4>
+    <p><strong>Promise:</strong> Repeal Inflation Reduction Act measures.</p>
+    <p><strong>Context/Status:</strong> Partial rollbacks; no full repeal. As of October 3, 2025, in progress.</p>
+
+    <h3>Other Promises</h3>
+    <h4>>> Promote Homeschooling</h4>
+    <p><strong>Promise:</strong> Policy support for homeschool families.</p>
+    <p><strong>Context/Status:</strong> No major actions. As of October 3, 2025, stalled.</p>
+
+    <h4>>> Build Freedom Cities</h4>
+    <p><strong>Promise:</strong> Develop new cities for homeownership.</p>
+    <p><strong>Context/Status:</strong> No progress. As of October 3, 2025, stalled.</p>
+
+    <h4>>> Promote Flying Cars Research</h4>
+    <p><strong>Promise:</strong> Support innovative technology research.</p>
+    <p><strong>Context/Status:</strong> No funding. As of October 3, 2025, stalled.</p>
+
+    <h4>>> Save TikTok</h4>
+    <p><strong>Promise:</strong> Delay ban or facilitate sale.</p>
+    <p><strong>Context/Status:</strong> Delays issued; no sale. As of October 3, 2025, partial.</p>
+
+    <h4>>> Put U.S. Astronauts on Mars</h4>
+    <p><strong>Promise:</strong> Expand space exploration.</p>
+    <p><strong>Context/Status:</strong> No plans advanced. As of October 3, 2025, stalled.</p>
+
+    <h4>>> 90 Trade Deals in 90 Days</h4>
+    <p><strong>Promise:</strong> Negotiate 90 deals quickly.</p>
+    <p><strong>Context/Status:</strong> None finalized; tariffs instead. As of October 3, 2025, stalled.</p>
+
+    <h4>>> End the Federal Reserve</h4>
+    <p><strong>Promise:</strong> Reform or abolish the Fed.</p>
+    <p><strong>Context/Status:</strong> No action. As of October 3, 2025, stalled.</p>
+
+    <h4>>> $5,000 Dividend Checks</h4>
+    <p><strong>Promise:</strong> Economic stimulus checks.</p>
+    <p><strong>Context/Status:</strong> No evidence; likely misinformation. As of October 3, 2025, stalled.</p>
+
+    <h4>>> End DEI Programs</h4>
+    <p><strong>Promise:</strong> Eliminate diversity, equity, and inclusion initiatives.</p>
+    <p><strong>Context/Status:</strong> Executive orders issued; partial dismantling. As of October 3, 2025, in progress.</p>
+
+    <h3>Analysis and Sentiment</h3>
+    <p><strong>Fulfilled:</strong> Pardon January 6 convicts, JFK files release, initial tariffs, no taxes on tips (capped deduction).</p>
+    <p><strong>Partially Fulfilled:</strong> Mass deportations (2M milestone but scaled back), tax reforms (capped deductions), border security (reduced crossings), end deep state (DOGE cuts amid shutdown).</p>
+    <p><strong>Unfulfilled:</strong> End Russia-Ukraine war, Epstein files (partial/redacted), Fort Knox audit (dropped), cap credit card rates, end inflation fully, birthright citizenship, UFO disclosure.</p>
+    <p><strong>Sentiment on X:</strong> Growing disillusionment over broken promises like censorship, wars not ended, and transparency failures; some defend fulfilled items, but overall polarized with frustration from MAGA base.
+    
+> END DATA STREAM_</p>
+</div>  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
