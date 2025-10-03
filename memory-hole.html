@@ -103,6 +103,38 @@
       box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
       transform: scale(1.05);
     }
+
+    /* Dark overlay for readability */
+    #memory-hole .terminal-box {
+      background: rgba(0, 0, 0, 0.85);
+      position: relative;
+    }
+
+    /* Ensure text is bright and crisp */
+    #memory-hole .terminal-box p,
+    #memory-hole .terminal-box h3,
+    #memory-hole .terminal-box h4 {
+      text-shadow: none;
+      position: relative;
+      z-index: 1;
+    }
+
+    #memory-hole .terminal-box h3 {
+      color: #39ff14;
+    }
+
+    #memory-hole .terminal-box h4 {
+      color: #adff2f;
+    }
+
+    #memory-hole .terminal-box p {
+      color: #c0ffc0;
+      line-height: 1.8;
+    }
+
+    #memory-hole .terminal-box strong {
+      color: #fff;
+    }
   </style>
 </head>
 <body>
