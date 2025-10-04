@@ -362,3 +362,26 @@ function initializeMatrixEffect() {
   setInterval(drawMatrix, 50);
   window.addEventListener('resize', setup);
 }
+
+// Red Pill Effect
+function takeRedPill() {
+  const effect = document.getElementById('red-pill-effect');
+  effect.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+// Blue Pill Effect
+function takeBluePill() {
+  const effect = document.getElementById('blue-pill-effect');
+  effect.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+// Close Effect
+function closeEffect() {
+  const effects = document.querySelectorAll('.pill-effect');
+  effects.forEach(effect => {
+    effect.classList.remove('active');
+  });
+  document.body.style.overflow = 'auto';
+}
