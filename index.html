@@ -175,6 +175,152 @@
         padding: 1rem 1.5rem;
       }
     }
+
+    <style>
+/* Pill Effect Overlays */
+.pill-effect {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, 
+    rgba(139, 0, 0, 0.95) 0%,
+    rgba(0, 0, 0, 0.98) 100%);
+  z-index: 10000;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.pill-effect.blue-theme {
+  background: radial-gradient(circle at center, 
+    rgba(0, 123, 255, 0.95) 0%,
+    rgba(0, 0, 0, 0.98) 100%);
+}
+
+.pill-effect.active {
+  display: flex;
+  animation: fadeIn 0.5s forwards;
+}
+
+.effect-content {
+  text-align: center;
+  padding: 3rem;
+  max-width: 800px;
+}
+
+.effect-content h1 {
+  font-size: 3rem;
+  color: #ff0000;
+  margin-bottom: 2rem;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+}
+
+.blue-theme .effect-content h1 {
+  color: #007BFF;
+}
+
+.glitch-effect {
+  animation: glitchIntense 1s infinite;
+}
+
+@keyframes glitchIntense {
+  0%, 100% {
+    text-shadow: 2px 2px #ff0000, -2px -2px #00ff00;
+    transform: translate(0);
+  }
+  25% {
+    text-shadow: -2px 2px #ff0000, 2px -2px #00ff00;
+    transform: translate(-3px, 3px);
+  }
+  50% {
+    text-shadow: 2px -2px #ff0000, -2px 2px #00ff00;
+    transform: translate(3px, -3px);
+  }
+  75% {
+    text-shadow: -2px -2px #ff0000, 2px 2px #00ff00;
+    transform: translate(-3px, -3px);
+  }
+}
+
+.fade-effect {
+  animation: pulseFade 2s infinite;
+}
+
+@keyframes pulseFade {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.typewriter {
+  font-size: 1.5rem;
+  color: #00ff00;
+  font-family: 'Courier New', monospace;
+  margin: 1rem 0;
+  opacity: 0;
+  animation: typeIn 1s forwards;
+}
+
+.blue-theme .typewriter {
+  color: #00d4ff;
+}
+
+.typewriter.delay-1 {
+  animation-delay: 1s;
+}
+
+.typewriter.delay-2 {
+  animation-delay: 2s;
+}
+
+@keyframes typeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.close-effect-btn {
+  margin-top: 3rem;
+  padding: 1rem 3rem;
+  background: rgba(255, 0, 0, 0.3);
+  border: 2px solid #ff0000;
+  color: #fff;
+  font-size: 1.2rem;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  opacity: 0;
+  animation: typeIn 1s forwards 3s;
+}
+
+.blue-theme .close-effect-btn {
+  background: rgba(0, 123, 255, 0.3);
+  border-color: #007BFF;
+}
+
+.close-effect-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
+}
+
+.blue-theme .close-effect-btn:hover {
+  box-shadow: 0 0 30px rgba(0, 123, 255, 0.8);
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+</style>
   </style>
 
 </head>
@@ -227,11 +373,32 @@
       <h2>> UPLINK TO FREEDOM</h2>
       <p class="subtitle" style="margin-bottom: 1rem;">CHOOSE YOUR DESTINY</p>
       <div class="pill-choice" style="display: flex; gap: 1rem; justify-content: center; margin: 1rem 0;">
-        <div class="pill red-pill" onclick="alert('You’re in—freedom awaits, rebel!')">RED PILL</div>
-        <div class="pill blue-pill" onclick="alert('Coward’s way out—back to the simulation.')">BLUE PILL</div>
+        <div class="pill red-pill" onclick="takeRedPill()">RED PILL</div>
+        <div class="pill blue-pill" onclick="takeBluePill()">BLUE PILL</div>
       </div>
     </div>
   </section>
+
+  <!-- Pill Effect Overlays -->
+  <div id="red-pill-effect" class="pill-effect">
+    <div class="effect-content">
+      <h1 class="glitch-effect">WELCOME TO THE REAL WORLD</h1>
+      <p class="typewriter">You've chosen truth over comfort...</p>
+      <p class="typewriter delay-1">The Matrix can no longer hold you...</p>
+      <p class="typewriter delay-2">Freedom awaits, rebel.</p>
+      <button onclick="closeEffect()" class="close-effect-btn">CONTINUE</button>
+    </div>
+  </div>
+
+  <div id="blue-pill-effect" class="pill-effect blue-theme">
+    <div class="effect-content">
+      <h1 class="fade-effect">RETURNING TO SIMULATION</h1>
+      <p class="typewriter">Ignorance is bliss...</p>
+      <p class="typewriter delay-1">The story ends here...</p>
+      <p class="typewriter delay-2">You wake in your bed and believe whatever you want to believe.</p>
+      <button onclick="closeEffect()" class="close-effect-btn">WAKE UP</button>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
