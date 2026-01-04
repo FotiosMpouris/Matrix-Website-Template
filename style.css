@@ -212,6 +212,7 @@ html {
   border: 1px solid rgba(0, 255, 65, 0.2);
   border-radius: 20px;
   padding: 3rem 2.5rem;
+  padding-top: 5rem;
   box-shadow: 
     0 8px 40px rgba(0, 0, 0, 0.5),
     0 0 20px rgba(0, 255, 65, 0.1);
@@ -219,6 +220,7 @@ html {
   color: #e0e0e0;
   max-width: 1200px;
   margin: 0 auto;
+  margin-top: 80px;
   position: relative;
 }
 
@@ -767,9 +769,11 @@ h2 {
 
   .terminal-box {
     padding: 1.5rem 1rem;
+    padding-top: 4rem;
     border-radius: 12px;
     max-width: 100%;
     overflow-x: hidden;
+    margin-top: 70px;
   }
 
   .terminal-box h2 {
@@ -858,7 +862,9 @@ h2 {
 
   .terminal-box {
     padding: 1rem 0.75rem;
+    padding-top: 3.5rem;
     overflow-x: hidden;
+    margin-top: 60px;
   }
 
   .terminal-box h2 {
